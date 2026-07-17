@@ -14,12 +14,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let map = null;
 
-  const fitWorld = () => {
-    // Zoom mínimo con el que el mundo cubre por completo el contenedor visible,
-    // así nunca se ve fondo blanco al alejar el zoom.
-    const minZoom = map.getBoundsZoom(worldBounds, true);
-    map.setMinZoom(minZoom);
-    if (map.getZoom() < minZoom) map.setZoom(minZoom);
+  // Centro real (en espacio de píxeles proyectados, no media de latitudes)
+  // de los límites del mundo para el zoom dado — así queda bien encajado.
+  const projectedCenter = (zoom) => {
+    const nwPoint = map.project(worldBounds.getNorthWest(), zoom);
+    const sePoint = map.project(worldBounds.getSouthEast(), zoom);
+    return map.unproject(nwPoint.add(sePoint).divideBy(2), zoom);
+  };
+
+  // Zoom mínimo con el que el mundo cubre siempre todo el contenedor, para
+  // que nunca aparezcan bordes (claros u oscuros) alrededor del mapa.
+  const clampToCover = () => {
+    const coverZoom = map.getBoundsZoom(worldBounds, true);
+    map.setMinZoom(coverZoom);
+    if (map.getZoom() < coverZoom) map.setZoom(coverZoom);
   };
 
   const openMap = () => {
@@ -28,13 +36,15 @@ document.addEventListener("DOMContentLoaded", () => {
     mapBtn.classList.add("is-active");
     mapBtn.setAttribute("aria-pressed", "true");
 
+    const firstOpen = !map;
+
     if (!map) {
       map = L.map("atp-map-canvas", {
         worldCopyJump: false,
         maxBounds: worldBounds,
         maxBoundsViscosity: 1.0,
         maxZoom: 18,
-      }).setView([20, 10], 2);
+      }).setView(worldBounds.getCenter(), 2);
 
       // Teselas de Esri (rotulan el mundo en inglés por defecto, sin clave API)
       L.tileLayer(
@@ -50,13 +60,22 @@ document.addEventListener("DOMContentLoaded", () => {
 
       window.addEventListener("resize", () => {
         map.invalidateSize();
-        fitWorld();
+        clampToCover();
       });
     }
 
     requestAnimationFrame(() => {
       map.invalidateSize();
-      fitWorld();
+      const coverZoom = map.getBoundsZoom(worldBounds, true);
+      map.setMinZoom(coverZoom);
+      // Solo la primera vez se encuadra el mundo completo a pantalla; en
+      // aperturas posteriores se respeta la posición/zoom que dejó el usuario,
+      // solo corrigiendo si ha quedado por debajo del zoom de cobertura.
+      if (firstOpen) {
+        map.setView(projectedCenter(coverZoom), coverZoom, { animate: false });
+      } else if (map.getZoom() < coverZoom) {
+        map.setZoom(coverZoom);
+      }
     });
   };
 
