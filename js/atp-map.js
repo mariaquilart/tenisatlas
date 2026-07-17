@@ -1,6 +1,8 @@
 // ATP — muestra un mapa mundial a pantalla casi completa al pulsar "Mapa" del menú
 // Un único mapamundi: sin repetición horizontal y sin espacios en blanco al
 // desplazar o hacer zoom (el desplazamiento y el zoom quedan acotados al planeta).
+// Incluye marcadores de torneo con clustering y filtros combinables de
+// categoría / superficie, más una tarjeta con los datos de cada torneo.
 
 document.addEventListener("DOMContentLoaded", () => {
   const mapBtn = document.getElementById("atp-map-btn");
@@ -12,7 +14,38 @@ document.addEventListener("DOMContentLoaded", () => {
   // dejando el borde norte en el límite de la proyección Web Mercator.
   const worldBounds = L.latLngBounds([-60, -180], [85.05112878, 180]);
 
-  let map = null;
+  const SURFACE_LABELS = { Hard: "Pista dura", Clay: "Tierra batida", Grass: "Hierba" };
+  const CATEGORY_ORDER = ["Grand Slam", "Masters 1000", "ATP 500", "ATP 250"];
+  const SURFACE_ORDER = ["Hard", "Clay", "Grass"];
+
+  const escapeHtml = (str) =>
+    String(str).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+
+  const buildCardHTML = (t) => {
+    const row = (label, value) =>
+      `<div class="tournament-card__row"><span class="tournament-card__row-label">${escapeHtml(label)}</span><span class="tournament-card__row-value">${value}</span></div>`;
+
+    const location = [t.venue && t.venue.street, t.venue && t.venue.city, t.venue && t.venue.country]
+      .filter(Boolean)
+      .map(escapeHtml)
+      .join(", ");
+
+    const photo = t.photo
+      ? `<img class="tournament-card__photo" src="${escapeHtml(t.photo)}" alt="Estadio principal de ${escapeHtml(t.name)}" loading="lazy">`
+      : "";
+
+    return `
+      ${photo}
+      <div class="tournament-card__body">
+        <div class="tournament-card__name">${escapeHtml(t.name)}</div>
+        ${row("Ubicación", location || "No disponible")}
+        ${row("Categoría", t.category ? escapeHtml(t.category) : "No disponible")}
+        ${row("Superficie", t.surface ? escapeHtml(SURFACE_LABELS[t.surface] || t.surface) : "No disponible")}
+        ${row("Primera edición", t.firstEdition ? String(t.firstEdition) : "No disponible")}
+        ${row("Más títulos", t.mostTitlesPlayer ? escapeHtml(t.mostTitlesPlayer) : "No disponible")}
+      </div>
+    `;
+  };
 
   // Centro real (en espacio de píxeles proyectados, no media de latitudes)
   // de los límites del mundo para el zoom dado — así queda bien encajado.
@@ -29,6 +62,86 @@ document.addEventListener("DOMContentLoaded", () => {
     map.setMinZoom(coverZoom);
     if (map.getZoom() < coverZoom) map.setZoom(coverZoom);
   };
+
+  const setupTournaments = () => {
+    const data = Array.isArray(window.ATP_TOURNAMENTS) ? window.ATP_TOURNAMENTS : [];
+    if (!data.length || typeof L.markerClusterGroup !== "function") return;
+
+    const categoryContainer = document.querySelector('#atp-map-filters [data-filter-group="category"]');
+    const surfaceContainer = document.querySelector('#atp-map-filters [data-filter-group="surface"]');
+    const emptyMsg = document.getElementById("atp-map-empty");
+
+    const categories = CATEGORY_ORDER.filter((c) => data.some((t) => t.category === c));
+    const surfaces = SURFACE_ORDER.filter((s) => data.some((t) => t.surface === s));
+    const activeCategories = new Set(categories);
+    const activeSurfaces = new Set(surfaces);
+
+    const clusterGroup = L.markerClusterGroup({
+      maxClusterRadius: 48,
+      spiderfyOnMaxZoom: true,
+      showCoverageOnHover: false,
+      iconCreateFunction: (cluster) =>
+        L.divIcon({
+          html: `<div class="tournament-cluster">${cluster.getChildCount()}</div>`,
+          className: "",
+          iconSize: L.point(42, 42),
+        }),
+    });
+
+    const markers = data
+      .filter((t) => typeof t.lat === "number" && typeof t.lng === "number")
+      .map((t) => {
+        const marker = L.marker([t.lat, t.lng], {
+          icon: L.divIcon({
+            className: "tournament-marker",
+            html: "",
+            iconSize: [22, 22],
+            iconAnchor: [11, 22],
+            popupAnchor: [0, -20],
+          }),
+        });
+        marker.bindPopup(buildCardHTML(t), { maxWidth: 300, minWidth: 260 });
+        marker.tournament = t;
+        return marker;
+      });
+
+    const refresh = () => {
+      clusterGroup.clearLayers();
+      const visible = markers.filter(
+        (m) => activeCategories.has(m.tournament.category) && activeSurfaces.has(m.tournament.surface)
+      );
+      if (visible.length) clusterGroup.addLayers(visible);
+      if (emptyMsg) emptyMsg.hidden = visible.length !== 0;
+    };
+
+    const addChip = (container, value, label, activeSet) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "map-filters__chip";
+      btn.textContent = label;
+      btn.setAttribute("aria-pressed", "true");
+      btn.addEventListener("click", () => {
+        const pressed = btn.getAttribute("aria-pressed") === "true";
+        if (pressed) {
+          activeSet.delete(value);
+          btn.setAttribute("aria-pressed", "false");
+        } else {
+          activeSet.add(value);
+          btn.setAttribute("aria-pressed", "true");
+        }
+        refresh();
+      });
+      container.appendChild(btn);
+    };
+
+    if (categoryContainer) categories.forEach((c) => addChip(categoryContainer, c, c, activeCategories));
+    if (surfaceContainer) surfaces.forEach((s) => addChip(surfaceContainer, s, SURFACE_LABELS[s] || s, activeSurfaces));
+
+    map.addLayer(clusterGroup);
+    refresh();
+  };
+
+  let map = null;
 
   const openMap = () => {
     hero.hidden = true;
@@ -57,6 +170,8 @@ document.addEventListener("DOMContentLoaded", () => {
           maxZoom: 18,
         }
       ).addTo(map);
+
+      setupTournaments();
 
       window.addEventListener("resize", () => {
         map.invalidateSize();

@@ -1,0 +1,53 @@
+// Atlas del Tenis — datos de los torneos ATP para el mapa.
+// Cada campo desconocido o no verificado se deja en null (nunca se inventa).
+
+window.ATP_TOURNAMENTS = [
+  {
+    id: "australian-open",
+    name: "Australian Open",
+    category: "Grand Slam",
+    surface: "Hard",
+    venue: { street: "Melbourne Park, Batman Avenue", city: "Melbourne", country: "Australia" },
+    lat: -37.8199,
+    lng: 144.978,
+    firstEdition: 1905,
+    mostTitlesPlayer: "Novak Djokovic (10)",
+    photo: null,
+  },
+  {
+    id: "roland-garros",
+    name: "Roland Garros",
+    category: "Grand Slam",
+    surface: "Clay",
+    venue: { street: "2 Avenue Gordon Bennett", city: "París", country: "Francia" },
+    lat: 48.847,
+    lng: 2.253,
+    firstEdition: 1891,
+    mostTitlesPlayer: "Rafael Nadal (14)",
+    photo: null,
+  },
+  {
+    id: "wimbledon",
+    name: "Wimbledon",
+    category: "Grand Slam",
+    surface: "Grass",
+    venue: { street: "Church Road", city: "Londres", country: "Reino Unido" },
+    lat: 51.434,
+    lng: -0.2143,
+    firstEdition: 1877,
+    mostTitlesPlayer: "Roger Federer (8)",
+    photo: null,
+  },
+  {
+    id: "us-open",
+    name: "US Open",
+    category: "Grand Slam",
+    surface: "Hard",
+    venue: { street: "USTA Billie Jean King National Tennis Center", city: "Nueva York", country: "Estados Unidos" },
+    lat: 40.7503,
+    lng: -73.8449,
+    firstEdition: 1881,
+    mostTitlesPlayer: "Richard Sears (7)",
+    photo: null,
+  },
+];

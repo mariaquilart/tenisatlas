@@ -8,6 +8,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="page--sub">
@@ -49,11 +51,24 @@
   </main>
 
   <section class="map-view" id="atp-map-view" hidden>
+    <div class="map-filters" id="atp-map-filters" aria-label="Filtros del mapa">
+      <div class="map-filters__group" role="group" aria-label="Filtrar por categoría">
+        <span class="map-filters__label">Categoría</span>
+        <div class="map-filters__chips" data-filter-group="category"></div>
+      </div>
+      <div class="map-filters__group" role="group" aria-label="Filtrar por superficie">
+        <span class="map-filters__label">Superficie</span>
+        <div class="map-filters__chips" data-filter-group="surface"></div>
+      </div>
+      <span class="map-filters__empty" id="atp-map-empty" hidden>Ningún torneo cumple estos filtros</span>
+    </div>
     <div class="map-view__canvas" id="atp-map-canvas"></div>
   </section>
 
   <script src="js/script.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
+  <script src="js/atp-tournaments-data.js"></script>
   <script src="js/atp-map.js"></script>
 </body>
 </html>
