@@ -9,7 +9,28 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
+<body class="page--sub">
+  <header class="site-nav">
+    <a href="index.html" class="site-nav__logo" aria-label="Atlas del Tenis — Inicio">
+      <svg class="site-nav__logo-mark" viewBox="0 0 40 40" aria-hidden="true">
+        <circle cx="20" cy="20" r="17" fill="none" stroke="currentColor" stroke-width="1.4"/>
+        <path d="M9 6 C17 13 17 27 9 34" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+        <path d="M31 6 C23 13 23 27 31 34" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <span class="site-nav__logo-text">Atlas del Tenis</span>
+    </a>
+    <nav class="site-nav__menu" aria-label="Navegación del circuito">
+      <button type="button" class="site-nav__link">Mapa</button>
+      <button type="button" class="site-nav__link">Calendarios</button>
+      <button type="button" class="site-nav__link">Versus</button>
+      <button type="button" class="site-nav__link">Historial</button>
+      <button type="button" class="site-nav__link">H2H</button>
+      <button type="button" class="site-nav__link">Palmarés</button>
+      <button type="button" class="site-nav__link">Campeones</button>
+      <button type="button" class="site-nav__link">Filtros</button>
+    </nav>
+  </header>
+
   <main class="hero">
     <div class="hero__court" aria-hidden="true">
       <div class="court-lines"></div>
@@ -23,13 +44,6 @@
         <span class="hero__title-line">WTA</span>
         <span class="hero__title-line hero__title-line--accent">Tour</span>
       </h1>
-      <p class="hero__subtitle">Sección en construcción. Muy pronto: rankings, torneos e historia del circuito WTA.</p>
-      <nav class="hero__actions" aria-label="Navegación">
-        <a href="index.html" class="tour-btn">
-          <span class="tour-btn__label">VOLVER</span>
-          <span class="tour-btn__sub">Inicio</span>
-        </a>
-      </nav>
     </div>
   </main>
   <script src="js/script.js"></script>
