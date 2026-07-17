@@ -423,3 +423,78 @@ body.page--sub .hero {
     animation: none;
   }
 }
+
+/* ---------------------------------------------------------
+   Sección de créditos (solo portada) — apartado final, fuera
+   del hero, con fade in/out al entrar/salir del viewport
+--------------------------------------------------------- */
+
+.credit-section {
+  position: relative;
+  min-height: 32vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(180deg, #04070a 0%, #060c0a 60%, #05090b 100%);
+  border-top: 1px solid rgba(233, 220, 195, 0.14);
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.credit-section.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.credit-section__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 3.5rem 2rem;
+  text-align: center;
+}
+
+.credit-section__label {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.credit-section__email {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.3rem;
+  letter-spacing: 0.02em;
+  color: var(--color-gold-soft);
+}
+
+@media (max-width: 560px) {
+  .credit-section {
+    min-height: 24vh;
+  }
+
+  .credit-section__inner {
+    padding: 2.75rem 1.5rem;
+  }
+
+  .credit-section__email {
+    font-size: 1.1rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .credit-section {
+    transition: opacity 0.6s ease;
+    transform: none;
+  }
+
+  .credit-section.is-visible {
+    transform: none;
+  }
+}
