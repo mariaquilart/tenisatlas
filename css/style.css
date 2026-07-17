@@ -172,6 +172,43 @@ body.page--sub .hero {
 }
 
 /* ---------------------------------------------------------
+   Vista de mapa (solo ATP, opción "Mapa" del menú) —
+   ocupa casi toda la pantalla, debajo de la barra de nav
+--------------------------------------------------------- */
+
+.map-view {
+  position: fixed;
+  top: 5.5rem;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 10;
+  background: var(--color-bg-1);
+}
+
+.map-view[hidden] {
+  display: none;
+}
+
+.map-view__canvas {
+  width: 100%;
+  height: 100%;
+  background: var(--color-bg-1);
+}
+
+.map-view__canvas.leaflet-container {
+  background: var(--color-bg-1);
+}
+
+.site-nav__link.is-active {
+  color: var(--color-gold-soft);
+}
+
+.site-nav__link.is-active::after {
+  transform: scaleX(1);
+}
+
+/* ---------------------------------------------------------
    Hero
 --------------------------------------------------------- */
 

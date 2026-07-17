@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="page--sub">
@@ -20,7 +21,7 @@
       <span class="site-nav__logo-text">Atlas del Tenis</span>
     </a>
     <nav class="site-nav__menu" aria-label="Navegación del circuito">
-      <button type="button" class="site-nav__link">Mapa</button>
+      <button type="button" class="site-nav__link" id="atp-map-btn" aria-pressed="false">Mapa</button>
       <button type="button" class="site-nav__link">Calendarios</button>
       <button type="button" class="site-nav__link">Versus</button>
       <button type="button" class="site-nav__link">Historial</button>
@@ -31,7 +32,7 @@
     </nav>
   </header>
 
-  <main class="hero">
+  <main class="hero" id="atp-hero">
     <div class="hero__court" aria-hidden="true">
       <div class="court-lines"></div>
     </div>
@@ -46,6 +47,13 @@
       </h1>
     </div>
   </main>
+
+  <section class="map-view" id="atp-map-view" hidden>
+    <div class="map-view__canvas" id="atp-map-canvas"></div>
+  </section>
+
   <script src="js/script.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="js/atp-map.js"></script>
 </body>
 </html>
