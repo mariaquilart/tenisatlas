@@ -156,6 +156,10 @@ body.page--sub .hero {
   padding-top: 5.5rem;
 }
 
+body.page--sub .hero[hidden] {
+  display: none;
+}
+
 @media (max-width: 720px) {
   .site-nav {
     gap: 1rem;
@@ -216,10 +220,8 @@ body.page--sub .hero {
   align-items: center;
   gap: 1.25rem 2rem;
   padding: 0.9rem clamp(1.25rem, 4vw, 3rem);
-  background: rgba(8, 13, 11, 0.72);
+  background: #000;
   border-bottom: 1px solid rgba(233, 220, 195, 0.12);
-  backdrop-filter: blur(14px) saturate(140%);
-  -webkit-backdrop-filter: blur(14px) saturate(140%);
 }
 
 .map-filters__group {
@@ -701,7 +703,7 @@ body.page--sub .hero {
 }
 
 /* ---------------------------------------------------------
-   Sección de créditos (solo portada) — apartado final, fuera
+   Sección de créditos (portada, ATP y WTA) — apartado final, fuera
    del hero, con fade in/out al entrar/salir del viewport
 --------------------------------------------------------- */
 
@@ -748,6 +750,14 @@ body.page--sub .hero {
   font-size: 1.3rem;
   letter-spacing: 0.02em;
   color: var(--color-gold-soft);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.credit-section__email:hover,
+.credit-section__email:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
 }
 
 @media (max-width: 560px) {
