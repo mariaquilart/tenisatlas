@@ -9,14 +9,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (returnFocus) button.focus();
   };
 
-  const openMenu = () => {
+  const positionMenu = () => {
     const buttonRect = button.getBoundingClientRect();
-    const menuWidth = menu.offsetWidth || 160;
+    const menuWidth = menu.offsetWidth;
     const left = Math.min(buttonRect.left, window.innerWidth - menuWidth - 12);
+    const safeLeft = Math.max(12, left);
+    const arrowLeft = Math.min(menuWidth - 16, Math.max(16, buttonRect.left + buttonRect.width / 2 - safeLeft));
 
     menu.style.top = `${buttonRect.bottom + 8}px`;
-    menu.style.left = `${Math.max(12, left)}px`;
+    menu.style.left = `${safeLeft}px`;
+    menu.style.setProperty("--calendar-arrow-left", `${arrowLeft}px`);
+  };
+
+  const openMenu = () => {
     menu.hidden = false;
+    positionMenu();
     button.setAttribute("aria-expanded", "true");
   };
 
@@ -38,5 +45,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (event.key === "Escape" && !menu.hidden) closeMenu(true);
   });
 
-  window.addEventListener("resize", () => closeMenu());
+  window.addEventListener("resize", () => {
+    if (!menu.hidden) positionMenu();
+  });
+
+  const navigation = button.closest(".site-nav__menu");
+  if (navigation) {
+    navigation.addEventListener("scroll", () => {
+      if (!menu.hidden) positionMenu();
+    });
+  }
 });

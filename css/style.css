@@ -164,11 +164,27 @@ a {
   box-shadow: 0 14px 36px rgba(0, 0, 0, 0.48);
 }
 
+.calendar-menu::before {
+  content: "";
+  position: absolute;
+  top: -0.38rem;
+  left: var(--calendar-arrow-left, 50%);
+  width: 0.68rem;
+  height: 0.68rem;
+  background: #080d0b;
+  border-top: 1px solid rgba(233, 220, 195, 0.16);
+  border-left: 1px solid rgba(233, 220, 195, 0.16);
+  border-radius: 0.12rem 0 0;
+  box-shadow: -3px -3px 8px rgba(0, 0, 0, 0.12);
+  transform: translateX(-50%) rotate(45deg);
+}
+
 .calendar-menu[hidden] {
   display: none;
 }
 
 .calendar-menu__item {
+  position: relative;
   display: block;
   width: 100%;
   padding: 0.62rem 0.75rem;
