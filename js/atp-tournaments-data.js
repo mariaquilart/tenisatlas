@@ -12,6 +12,7 @@ window.ATP_TOURNAMENTS = [
     lng: 144.98005,
     firstEdition: 1905,
     mostTitlesPlayer: "Novak Djokovic (10)",
+    prizeMoney: "68.000.000 €",
     photo: null,
   },
   {
@@ -24,6 +25,7 @@ window.ATP_TOURNAMENTS = [
     lng: 2.24639,
     firstEdition: 1891,
     mostTitlesPlayer: "Rafael Nadal (14)",
+    prizeMoney: "56.000.000 €",
     photo: null,
   },
   {
@@ -36,6 +38,7 @@ window.ATP_TOURNAMENTS = [
     lng: -0.21444,
     firstEdition: 1877,
     mostTitlesPlayer: "Roger Federer (8)",
+    prizeMoney: "63.000.000 €",
     photo: null,
   },
   {
@@ -48,6 +51,7 @@ window.ATP_TOURNAMENTS = [
     lng: -73.8475,
     firstEdition: 1881,
     mostTitlesPlayer: "Richard Sears (7)",
+    prizeMoney: "68.000.000 €",
     photo: null,
   },
   {
@@ -60,6 +64,7 @@ window.ATP_TOURNAMENTS = [
     lng: -116.305603,
     firstEdition: 1974,
     mostTitlesPlayer: "Novak Djokovic (5) y Roger Federer (5)",
+    prizeMoney: "8.100.000 €",
     photo: null,
   },
   {
@@ -72,6 +77,7 @@ window.ATP_TOURNAMENTS = [
     lng: -80.2389,
     firstEdition: 1985,
     mostTitlesPlayer: "Andre Agassi (6) y Novak Djokovic (6)",
+    prizeMoney: "8.100.000 €",
     photo: null,
   },
   {
@@ -84,6 +90,7 @@ window.ATP_TOURNAMENTS = [
     lng: 7.4408,
     firstEdition: 1897,
     mostTitlesPlayer: "Rafael Nadal (11)",
+    prizeMoney: "6.309.095 €",
     photo: null,
   },
   {
@@ -96,6 +103,7 @@ window.ATP_TOURNAMENTS = [
     lng: -3.6842,
     firstEdition: 2002,
     mostTitlesPlayer: "Rafael Nadal (5)",
+    prizeMoney: "8.235.540 €",
     photo: null,
   },
   {
@@ -108,6 +116,7 @@ window.ATP_TOURNAMENTS = [
     lng: 12.45639,
     firstEdition: 1930,
     mostTitlesPlayer: "Rafael Nadal (10)",
+    prizeMoney: "8.235.540 €",
     photo: null,
   },
   {
@@ -120,6 +129,7 @@ window.ATP_TOURNAMENTS = [
     lng: -79.512056,
     firstEdition: 1881,
     mostTitlesPlayer: "Ivan Lendl (6)",
+    prizeMoney: "8.100.000 €",
     photo: null,
   },
   {
@@ -132,6 +142,7 @@ window.ATP_TOURNAMENTS = [
     lng: -84.27711,
     firstEdition: 1899,
     mostTitlesPlayer: "Roger Federer (7)",
+    prizeMoney: "8.100.000 €",
     photo: null,
   },
   {
@@ -144,6 +155,7 @@ window.ATP_TOURNAMENTS = [
     lng: 121.355522,
     firstEdition: 2009,
     mostTitlesPlayer: "Novak Djokovic (4)",
+    prizeMoney: "8.100.000 €",
     photo: null,
   },
   {
@@ -156,6 +168,7 @@ window.ATP_TOURNAMENTS = [
     lng: 2.229182,
     firstEdition: 1986,
     mostTitlesPlayer: "Novak Djokovic (7)",
+    prizeMoney: "6.309.095 €",
     photo: null,
   },
   {
@@ -168,6 +181,7 @@ window.ATP_TOURNAMENTS = [
     lng: -96.828384,
     firstEdition: 2025,
     mostTitlesPlayer: "Denis Shapovalov (1)",
+    prizeMoney: "2.800.000 €",
     photo: null,
   },
   {
@@ -180,6 +194,7 @@ window.ATP_TOURNAMENTS = [
     lng: 4.484922,
     firstEdition: 1972,
     mostTitlesPlayer: "Roger Federer (3)",
+    prizeMoney: "2.560.000 €",
     photo: null,
   },
   {
@@ -204,6 +219,7 @@ window.ATP_TOURNAMENTS = [
     lng: -43.223219,
     firstEdition: 2014,
     mostTitlesPlayer: "Diego Schwartzman (2)",
+    prizeMoney: "2.300.000 €",
     photo: null,
   },
   {
@@ -216,6 +232,7 @@ window.ATP_TOURNAMENTS = [
     lng: -99.822889,
     firstEdition: 1993,
     mostTitlesPlayer: "David Ferrer (4)",
+    prizeMoney: "2.500.000 €",
     photo: null,
   },
   {
@@ -228,6 +245,7 @@ window.ATP_TOURNAMENTS = [
     lng: 55.3425,
     firstEdition: 1993,
     mostTitlesPlayer: "Roger Federer (8)",
+    prizeMoney: "2.900.000 €",
     photo: null,
   },
   {
@@ -240,6 +258,7 @@ window.ATP_TOURNAMENTS = [
     lng: 2.117,
     firstEdition: 1953,
     mostTitlesPlayer: "Rafael Nadal (12)",
+    prizeMoney: "2.889.200 €",
     photo: null,
   },
   {
@@ -252,6 +271,7 @@ window.ATP_TOURNAMENTS = [
     lng: 11.6151,
     firstEdition: 1900,
     mostTitlesPlayer: "Philipp Kohlschreiber (3)",
+    prizeMoney: "2.561.110 €",
     photo: null,
   },
   {
@@ -264,6 +284,7 @@ window.ATP_TOURNAMENTS = [
     lng: 9.99158,
     firstEdition: 1892,
     mostTitlesPlayer: "Roger Federer (4)",
+    prizeMoney: "2.219.670 €",
     photo: null,
   },
   {
@@ -276,6 +297,7 @@ window.ATP_TOURNAMENTS = [
     lng: 8.348889,
     firstEdition: 1993,
     mostTitlesPlayer: "Roger Federer (10)",
+    prizeMoney: "2.583.330 €",
     photo: null,
   },
   {
@@ -288,6 +310,7 @@ window.ATP_TOURNAMENTS = [
     lng: -0.21142,
     firstEdition: 1890,
     mostTitlesPlayer: "Andy Murray (5)",
+    prizeMoney: "2.583.330 €",
     photo: null,
   },
   {
@@ -300,6 +323,7 @@ window.ATP_TOURNAMENTS = [
     lng: -77.0375,
     firstEdition: 1969,
     mostTitlesPlayer: "Andre Agassi (5)",
+    prizeMoney: "2.400.000 €",
     photo: null,
   },
   {
@@ -312,6 +336,7 @@ window.ATP_TOURNAMENTS = [
     lng: 116.3707,
     firstEdition: 2004,
     mostTitlesPlayer: "Novak Djokovic (6)",
+    prizeMoney: "3.000.000 €",
     photo: null,
   },
   {
@@ -324,6 +349,7 @@ window.ATP_TOURNAMENTS = [
     lng: 139.7903,
     firstEdition: 1972,
     mostTitlesPlayer: "Stefan Edberg (4)",
+    prizeMoney: "2.000.000 €",
     photo: null,
   },
   {
@@ -336,6 +362,7 @@ window.ATP_TOURNAMENTS = [
     lng: 7.618963,
     firstEdition: 1970,
     mostTitlesPlayer: "Roger Federer (10)",
+    prizeMoney: "2.500.000 €",
     photo: null,
   },
   {
@@ -348,6 +375,7 @@ window.ATP_TOURNAMENTS = [
     lng: 16.33244,
     firstEdition: 1974,
     mostTitlesPlayer: "Brian Gottfried (4)",
+    prizeMoney: "2.700.000 €",
     photo: null,
   },
   {
@@ -360,6 +388,7 @@ window.ATP_TOURNAMENTS = [
     lng: 153.00722,
     firstEdition: 2009,
     mostTitlesPlayer: "Grigor Dimitrov (2)",
+    prizeMoney: "650.000 €",
     photo: null,
   },
   {
@@ -372,6 +401,7 @@ window.ATP_TOURNAMENTS = [
     lng: 114.189444,
     firstEdition: 1973,
     mostTitlesPlayer: "Michael Chang (3)",
+    prizeMoney: "700.000 €",
     photo: null,
   },
   {
@@ -384,6 +414,7 @@ window.ATP_TOURNAMENTS = [
     lng: 138.5947,
     firstEdition: 2020,
     mostTitlesPlayer: "Félix Auger-Aliassime (2)",
+    prizeMoney: "650.000 €",
     photo: null,
   },
   {
@@ -396,6 +427,7 @@ window.ATP_TOURNAMENTS = [
     lng: 174.7735,
     firstEdition: 1956,
     mostTitlesPlayer: "Roy Emerson (4)",
+    prizeMoney: "650.000 €",
     photo: null,
   },
   {
@@ -408,6 +440,7 @@ window.ATP_TOURNAMENTS = [
     lng: 3.95172,
     firstEdition: 1987,
     mostTitlesPlayer: "Richard Gasquet (4)",
+    prizeMoney: "600.000 €",
     photo: null,
   },
   {
@@ -420,6 +453,7 @@ window.ATP_TOURNAMENTS = [
     lng: -58.43218,
     firstEdition: 1893,
     mostTitlesPlayer: "Guillermo Vilas (8)",
+    prizeMoney: "650.000 €",
     photo: null,
   },
   {
@@ -432,6 +466,7 @@ window.ATP_TOURNAMENTS = [
     lng: -80.105545,
     firstEdition: 1993,
     mostTitlesPlayer: "Xavier Malisse (2) y Sam Querrey (2)",
+    prizeMoney: "600.000 €",
     photo: null,
   },
   {
@@ -444,6 +479,7 @@ window.ATP_TOURNAMENTS = [
     lng: 5.4014,
     firstEdition: 1993,
     mostTitlesPlayer: "Thomas Enqvist (3)",
+    prizeMoney: "650.000 €",
     photo: null,
   },
   {
@@ -468,6 +504,7 @@ window.ATP_TOURNAMENTS = [
     lng: -7.992047,
     firstEdition: 1984,
     mostTitlesPlayer: "Pablo Andújar (3)",
+    prizeMoney: "600.000 €",
     photo: null,
   },
   {
@@ -480,6 +517,7 @@ window.ATP_TOURNAMENTS = [
     lng: 26.099312,
     firstEdition: 1993,
     mostTitlesPlayer: "David Ferrer (3)",
+    prizeMoney: "600.000 €",
     photo: null,
   },
   {
@@ -492,6 +530,7 @@ window.ATP_TOURNAMENTS = [
     lng: -95.428289,
     firstEdition: 1910,
     mostTitlesPlayer: "Bill Tilden (5)",
+    prizeMoney: "650.000 €",
     photo: null,
   },
   {
@@ -504,6 +543,7 @@ window.ATP_TOURNAMENTS = [
     lng: 6.16928,
     firstEdition: 1980,
     mostTitlesPlayer: "Casper Ruud (3)",
+    prizeMoney: "612.620 €",
     photo: null,
   },
   {
@@ -516,6 +556,7 @@ window.ATP_TOURNAMENTS = [
     lng: 9.169611,
     firstEdition: 1898,
     mostTitlesPlayer: "Rafael Nadal (3)",
+    prizeMoney: "757.320 €",
     photo: null,
   },
   {
@@ -528,6 +569,7 @@ window.ATP_TOURNAMENTS = [
     lng: 5.412806,
     firstEdition: 1990,
     mostTitlesPlayer: "Nicolas Mahut (3)",
+    prizeMoney: "723.435 €",
     photo: null,
   },
   {
@@ -540,6 +582,7 @@ window.ATP_TOURNAMENTS = [
     lng: 2.495134,
     firstEdition: 2021,
     mostTitlesPlayer: "Tallon Griekspoor (1)",
+    prizeMoney: "612.620 €",
     photo: null,
   },
   {
@@ -552,6 +595,7 @@ window.ATP_TOURNAMENTS = [
     lng: 0.282946,
     firstEdition: 1881,
     mostTitlesPlayer: "Taylor Fritz (4)",
+    prizeMoney: "773.465 €",
     photo: null,
   },
   {
@@ -564,6 +608,7 @@ window.ATP_TOURNAMENTS = [
     lng: 12.838333,
     firstEdition: 1948,
     mostTitlesPlayer: "Björn Borg (5)",
+    prizeMoney: "600.000 €",
     photo: null,
   },
   {
@@ -576,6 +621,7 @@ window.ATP_TOURNAMENTS = [
     lng: 7.283868,
     firstEdition: 1915,
     mostTitlesPlayer: "Roy Emerson (5)",
+    prizeMoney: "600.000 €",
     photo: null,
   },
   {
@@ -588,6 +634,7 @@ window.ATP_TOURNAMENTS = [
     lng: 13.518228,
     firstEdition: 1990,
     mostTitlesPlayer: "Carlos Moyá (2)",
+    prizeMoney: "600.000 €",
     photo: null,
   },
   {
@@ -600,6 +647,7 @@ window.ATP_TOURNAMENTS = [
     lng: 12.40056,
     firstEdition: 1894,
     mostTitlesPlayer: "Thomas Muster (4)",
+    prizeMoney: "600.000 €",
     photo: null,
   },
   {
@@ -612,6 +660,7 @@ window.ATP_TOURNAMENTS = [
     lng: -9.2525,
     firstEdition: 2015,
     mostTitlesPlayer: "Casper Ruud (2)",
+    prizeMoney: "600.000 €",
     photo: null,
   },
   {
@@ -624,6 +673,7 @@ window.ATP_TOURNAMENTS = [
     lng: -109.784504,
     firstEdition: 2016,
     mostTitlesPlayer: "Daniil Medvedev (1)",
+    prizeMoney: "700.000 €",
     photo: null,
   },
   {
@@ -636,6 +686,7 @@ window.ATP_TOURNAMENTS = [
     lng: -80.251323,
     firstEdition: 2011,
     mostTitlesPlayer: "Adrian Mannarino (2)",
+    prizeMoney: "700.000 €",
     photo: null,
   },
   {
@@ -660,6 +711,7 @@ window.ATP_TOURNAMENTS = [
     lng: 103.905231,
     firstEdition: 2016,
     mostTitlesPlayer: "Karen Khachanov (1)",
+    prizeMoney: "1.000.000 €",
     photo: null,
   },
   {
@@ -672,6 +724,7 @@ window.ATP_TOURNAMENTS = [
     lng: 4.44162,
     firstEdition: 2016,
     mostTitlesPlayer: "Jannik Sinner (2)",
+    prizeMoney: "700.000 €",
     photo: null,
   },
   {
@@ -684,6 +737,7 @@ window.ATP_TOURNAMENTS = [
     lng: 18.095306,
     firstEdition: 1969,
     mostTitlesPlayer: "John McEnroe (4)",
+    prizeMoney: "700.000 €",
     photo: null,
   },
   {
@@ -708,6 +762,7 @@ window.ATP_TOURNAMENTS = [
     lng: 120.224431,
     firstEdition: 2024,
     mostTitlesPlayer: "Alexander Bublik (1) y Marin Čilić (1)",
+    prizeMoney: "1.000.000 €",
     photo: null,
   },
 ];
