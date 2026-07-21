@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const worldBounds = L.latLngBounds([-60, -180], [85.05112878, 180]);
 
   const SURFACE_LABELS = { Hard: "Pista dura", Clay: "Tierra batida", Grass: "Hierba" };
-  const CATEGORY_ORDER = ["Grand Slam", "Masters 1000", "ATP 500", "ATP 250"];
+  const CATEGORY_ORDER = ["Grand Slam", "ATP Masters 1000", "ATP 500", "ATP 250"];
   const SURFACE_ORDER = ["Hard", "Clay", "Grass"];
 
   const escapeHtml = (str) =>
@@ -95,9 +95,9 @@ document.addEventListener("DOMContentLoaded", () => {
           icon: L.divIcon({
             className: "tournament-marker",
             html: "",
-            iconSize: [22, 22],
-            iconAnchor: [11, 22],
-            popupAnchor: [0, -20],
+            iconSize: [24, 24],
+            iconAnchor: [12, 24],
+            popupAnchor: [0, -22],
           }),
         });
         marker.bindPopup(buildCardHTML(t), { maxWidth: 300, minWidth: 260 });
