@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ${row("Superficie", t.surface ? escapeHtml(SURFACE_LABELS[t.surface] || t.surface) : "No disponible")}
         ${row("Primera edición", t.firstEdition ? String(t.firstEdition) : "No disponible")}
         ${row("Más títulos", t.mostTitlesPlayer ? escapeHtml(t.mostTitlesPlayer) : "No disponible")}
-        ${Object.prototype.hasOwnProperty.call(t, "prizeMoney") ? row("Premios", t.prizeMoney ? escapeHtml(t.prizeMoney) : "—") : ""}
+        ${Object.prototype.hasOwnProperty.call(t, "prizeMoney") ? row("Premio", t.prizeMoney ? escapeHtml(t.prizeMoney) : "—") : ""}
       </div>
     `;
   };
