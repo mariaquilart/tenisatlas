@@ -74,8 +74,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const categories = CATEGORY_ORDER.filter((c) => data.some((t) => t.category === c));
     const surfaces = SURFACE_ORDER.filter((s) => data.some((t) => t.surface === s));
-    const activeCategories = new Set(categories);
-    const activeSurfaces = new Set(surfaces);
+    // Sin filtros activos al abrir el mapa: un conjunto vacío equivale a
+    // mostrar todos los valores de ese grupo.
+    const activeCategories = new Set();
+    const activeSurfaces = new Set();
 
     const clusterGroup = L.markerClusterGroup({
       maxClusterRadius: 48,
@@ -109,24 +111,32 @@ document.addEventListener("DOMContentLoaded", () => {
     const refresh = () => {
       clusterGroup.clearLayers();
       const visible = markers.filter(
-        (m) => activeCategories.has(m.tournament.category) && activeSurfaces.has(m.tournament.surface)
+        (m) =>
+          (!activeCategories.size || activeCategories.has(m.tournament.category)) &&
+          (!activeSurfaces.size || activeSurfaces.has(m.tournament.surface))
       );
       if (visible.length) clusterGroup.addLayers(visible);
       if (emptyMsg) emptyMsg.hidden = visible.length !== 0;
     };
 
-    const addChip = (container, value, label, activeSet) => {
+    const addChip = (container, value, label, activeSet, exclusive = false) => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "map-filters__chip";
       btn.textContent = label;
-      btn.setAttribute("aria-pressed", "true");
+      btn.setAttribute("aria-pressed", "false");
       btn.addEventListener("click", () => {
         const pressed = btn.getAttribute("aria-pressed") === "true";
         if (pressed) {
           activeSet.delete(value);
           btn.setAttribute("aria-pressed", "false");
         } else {
+          if (exclusive) {
+            activeSet.clear();
+            container.querySelectorAll('.map-filters__chip[aria-pressed="true"]').forEach((chip) => {
+              chip.setAttribute("aria-pressed", "false");
+            });
+          }
           activeSet.add(value);
           btn.setAttribute("aria-pressed", "true");
         }
@@ -135,7 +145,7 @@ document.addEventListener("DOMContentLoaded", () => {
       container.appendChild(btn);
     };
 
-    if (categoryContainer) categories.forEach((c) => addChip(categoryContainer, c, c, activeCategories));
+    if (categoryContainer) categories.forEach((c) => addChip(categoryContainer, c, c, activeCategories, true));
     if (surfaceContainer) surfaces.forEach((s) => addChip(surfaceContainer, s, SURFACE_LABELS[s] || s, activeSurfaces));
 
     map.addLayer(clusterGroup);
