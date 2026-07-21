@@ -155,6 +155,10 @@ document.addEventListener("DOMContentLoaded", () => {
   let map = null;
 
   const openMap = () => {
+    const calendarView = document.getElementById("atp-tournaments-calendar");
+    const calendarButton = document.getElementById("atp-calendar-btn");
+    if (calendarView) calendarView.hidden = true;
+    if (calendarButton) calendarButton.classList.remove("is-active");
     hero.hidden = true;
     mapView.hidden = false;
     mapBtn.classList.add("is-active");

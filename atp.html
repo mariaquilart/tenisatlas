@@ -36,7 +36,7 @@
 
   <div class="calendar-menu" id="atp-calendar-menu" role="menu" aria-label="Opciones de calendario" hidden>
     <button type="button" class="calendar-menu__item" role="menuitem">Cumpleaños</button>
-    <button type="button" class="calendar-menu__item" role="menuitem">Torneos</button>
+    <button type="button" class="calendar-menu__item" id="atp-tournaments-calendar-option" role="menuitem">Torneos</button>
   </div>
 
   <main class="hero" id="atp-hero">
@@ -70,6 +70,20 @@
     <div class="map-view__canvas" id="atp-map-canvas"></div>
   </section>
 
+  <section class="tournaments-calendar" id="atp-tournaments-calendar" aria-labelledby="tournaments-calendar-title" hidden>
+    <div class="tournaments-calendar__panel">
+      <header class="tournaments-calendar__header">
+        <button type="button" class="tournaments-calendar__nav" id="tournaments-calendar-prev" aria-label="Mes anterior">&#8592;</button>
+        <h2 class="tournaments-calendar__title" id="tournaments-calendar-title"></h2>
+        <button type="button" class="tournaments-calendar__nav" id="tournaments-calendar-next" aria-label="Mes siguiente">&#8594;</button>
+      </header>
+      <div class="tournaments-calendar__weekdays" aria-hidden="true">
+        <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
+      </div>
+      <div class="tournaments-calendar__grid" id="tournaments-calendar-grid"></div>
+    </div>
+  </section>
+
   <footer class="credit-section" id="credit-section">
     <div class="credit-section__inner">
       <span class="credit-section__label">Creado por</span>
@@ -80,6 +94,7 @@
   <script src="js/script.js"></script>
   <script src="js/credit.js"></script>
   <script src="js/atp-calendar-menu.js"></script>
+  <script src="js/atp-tournaments-calendar.js"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="js/atp-tournaments-data.js"></script>
