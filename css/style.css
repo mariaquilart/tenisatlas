@@ -227,7 +227,7 @@ a {
   width: min(62rem, 100%);
   margin: 0 auto;
   padding: clamp(1rem, 2.5vw, 2rem);
-  background: linear-gradient(155deg, rgba(27, 65, 52, 0.97), rgba(14, 42, 34, 0.98));
+  background: linear-gradient(155deg, rgba(37, 82, 66, 0.98), rgba(22, 59, 47, 0.99));
   border: 1px solid rgba(227, 202, 160, 0.25);
   border-radius: 1rem;
   box-shadow: 0 24px 60px rgba(1, 10, 8, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.04);
@@ -313,6 +313,27 @@ a {
 .tournaments-calendar__day--empty {
   color: transparent;
   background: rgba(255, 255, 255, 0.025);
+}
+
+.tournaments-calendar__day--weekend {
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.tournaments-calendar__day-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+}
+
+.tournaments-calendar__day--today .tournaments-calendar__day-number {
+  color: #07110e;
+  background: var(--color-gold-soft);
+  border: 1px solid var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(227, 202, 160, 0.16);
+  font-weight: 600;
 }
 
 @media (max-width: 560px) {

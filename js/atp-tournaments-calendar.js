@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
     title.textContent = `${monthNames[currentMonth]} de ${currentYear}`;
     grid.replaceChildren();
 
+    const today = new Date();
     const firstWeekday = (new Date(Date.UTC(currentYear, currentMonth, 1)).getUTCDay() + 6) % 7;
     const daysInMonth = new Date(Date.UTC(currentYear, currentMonth + 1, 0)).getUTCDate();
     const cellCount = Math.ceil((firstWeekday + daysInMonth) / 7) * 7;
@@ -45,7 +46,15 @@ document.addEventListener("DOMContentLoaded", () => {
         dayCell.classList.add("tournaments-calendar__day--empty");
         dayCell.setAttribute("aria-hidden", "true");
       } else {
-        dayCell.textContent = String(day);
+        const dayNumber = document.createElement("span");
+        dayNumber.className = "tournaments-calendar__day-number";
+        dayNumber.textContent = String(day);
+        dayCell.appendChild(dayNumber);
+        if (cell % 7 >= 5) dayCell.classList.add("tournaments-calendar__day--weekend");
+        if (day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+          dayCell.classList.add("tournaments-calendar__day--today");
+          dayCell.setAttribute("aria-current", "date");
+        }
         dayCell.setAttribute("aria-label", `${day} de ${monthNames[currentMonth]} de ${currentYear}`);
       }
 
@@ -81,4 +90,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   previousButton.addEventListener("click", () => changeMonth(-1));
   nextButton.addEventListener("click", () => changeMonth(1));
+
+  const scheduleTodayRefresh = () => {
+    const now = new Date();
+    const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+    window.setTimeout(() => {
+      if (!calendar.hidden) render();
+      scheduleTodayRefresh();
+    }, nextMidnight.getTime() - now.getTime() + 100);
+  };
+
+  scheduleTodayRefresh();
 });
