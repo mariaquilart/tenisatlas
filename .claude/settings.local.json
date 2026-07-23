@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.atptour.com)",
+      "WebSearch",
+      "WebFetch(domain:www.tennisexplorer.com)",
+      "WebFetch(domain:www.perfect-tennis.com)",
+      "WebFetch(domain:www.sofascore.com)",
+      "WebFetch(domain:en.wikipedia.org)",
+      "Skill(run)",
+      "Bash(python -c \"import playwright; print\\('ok'\\)\")"
+    ]
+  }
+}

@@ -9,8 +9,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const mapView = document.getElementById("atp-map-view");
   const mapButton = document.getElementById("atp-map-btn");
   const calendarButton = document.getElementById("atp-calendar-btn");
+  const tournamentModal = document.getElementById("calendar-tournament-modal");
+  const tournamentName = document.getElementById("calendar-tournament-name");
+  const tournamentDetails = document.getElementById("calendar-tournament-details");
+  const tournamentClose = document.getElementById("calendar-tournament-close");
 
-  if (!option || !calendar || !title || !grid || !previousButton || !nextButton) return;
+  if (!option || !calendar || !title || !grid || !previousButton || !nextButton
+    || !tournamentModal || !tournamentName || !tournamentDetails || !tournamentClose) return;
 
   const firstMonth = 6;
   const firstYear = 2026;
@@ -20,16 +25,101 @@ document.addEventListener("DOMContentLoaded", () => {
     "enero", "febrero", "marzo", "abril", "mayo", "junio",
     "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre",
   ];
+  const tournaments = [
+    {
+      name: "EFG Swiss Open Gstaad",
+      start: "2026-07-13",
+      details: [
+        ["Inicio", "13 de julio de 2026"],
+        ["Fin", "19 de julio de 2026"],
+        ["Categoría", "ATP 250"],
+        ["Ubicación", "Gstaad (Suiza)"],
+        ["Superficie", "Tierra batida"],
+      ],
+    },
+    {
+      name: "Nordea Open Bastad",
+      start: "2026-07-13",
+      details: [
+        ["Inicio", "13 de julio de 2026"],
+        ["Fin", "19 de julio de 2026"],
+        ["Categoría", "ATP 250"],
+        ["Ubicación", "Bastad (Suecia)"],
+        ["Superficie", "Tierra batida"],
+      ],
+    },
+    {
+      name: "Plava Laguna Croatia Open Umag",
+      start: "2026-07-20",
+      details: [
+        ["Inicio", "20 de julio de 2026"],
+        ["Fin", "26 de julio de 2026"],
+        ["Categoría", "ATP 250"],
+        ["Ubicación", "Umag (Croacia)"],
+        ["Superficie", "Tierra batida"],
+      ],
+    },
+    {
+      name: "Generali Open Kitzbühel",
+      start: "2026-07-20",
+      details: [
+        ["Inicio", "20 de julio de 2026"],
+        ["Fin", "26 de julio de 2026"],
+        ["Categoría", "ATP 250"],
+        ["Ubicación", "Kitzbühel (Austria)"],
+        ["Superficie", "Tierra batida"],
+      ],
+    },
+    {
+      name: "Generali Open Kitzbühel",
+      start: "2026-07-27",
+      details: [
+        ["Inicio", "27 de julio de 2026"],
+        ["Fin", "2 de agosto de 2026"],
+        ["Categoría", "ATP 500"],
+        ["Ubicación", "Washington D. C. (Estados Unidos)"],
+        ["Superficie", "Dura"],
+      ],
+    },
+  ];
 
   let currentMonth = firstMonth;
   let currentYear = firstYear;
+  let tournamentTrigger = null;
 
   const monthIndex = (year, month) => year * 12 + month;
   const firstIndex = monthIndex(firstYear, firstMonth);
   const lastIndex = monthIndex(lastYear, lastMonth);
 
+  const closeTournamentCard = () => {
+    tournamentModal.hidden = true;
+    if (tournamentTrigger) tournamentTrigger.focus();
+    tournamentTrigger = null;
+  };
+
+  const openTournamentCard = (tournament, trigger) => {
+    tournamentTrigger = trigger;
+    tournamentName.textContent = tournament.name;
+    tournamentDetails.replaceChildren();
+
+    tournament.details.forEach(([label, value]) => {
+      const row = document.createElement("div");
+      row.className = "calendar-tournament-card__row";
+      const term = document.createElement("dt");
+      term.textContent = label;
+      const description = document.createElement("dd");
+      description.textContent = value;
+      row.append(term, description);
+      tournamentDetails.appendChild(row);
+    });
+
+    tournamentModal.hidden = false;
+    tournamentClose.focus();
+  };
+
   const render = () => {
-    title.textContent = `${monthNames[currentMonth]} de ${currentYear}`;
+    const monthName = monthNames[currentMonth];
+    title.textContent = `${monthName.charAt(0).toUpperCase()}${monthName.slice(1)} de ${currentYear}`;
     grid.replaceChildren();
 
     const today = new Date();
@@ -50,6 +140,17 @@ document.addEventListener("DOMContentLoaded", () => {
         dayNumber.className = "tournaments-calendar__day-number";
         dayNumber.textContent = String(day);
         dayCell.appendChild(dayNumber);
+        const dateKey = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        const dayTournaments = tournaments.filter((tournament) => tournament.start === dateKey);
+        dayTournaments.forEach((tournament) => {
+          const tournamentButton = document.createElement("button");
+          tournamentButton.type = "button";
+          tournamentButton.className = "tournaments-calendar__event";
+          tournamentButton.textContent = tournament.name;
+          tournamentButton.setAttribute("aria-label", `Ver información de ${tournament.name}`);
+          tournamentButton.addEventListener("click", () => openTournamentCard(tournament, tournamentButton));
+          dayCell.appendChild(tournamentButton);
+        });
         if (cell % 7 >= 5) dayCell.classList.add("tournaments-calendar__day--weekend");
         if (day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
           dayCell.classList.add("tournaments-calendar__day--today");
@@ -90,6 +191,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
   previousButton.addEventListener("click", () => changeMonth(-1));
   nextButton.addEventListener("click", () => changeMonth(1));
+  tournamentClose.addEventListener("click", closeTournamentCard);
+  tournamentModal.addEventListener("click", (event) => {
+    if (event.target === tournamentModal) closeTournamentCard();
+  });
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !tournamentModal.hidden) closeTournamentCard();
+  });
 
   const scheduleTodayRefresh = () => {
     const now = new Date();
