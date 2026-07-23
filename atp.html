@@ -71,6 +71,21 @@
   </section>
 
   <section class="tournaments-calendar" id="atp-tournaments-calendar" aria-labelledby="tournaments-calendar-title" hidden>
+    <div class="tournaments-calendar__layout">
+      <aside class="tournaments-sidebar" aria-label="Resumen de torneos del mes">
+        <section class="tournaments-sidebar__section">
+          <h3 class="tournaments-sidebar__heading">Torneos que se están jugando</h3>
+          <div class="tournaments-sidebar__list" id="calendar-tournaments-current"></div>
+        </section>
+        <section class="tournaments-sidebar__section">
+          <h3 class="tournaments-sidebar__heading">Torneos pasados este mes</h3>
+          <div class="tournaments-sidebar__list" id="calendar-tournaments-past"></div>
+        </section>
+        <section class="tournaments-sidebar__section">
+          <h3 class="tournaments-sidebar__heading">Torneos próximos este mes</h3>
+          <div class="tournaments-sidebar__list" id="calendar-tournaments-upcoming"></div>
+        </section>
+      </aside>
     <div class="tournaments-calendar__panel">
       <header class="tournaments-calendar__header">
         <button type="button" class="tournaments-calendar__nav" id="tournaments-calendar-prev" aria-label="Mes anterior">&#8592;</button>
@@ -81,6 +96,7 @@
         <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Dom</span>
       </div>
       <div class="tournaments-calendar__grid" id="tournaments-calendar-grid"></div>
+    </div>
     </div>
     <div class="calendar-tournament-modal" id="calendar-tournament-modal" hidden>
       <article class="calendar-tournament-card" role="dialog" aria-modal="true" aria-labelledby="calendar-tournament-name">
