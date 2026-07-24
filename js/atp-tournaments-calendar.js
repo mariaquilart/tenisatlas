@@ -16,10 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const currentTournamentsList = document.getElementById("calendar-tournaments-current");
   const pastTournamentsList = document.getElementById("calendar-tournaments-past");
   const upcomingTournamentsList = document.getElementById("calendar-tournaments-upcoming");
+  const sidebarSectionToggles = calendar.querySelectorAll(".tournaments-sidebar__section-toggle");
 
   if (!option || !calendar || !title || !grid || !previousButton || !nextButton
     || !tournamentModal || !tournamentName || !tournamentDetails || !tournamentClose
-    || !currentTournamentsList || !pastTournamentsList || !upcomingTournamentsList) return;
+    || !currentTournamentsList || !pastTournamentsList || !upcomingTournamentsList
+    || !sidebarSectionToggles.length) return;
 
   const firstMonth = 6;
   const firstYear = 2026;
@@ -806,10 +808,8 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const createSidebarCard = (tournament) => {
-    const card = document.createElement("button");
-    card.type = "button";
+    const card = document.createElement("article");
     card.className = "tournaments-sidebar__card";
-    card.setAttribute("aria-label", `Ver información de ${tournament.name}`);
 
     const name = document.createElement("strong");
     name.className = "tournaments-sidebar__card-name";
@@ -833,7 +833,6 @@ document.addEventListener("DOMContentLoaded", () => {
       card.appendChild(location);
     }
 
-    card.addEventListener("click", () => openTournamentCard(tournament, card));
     return card;
   };
 
@@ -878,6 +877,7 @@ document.addEventListener("DOMContentLoaded", () => {
     grid.replaceChildren();
 
     const today = new Date();
+    const todayAtNoon = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 12);
     const firstWeekday = (new Date(Date.UTC(currentYear, currentMonth, 1)).getUTCDay() + 6) % 7;
     const daysInMonth = new Date(Date.UTC(currentYear, currentMonth + 1, 0)).getUTCDate();
     const cellCount = Math.ceil((firstWeekday + daysInMonth) / 7) * 7;
@@ -911,6 +911,14 @@ document.addEventListener("DOMContentLoaded", () => {
           tournamentButton.textContent = tournament.name;
           tournamentButton.title = tournament.name;
           tournamentButton.setAttribute("aria-label", `Ver información de ${tournament.name}`);
+          const [startYear, startMonth, startDay] = tournament.start.split("-").map(Number);
+          const tournamentStart = new Date(startYear, startMonth - 1, startDay, 12);
+          const tournamentEnd = parseSpanishDate(detailValue(tournament, "Fin"));
+          if (tournamentEnd && tournamentStart <= todayAtNoon && todayAtNoon <= tournamentEnd) {
+            tournamentButton.classList.add("tournaments-calendar__event--live");
+          } else if (tournamentEnd && tournamentEnd < todayAtNoon) {
+            tournamentButton.classList.add("tournaments-calendar__event--past");
+          }
           tournamentButton.addEventListener("click", () => openTournamentCard(tournament, tournamentButton));
           dayCell.appendChild(tournamentButton);
         });
@@ -956,6 +964,17 @@ document.addEventListener("DOMContentLoaded", () => {
   previousButton.addEventListener("click", () => changeMonth(-1));
   nextButton.addEventListener("click", () => changeMonth(1));
   tournamentClose.addEventListener("click", closeTournamentCard);
+  sidebarSectionToggles.forEach((toggle) => {
+    toggle.addEventListener("click", () => {
+      const list = document.getElementById(toggle.getAttribute("aria-controls"));
+      if (!list) return;
+      const collapsed = !list.hidden;
+      list.hidden = collapsed;
+      toggle.textContent = collapsed ? "+" : "−";
+      toggle.setAttribute("aria-expanded", String(!collapsed));
+      toggle.setAttribute("aria-label", `${collapsed ? "Desplegar" : "Plegar"} ${toggle.closest(".tournaments-sidebar__section").querySelector(".tournaments-sidebar__heading").textContent.toLowerCase()}`);
+    });
+  });
   tournamentModal.addEventListener("click", (event) => {
     if (event.target === tournamentModal) closeTournamentCard();
   });

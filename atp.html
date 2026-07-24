@@ -72,17 +72,26 @@
 
   <section class="tournaments-calendar" id="atp-tournaments-calendar" aria-labelledby="tournaments-calendar-title" hidden>
     <div class="tournaments-calendar__layout">
-      <aside class="tournaments-sidebar" aria-label="Resumen de torneos del mes">
+      <aside class="tournaments-sidebar" id="tournaments-sidebar" aria-label="Resumen de torneos del mes">
         <section class="tournaments-sidebar__section">
-          <h3 class="tournaments-sidebar__heading">Torneos que se están jugando</h3>
+          <div class="tournaments-sidebar__section-header">
+            <h3 class="tournaments-sidebar__heading">Torneos que se están jugando</h3>
+            <button type="button" class="tournaments-sidebar__section-toggle" aria-controls="calendar-tournaments-current" aria-expanded="true" aria-label="Plegar torneos que se están jugando">&minus;</button>
+          </div>
           <div class="tournaments-sidebar__list" id="calendar-tournaments-current"></div>
         </section>
         <section class="tournaments-sidebar__section">
-          <h3 class="tournaments-sidebar__heading">Torneos pasados este mes</h3>
+          <div class="tournaments-sidebar__section-header">
+            <h3 class="tournaments-sidebar__heading">Torneos pasados este mes</h3>
+            <button type="button" class="tournaments-sidebar__section-toggle" aria-controls="calendar-tournaments-past" aria-expanded="true" aria-label="Plegar torneos pasados este mes">&minus;</button>
+          </div>
           <div class="tournaments-sidebar__list" id="calendar-tournaments-past"></div>
         </section>
         <section class="tournaments-sidebar__section">
-          <h3 class="tournaments-sidebar__heading">Torneos próximos este mes</h3>
+          <div class="tournaments-sidebar__section-header">
+            <h3 class="tournaments-sidebar__heading">Torneos próximos este mes</h3>
+            <button type="button" class="tournaments-sidebar__section-toggle" aria-controls="calendar-tournaments-upcoming" aria-expanded="true" aria-label="Plegar torneos próximos este mes">&minus;</button>
+          </div>
           <div class="tournaments-sidebar__list" id="calendar-tournaments-upcoming"></div>
         </section>
       </aside>
