@@ -17,11 +17,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const pastTournamentsList = document.getElementById("calendar-tournaments-past");
   const upcomingTournamentsList = document.getElementById("calendar-tournaments-upcoming");
   const sidebarSectionToggles = calendar.querySelectorAll(".tournaments-sidebar__section-toggle");
+  const matchesModal = document.getElementById("calendar-matches-modal");
+  const matchesClose = document.getElementById("calendar-matches-close");
+  const matchesStatus = document.getElementById("calendar-matches-status");
+  const matchesList = document.getElementById("calendar-matches-list");
+  const winnerModal = document.getElementById("calendar-winner-modal");
+  const winnerClose = document.getElementById("calendar-winner-close");
+  const winnerTournament = document.getElementById("calendar-winner-tournament");
+  const winnerContent = document.getElementById("calendar-winner-content");
 
   if (!option || !calendar || !title || !grid || !previousButton || !nextButton
     || !tournamentModal || !tournamentName || !tournamentDetails || !tournamentClose
     || !currentTournamentsList || !pastTournamentsList || !upcomingTournamentsList
-    || !sidebarSectionToggles.length) return;
+    || !sidebarSectionToggles.length || !matchesModal || !matchesClose
+    || !matchesStatus || !matchesList || !winnerModal || !winnerClose
+    || !winnerTournament || !winnerContent) return;
 
   const firstMonth = 6;
   const firstYear = 2026;
@@ -35,6 +45,13 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       name: "EFG Swiss Open Gstaad",
       start: "2026-07-13",
+      winner: {
+        name: "Stefanos Tsitsipas",
+        country: "Grecia",
+        countryCode: "GR",
+        photo: "images/players/stefanos-tsitsipas.jpg?v=2",
+        defeated: "Raphael Collignon",
+      },
       details: [
         ["Inicio", "13 de julio de 2026"],
         ["Fin", "19 de julio de 2026"],
@@ -46,6 +63,13 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       name: "Nordea Open Bastad",
       start: "2026-07-13",
+      winner: {
+        name: "Andrey Rublev",
+        country: "Rusia",
+        countryCode: "RU",
+        photo: "images/players/andrey-rublev.jpg?v=2",
+        defeated: "Luciano Darderi",
+      },
       details: [
         ["Inicio", "13 de julio de 2026"],
         ["Fin", "19 de julio de 2026"],
@@ -56,10 +80,17 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       name: "Plava Laguna Croatia Open Umag",
-      start: "2026-07-20",
+      start: "2026-07-13",
+      winner: {
+        name: "Daniel Mérida",
+        country: "España",
+        countryCode: "ES",
+        photo: "images/players/daniel-merida.jpg?v=2",
+        defeated: "Damir Džumhur",
+      },
       details: [
-        ["Inicio", "20 de julio de 2026"],
-        ["Fin", "26 de julio de 2026"],
+        ["Inicio", "13 de julio de 2026"],
+        ["Fin", "19 de julio de 2026"],
         ["Categoría", "ATP 250"],
         ["Ubicación", "Umag (Croacia)"],
         ["Superficie", "Tierra batida"],
@@ -77,14 +108,14 @@ document.addEventListener("DOMContentLoaded", () => {
       ],
     },
     {
-      name: "Generali Open Kitzbühel",
+      name: "Mubadala DC Open (Washington)",
       start: "2026-07-27",
       details: [
         ["Inicio", "27 de julio de 2026"],
         ["Fin", "2 de agosto de 2026"],
         ["Categoría", "ATP 500"],
         ["Ubicación", "Washington D. C. (Estados Unidos)"],
-        ["Superficie", "Dura"],
+        ["Superficie", "Pista dura"],
       ],
     },
     {
@@ -763,6 +794,8 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentMonth = firstMonth;
   let currentYear = firstYear;
   let tournamentTrigger = null;
+  let matchesTrigger = null;
+  let winnerTrigger = null;
 
   const monthIndex = (year, month) => year * 12 + month;
   const firstIndex = monthIndex(firstYear, firstMonth);
@@ -807,9 +840,68 @@ document.addEventListener("DOMContentLoaded", () => {
     return new Date(Number(match[3]), month, Number(match[1]), 12);
   };
 
-  const createSidebarCard = (tournament) => {
-    const card = document.createElement("article");
+  const flagEmoji = (countryCode) => {
+    return /^[A-Z]{2}$/.test(countryCode || "") ? countryCode : "—";
+  };
+
+  const closeWinnerCard = () => {
+    winnerModal.hidden = true;
+    if (winnerTrigger) winnerTrigger.focus();
+    winnerTrigger = null;
+  };
+
+  const openWinnerCard = (tournament, trigger) => {
+    const winner = tournament.winner;
+    if (!winner) return;
+    winnerTrigger = trigger;
+    winnerTournament.textContent = tournament.name;
+    winnerContent.replaceChildren();
+
+    const portrait = document.createElement("span");
+    portrait.className = "calendar-winner-card__portrait";
+    const photo = document.createElement("img");
+    photo.className = "calendar-winner-card__photo";
+    photo.src = winner.photo;
+    photo.alt = `Foto de ${winner.name}`;
+    photo.width = 96;
+    photo.height = 96;
+    const flag = document.createElement("span");
+    flag.className = "calendar-winner-card__flag";
+    flag.textContent = flagEmoji(winner.countryCode);
+    flag.setAttribute("aria-hidden", "true");
+    portrait.append(photo, flag);
+
+    const label = document.createElement("span");
+    label.className = "calendar-winner-card__label";
+    label.textContent = "GANADOR";
+    const name = document.createElement("strong");
+    name.className = "calendar-winner-card__name";
+    name.textContent = winner.name;
+    const country = document.createElement("span");
+    country.className = "calendar-winner-card__country";
+    country.textContent = winner.country;
+    const result = document.createElement("p");
+    result.className = "calendar-winner-card__result";
+    result.append("Ganó la final frente a ");
+    const opponent = document.createElement("strong");
+    opponent.textContent = winner.defeated;
+    result.appendChild(opponent);
+
+    winnerContent.append(label, portrait, name, country, result);
+    winnerModal.hidden = false;
+    winnerClose.focus();
+  };
+
+  const createSidebarCard = (tournament, showWinner = false) => {
+    const interactive = showWinner && tournament.winner;
+    const card = document.createElement(interactive ? "button" : "article");
     card.className = "tournaments-sidebar__card";
+    if (interactive) {
+      card.type = "button";
+      card.classList.add("tournaments-sidebar__card--interactive");
+      card.setAttribute("aria-label", `Ver campeón de ${tournament.name}`);
+      card.addEventListener("click", () => openWinnerCard(tournament, card));
+    }
 
     const name = document.createElement("strong");
     name.className = "tournaments-sidebar__card-name";
@@ -836,7 +928,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return card;
   };
 
-  const fillSidebarList = (list, items) => {
+  const fillSidebarList = (list, items, showWinners = false) => {
     list.replaceChildren();
     if (!items.length) {
       const empty = document.createElement("p");
@@ -845,7 +937,7 @@ document.addEventListener("DOMContentLoaded", () => {
       list.appendChild(empty);
       return;
     }
-    items.forEach((tournament) => list.appendChild(createSidebarCard(tournament)));
+    items.forEach((tournament) => list.appendChild(createSidebarCard(tournament, showWinners)));
   };
 
   const renderSidebar = () => {
@@ -867,8 +959,99 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     fillSidebarList(currentTournamentsList, current);
-    fillSidebarList(pastTournamentsList, past);
+    fillSidebarList(pastTournamentsList, past, true);
     fillSidebarList(upcomingTournamentsList, upcoming);
+  };
+
+  const closeMatchesCard = () => {
+    matchesModal.hidden = true;
+    if (matchesTrigger) matchesTrigger.focus();
+    matchesTrigger = null;
+  };
+
+  const createMatchCard = (match) => {
+    const card = document.createElement("article");
+    card.className = "calendar-match";
+
+    const round = document.createElement("span");
+    round.className = "calendar-match__round";
+    round.textContent = match.round || match.tournament || "Partido";
+
+    const tournament = document.createElement("span");
+    tournament.className = "calendar-match__tournament";
+    tournament.textContent = match.tournament || "Torneo ATP";
+
+    const header = document.createElement("div");
+    header.className = "calendar-match__header";
+    const time = document.createElement("time");
+    time.className = "calendar-match__time";
+    time.textContent = match.time || "Por confirmar";
+    header.append(tournament, time);
+
+    const versus = document.createElement("div");
+    versus.className = "calendar-match__versus";
+    const versusLabel = document.createElement("span");
+    versusLabel.textContent = "vs.";
+    versus.appendChild(versusLabel);
+
+    const flagEmoji = (countryCode) => {
+      return /^[A-Z]{2}$/.test(countryCode || "") ? countryCode : "—";
+    };
+
+    const createPlayer = (player) => {
+      const playerColumn = document.createElement("div");
+      playerColumn.className = "calendar-match__player";
+      const avatar = document.createElement("span");
+      avatar.className = "calendar-match__player-mark";
+      if (player?.photo) {
+        const photo = document.createElement("img");
+        photo.className = "calendar-match__player-photo";
+        photo.src = player.photo;
+        photo.alt = `Foto de ${player.name}`;
+        photo.width = 52;
+        photo.height = 52;
+        avatar.appendChild(photo);
+      }
+      const flag = document.createElement("span");
+      flag.className = "calendar-match__player-flag";
+      flag.textContent = flagEmoji(player?.country_code);
+      flag.setAttribute("aria-hidden", "true");
+      avatar.appendChild(flag);
+      const playerName = document.createElement("strong");
+      playerName.textContent = player?.name || "Por confirmar";
+      const country = document.createElement("span");
+      country.className = "calendar-match__country";
+      country.textContent = player?.country || "País no disponible";
+      playerColumn.append(avatar, playerName, country);
+      return playerColumn;
+    };
+
+    const matchup = document.createElement("div");
+    matchup.className = "calendar-match__matchup";
+    matchup.append(createPlayer(match.player1), versus, createPlayer(match.player2));
+
+    card.append(round, header, matchup);
+    return card;
+  };
+
+  const openMatchesCard = (dateKey, trigger) => {
+    matchesTrigger = trigger;
+    matchesList.replaceChildren();
+    matchesModal.hidden = false;
+    matchesClose.focus();
+
+    const data = window.ATP_DAILY_MATCHES;
+    matchesStatus.hidden = false;
+    if (!data || data.date !== dateKey) {
+      matchesStatus.textContent = "Todavía no hay partidos verificados para hoy.";
+      return;
+    }
+    if (!Array.isArray(data.matches) || !data.matches.length) {
+      matchesStatus.textContent = "No hay partidos ATP programados para hoy.";
+      return;
+    }
+    matchesStatus.hidden = true;
+    data.matches.forEach((match) => matchesList.appendChild(createMatchCard(match)));
   };
 
   const render = () => {
@@ -892,9 +1075,16 @@ document.addEventListener("DOMContentLoaded", () => {
         dayCell.classList.add("tournaments-calendar__day--empty");
         dayCell.setAttribute("aria-hidden", "true");
       } else {
-        const dayNumber = document.createElement("span");
+        const isToday = day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear();
+        const dayNumber = document.createElement(isToday ? "button" : "span");
         dayNumber.className = "tournaments-calendar__day-number";
         dayNumber.textContent = String(day);
+        if (isToday) {
+          dayNumber.type = "button";
+          dayNumber.classList.add("tournaments-calendar__day-number--interactive");
+          dayNumber.setAttribute("aria-label", `Ver partidos de hoy, ${day} de ${monthNames[currentMonth]} de ${currentYear}`);
+          dayNumber.addEventListener("click", () => openMatchesCard(dateKey, dayNumber));
+        }
         dayCell.appendChild(dayNumber);
         const dateKey = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
         const dayTournaments = tournaments.filter((tournament) => tournament.start === dateKey);
@@ -923,7 +1113,7 @@ document.addEventListener("DOMContentLoaded", () => {
           dayCell.appendChild(tournamentButton);
         });
         if (cell % 7 >= 5) dayCell.classList.add("tournaments-calendar__day--weekend");
-        if (day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
+        if (isToday) {
           dayCell.classList.add("tournaments-calendar__day--today");
           dayCell.setAttribute("aria-current", "date");
         }
@@ -964,6 +1154,8 @@ document.addEventListener("DOMContentLoaded", () => {
   previousButton.addEventListener("click", () => changeMonth(-1));
   nextButton.addEventListener("click", () => changeMonth(1));
   tournamentClose.addEventListener("click", closeTournamentCard);
+  matchesClose.addEventListener("click", closeMatchesCard);
+  winnerClose.addEventListener("click", closeWinnerCard);
   sidebarSectionToggles.forEach((toggle) => {
     toggle.addEventListener("click", () => {
       const list = document.getElementById(toggle.getAttribute("aria-controls"));
@@ -978,8 +1170,16 @@ document.addEventListener("DOMContentLoaded", () => {
   tournamentModal.addEventListener("click", (event) => {
     if (event.target === tournamentModal) closeTournamentCard();
   });
+  matchesModal.addEventListener("click", (event) => {
+    if (event.target === matchesModal) closeMatchesCard();
+  });
+  winnerModal.addEventListener("click", (event) => {
+    if (event.target === winnerModal) closeWinnerCard();
+  });
   document.addEventListener("keydown", (event) => {
     if (event.key === "Escape" && !tournamentModal.hidden) closeTournamentCard();
+    if (event.key === "Escape" && !matchesModal.hidden) closeMatchesCard();
+    if (event.key === "Escape" && !winnerModal.hidden) closeWinnerCard();
   });
 
   const scheduleTodayRefresh = () => {

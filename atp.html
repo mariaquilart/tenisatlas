@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=20260726b">
 </head>
 <body class="page--sub">
   <header class="site-nav">
@@ -114,6 +114,21 @@
         <dl class="calendar-tournament-card__details" id="calendar-tournament-details"></dl>
       </article>
     </div>
+    <div class="calendar-matches-modal" id="calendar-matches-modal" hidden>
+      <article class="calendar-matches-card" role="dialog" aria-modal="true" aria-labelledby="calendar-matches-title">
+        <button type="button" class="calendar-tournament-card__close" id="calendar-matches-close" aria-label="Cerrar partidos del día">&times;</button>
+        <h3 class="calendar-tournament-card__name" id="calendar-matches-title">Partidos de hoy</h3>
+        <p class="calendar-matches-card__status" id="calendar-matches-status" role="status"></p>
+        <div class="calendar-matches-card__list" id="calendar-matches-list"></div>
+      </article>
+    </div>
+    <div class="calendar-winner-modal" id="calendar-winner-modal" hidden>
+      <article class="calendar-winner-card" role="dialog" aria-modal="true" aria-labelledby="calendar-winner-tournament">
+        <button type="button" class="calendar-tournament-card__close" id="calendar-winner-close" aria-label="Cerrar información del campeón">&times;</button>
+        <h3 class="calendar-winner-card__tournament" id="calendar-winner-tournament"></h3>
+        <div class="calendar-winner-card__content" id="calendar-winner-content"></div>
+      </article>
+    </div>
   </section>
 
   <footer class="credit-section" id="credit-section">
@@ -126,7 +141,8 @@
   <script src="js/script.js"></script>
   <script src="js/credit.js"></script>
   <script src="js/atp-calendar-menu.js"></script>
-  <script src="js/atp-tournaments-calendar.js"></script>
+  <script src="js/atp-daily-matches-data.js?v=20260726b"></script>
+  <script src="js/atp-tournaments-calendar.js?v=20260726c"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="js/atp-tournaments-data.js"></script>
