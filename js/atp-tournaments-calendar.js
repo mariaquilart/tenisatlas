@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const nextButton = document.getElementById("tournaments-calendar-next");
   const hero = document.getElementById("atp-hero");
   const mapView = document.getElementById("atp-map-view");
+  const birthdaysView = document.getElementById("atp-birthdays-agenda");
   const mapButton = document.getElementById("atp-map-btn");
   const calendarButton = document.getElementById("atp-calendar-btn");
   const tournamentModal = document.getElementById("calendar-tournament-modal");
@@ -1135,6 +1136,7 @@ document.addEventListener("DOMContentLoaded", () => {
     currentMonth = todayIndex % 12;
     if (hero) hero.hidden = true;
     if (mapView) mapView.hidden = true;
+    if (birthdaysView) birthdaysView.hidden = true;
     if (mapButton) {
       mapButton.classList.remove("is-active");
       mapButton.setAttribute("aria-pressed", "false");

@@ -6,9 +6,10 @@
 
 document.addEventListener("DOMContentLoaded", () => {
   const mapBtn = document.getElementById("atp-map-btn");
+  const tournamentsMapOption = document.getElementById("atp-tournaments-map-option");
   const hero = document.getElementById("atp-hero");
   const mapView = document.getElementById("atp-map-view");
-  if (!mapBtn || !hero || !mapView || typeof L === "undefined") return;
+  if (!mapBtn || !tournamentsMapOption || !hero || !mapView || typeof L === "undefined") return;
 
   // Límites del mapa: se recorta la Antártida (sin interés para el contenido)
   // dejando el borde norte en el límite de la proyección Web Mercator.
@@ -156,8 +157,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const openMap = () => {
     const calendarView = document.getElementById("atp-tournaments-calendar");
+    const birthdaysView = document.getElementById("atp-birthdays-agenda");
     const calendarButton = document.getElementById("atp-calendar-btn");
     if (calendarView) calendarView.hidden = true;
+    if (birthdaysView) birthdaysView.hidden = true;
     if (calendarButton) calendarButton.classList.remove("is-active");
     hero.hidden = true;
     mapView.hidden = false;
@@ -216,8 +219,5 @@ document.addEventListener("DOMContentLoaded", () => {
     mapBtn.setAttribute("aria-pressed", "false");
   };
 
-  mapBtn.addEventListener("click", () => {
-    if (mapView.hidden) openMap();
-    else closeMap();
-  });
+  tournamentsMapOption.addEventListener("click", openMap);
 });

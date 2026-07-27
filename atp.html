@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
-  <link rel="stylesheet" href="css/style.css?v=20260727">
+  <link rel="stylesheet" href="css/style.css?v=20260727p">
 </head>
 <body class="page--sub">
   <header class="site-nav">
@@ -23,7 +23,7 @@
       <span class="site-nav__logo-text">Atlas del Tenis</span>
     </a>
     <nav class="site-nav__menu" aria-label="Navegación del circuito">
-      <button type="button" class="site-nav__link" id="atp-map-btn" aria-pressed="false">Mapa</button>
+      <button type="button" class="site-nav__link" id="atp-map-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="atp-map-menu" aria-pressed="false">Mapa</button>
       <button type="button" class="site-nav__link" id="atp-calendar-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="atp-calendar-menu">Calendario</button>
       <button type="button" class="site-nav__link">Versus</button>
       <button type="button" class="site-nav__link">Historial</button>
@@ -35,8 +35,12 @@
   </header>
 
   <div class="calendar-menu" id="atp-calendar-menu" role="menu" aria-label="Opciones de calendario" hidden>
-    <button type="button" class="calendar-menu__item" role="menuitem">Cumpleaños</button>
+    <button type="button" class="calendar-menu__item" id="atp-birthdays-calendar-option" role="menuitem">Cumpleaños</button>
     <button type="button" class="calendar-menu__item" id="atp-tournaments-calendar-option" role="menuitem">Torneos</button>
+  </div>
+  <div class="calendar-menu" id="atp-map-menu" role="menu" aria-label="Opciones de mapa" hidden>
+    <button type="button" class="calendar-menu__item" id="atp-tournaments-map-option" role="menuitem">Torneos</button>
+    <button type="button" class="calendar-menu__item" id="atp-players-map-option" role="menuitem">Jugadores</button>
   </div>
 
   <main class="hero" id="atp-hero">
@@ -68,6 +72,20 @@
       <span class="map-filters__empty" id="atp-map-empty" hidden>Ningún torneo cumple estos filtros</span>
     </div>
     <div class="map-view__canvas" id="atp-map-canvas"></div>
+  </section>
+
+  <section class="birthdays-agenda" id="atp-birthdays-agenda" aria-labelledby="birthdays-agenda-title" hidden>
+    <div class="birthdays-agenda__inner">
+      <div class="birthdays-agenda__today" id="birthdays-agenda-today" role="status" hidden>
+        <div class="birthdays-agenda__confetti" id="birthdays-agenda-confetti" aria-hidden="true"></div>
+        <p class="birthdays-agenda__today-label">Hoy es el cumpleaños de…</p>
+        <div class="birthdays-agenda__today-players" id="birthdays-agenda-today-players"></div>
+      </div>
+      <header class="birthdays-agenda__header">
+        <h1 class="birthdays-agenda__title" id="birthdays-agenda-title">Agenda anual de cumpleaños</h1>
+      </header>
+      <div class="birthdays-agenda__months" id="birthdays-agenda-months"></div>
+    </div>
   </section>
 
   <section class="tournaments-calendar" id="atp-tournaments-calendar" aria-labelledby="tournaments-calendar-title" hidden>
@@ -140,12 +158,13 @@
 
   <script src="js/script.js"></script>
   <script src="js/credit.js"></script>
-  <script src="js/atp-calendar-menu.js"></script>
+  <script src="js/atp-calendar-menu.js?v=20260727"></script>
+  <script src="js/atp-birthdays-calendar.js?v=20260727l"></script>
   <script src="js/atp-daily-matches-data.js?v=20260726b"></script>
-  <script src="js/atp-tournaments-calendar.js?v=20260727e"></script>
+  <script src="js/atp-tournaments-calendar.js?v=20260727f"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="js/atp-tournaments-data.js"></script>
-  <script src="js/atp-map.js"></script>
+  <script src="js/atp-map.js?v=20260727b"></script>
 </body>
 </html>

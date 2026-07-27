@@ -1,15 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const button = document.getElementById("atp-calendar-btn");
-  const menu = document.getElementById("atp-calendar-menu");
-  if (!button || !menu) return;
+  const menuPairs = [
+    {
+      button: document.getElementById("atp-calendar-btn"),
+      menu: document.getElementById("atp-calendar-menu"),
+    },
+    {
+      button: document.getElementById("atp-map-btn"),
+      menu: document.getElementById("atp-map-menu"),
+    },
+  ].filter(({ button, menu }) => button && menu);
 
-  const closeMenu = (returnFocus = false) => {
+  const closeMenu = (button, menu, returnFocus = false) => {
     menu.hidden = true;
     button.setAttribute("aria-expanded", "false");
     if (returnFocus) button.focus();
   };
 
-  const positionMenu = () => {
+  const positionMenu = (button, menu) => {
     const buttonRect = button.getBoundingClientRect();
     const menuWidth = menu.offsetWidth;
     const left = Math.min(buttonRect.left, window.innerWidth - menuWidth - 12);
@@ -21,38 +28,48 @@ document.addEventListener("DOMContentLoaded", () => {
     menu.style.setProperty("--calendar-arrow-left", `${arrowLeft}px`);
   };
 
-  const openMenu = () => {
+  const openMenu = (button, menu) => {
+    menuPairs.forEach((pair) => {
+      if (pair.menu !== menu) closeMenu(pair.button, pair.menu);
+    });
     menu.hidden = false;
-    positionMenu();
+    positionMenu(button, menu);
     button.setAttribute("aria-expanded", "true");
   };
 
-  button.addEventListener("click", (event) => {
-    event.stopPropagation();
-    if (menu.hidden) openMenu();
-    else closeMenu();
-  });
+  menuPairs.forEach(({ button, menu }) => {
+    button.addEventListener("click", (event) => {
+      event.stopPropagation();
+      if (menu.hidden) openMenu(button, menu);
+      else closeMenu(button, menu);
+    });
 
-  menu.addEventListener("click", (event) => {
-    if (event.target.closest(".calendar-menu__item")) closeMenu();
+    menu.addEventListener("click", (event) => {
+      if (event.target.closest(".calendar-menu__item")) closeMenu(button, menu);
+    });
   });
 
   document.addEventListener("click", (event) => {
-    if (!menu.hidden && !menu.contains(event.target) && event.target !== button) closeMenu();
+    menuPairs.forEach(({ button, menu }) => {
+      if (!menu.hidden && !menu.contains(event.target) && event.target !== button) closeMenu(button, menu);
+    });
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !menu.hidden) closeMenu(true);
-  });
-
-  window.addEventListener("resize", () => {
-    if (!menu.hidden) positionMenu();
-  });
-
-  const navigation = button.closest(".site-nav__menu");
-  if (navigation) {
-    navigation.addEventListener("scroll", () => {
-      if (!menu.hidden) positionMenu();
+    if (event.key !== "Escape") return;
+    menuPairs.forEach(({ button, menu }) => {
+      if (!menu.hidden) closeMenu(button, menu, true);
     });
-  }
+  });
+
+  const repositionOpenMenus = () => {
+    menuPairs.forEach(({ button, menu }) => {
+      if (!menu.hidden) positionMenu(button, menu);
+    });
+  };
+
+  window.addEventListener("resize", repositionOpenMenus);
+
+  const navigation = menuPairs[0]?.button.closest(".site-nav__menu");
+  if (navigation) navigation.addEventListener("scroll", repositionOpenMenus);
 });

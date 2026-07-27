@@ -207,6 +207,335 @@ a {
   outline: none;
 }
 
+/* Agenda anual de cumpleaños ATP */
+.birthdays-agenda {
+  position: fixed;
+  inset: 5.5rem 0 0;
+  z-index: 10;
+  overflow-x: hidden;
+  overflow-y: auto;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(214, 189, 135, 0.12), transparent 32rem),
+    #faf8f3;
+}
+
+.birthdays-agenda[hidden] {
+  display: none;
+}
+
+.birthdays-agenda__inner {
+  width: min(92rem, 100%);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: clamp(1.5rem, 3vw, 3rem);
+}
+
+.birthdays-agenda__header {
+  max-width: 44rem;
+  margin: 0 auto clamp(1.5rem, 3vw, 2.5rem);
+  text-align: center;
+}
+
+.birthdays-agenda__eyebrow {
+  margin-bottom: 0.45rem;
+  color: #39745b;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.birthdays-agenda__title {
+  color: #4f4433;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 600;
+  line-height: 1;
+}
+
+.birthdays-agenda__intro {
+  margin-top: 0.65rem;
+  color: #786b56;
+  font-size: 0.82rem;
+}
+
+.birthdays-agenda__today {
+  position: relative;
+  isolation: isolate;
+  width: 100vw;
+  margin: 0 0 1.5rem calc(50% - 50vw);
+  overflow: hidden;
+  padding: 1.2rem 1.5rem;
+  background: #fffdf8;
+  border: 1px solid #d6bd87;
+  border-right: 0;
+  border-left: 0;
+  border-radius: 0;
+  box-shadow: 0 10px 28px rgba(55, 48, 37, 0.09);
+  text-align: center;
+}
+
+.birthdays-agenda__today[hidden] {
+  display: none;
+}
+
+.birthdays-agenda__today-label {
+  position: relative;
+  z-index: 2;
+  width: fit-content;
+  max-width: 100%;
+  margin-inline: auto;
+  color: #786b56;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.birthdays-agenda__today-players {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: 0.75rem;
+  width: min(15.25rem, 100%);
+  margin: 0.9rem auto 0;
+}
+
+.birthdays-agenda__today-player {
+  display: grid;
+  grid-template-columns: 4.85rem minmax(0, auto);
+  align-items: center;
+  gap: 0.9rem;
+  width: 100%;
+  max-width: 100%;
+  text-align: left;
+}
+
+.birthdays-agenda__today-portrait {
+  display: grid;
+  place-items: center;
+  width: 4.85rem;
+  height: 4.85rem;
+  overflow: hidden;
+  background: #e9e0d0;
+  border: 2px solid #d6bd87;
+  border-radius: 50%;
+  color: #4f4433;
+  font-size: 0.8rem;
+  font-weight: 700;
+  box-shadow: 0 7px 18px rgba(55, 48, 37, 0.14);
+}
+
+.birthdays-agenda__today-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.birthdays-agenda__today-info {
+  display: grid;
+  align-content: center;
+  justify-items: start;
+  gap: 0.35rem;
+}
+
+.birthdays-agenda__today-name {
+  color: #39745b;
+  font-family: var(--font-display);
+  font-size: 1.58rem;
+  font-weight: 600;
+  line-height: 1.05;
+}
+
+.birthdays-agenda__today-age {
+  color: #786b56;
+  font-size: 0.88rem;
+  font-weight: 500;
+}
+
+.birthdays-agenda__confetti {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.birthdays-agenda__confetti i {
+  position: absolute;
+  top: -0.7rem;
+  left: var(--confetti-left);
+  width: 0.42rem;
+  height: 0.72rem;
+  background: var(--confetti-color);
+  border-radius: 0.08rem;
+  opacity: 0;
+  animation: birthday-confetti var(--confetti-duration) linear var(--confetti-delay) infinite;
+}
+
+@keyframes birthday-confetti {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -0.5rem, 0) rotate(0);
+  }
+  12% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(1.2rem, 8rem, 0) rotate(var(--confetti-turn));
+  }
+}
+
+.birthdays-agenda__months {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.birthdays-agenda__month {
+  min-height: 10rem;
+  overflow: hidden;
+  background: #fffdf8;
+  border: 1px solid #ded8ca;
+  border-radius: 0.75rem;
+  box-shadow: 0 6px 18px rgba(55, 48, 37, 0.05);
+}
+
+.birthdays-agenda__month--current {
+  border-color: #bea36d;
+  box-shadow: 0 7px 22px rgba(190, 163, 109, 0.14);
+}
+
+.birthdays-agenda__month-name {
+  padding: 0.72rem 1rem;
+  background: #e9e0d0;
+  border-bottom: 1px solid #ded8ca;
+  color: #4f4433;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.birthdays-agenda__month--current .birthdays-agenda__month-name {
+  background: #d6bd87;
+}
+
+.birthdays-agenda__month-list {
+  display: grid;
+  gap: 0.45rem;
+  padding: 0.85rem;
+}
+
+.birthdays-agenda__birthday {
+  display: grid;
+  grid-template-columns: 2.2rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.55rem;
+  background: #f7f3eb;
+  border-radius: 0.45rem;
+}
+
+.birthdays-agenda__birthday-day {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  background: #e9e0d0;
+  border-radius: 50%;
+  color: #4f4433;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.birthdays-agenda__birthday-name {
+  display: block;
+  color: #34483f;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.birthdays-agenda__birthday-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.42rem;
+  min-width: 0;
+}
+
+.birthdays-agenda__birthday-flag {
+  flex: 0 0 auto;
+  display: block;
+  width: 1.18rem;
+  height: 0.82rem;
+  object-fit: cover;
+  border-radius: 0.12rem;
+  box-shadow: 0 0 0 1px rgba(79, 68, 51, 0.14);
+}
+
+.birthdays-agenda__birthday-info {
+  min-width: 0;
+}
+
+.birthdays-agenda__birthday-year {
+  display: block;
+  margin-top: 0.12rem;
+  padding-left: 1.6rem;
+  color: #938875;
+  font-size: 0.58rem;
+}
+
+.birthdays-agenda__empty {
+  padding: 1.15rem 0.4rem;
+  color: #a09685;
+  font-size: 0.7rem;
+  font-style: italic;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .birthdays-agenda__months {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .birthdays-agenda {
+    inset-block-start: 4.5rem;
+  }
+
+  .birthdays-agenda__inner {
+    padding: 1.2rem 0.85rem 2rem;
+  }
+
+  .birthdays-agenda__months {
+    grid-template-columns: 1fr;
+  }
+
+  .birthdays-agenda__today {
+    padding-inline: 1rem;
+  }
+
+  .birthdays-agenda__today-player {
+    grid-template-columns: 4.2rem minmax(0, auto);
+    gap: 0.75rem;
+  }
+
+  .birthdays-agenda__today-portrait {
+    width: 4.2rem;
+    height: 4.2rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .birthdays-agenda__confetti i {
+    animation: none;
+  }
+}
+
 /* Calendario mensual de torneos ATP */
 .tournaments-calendar {
   position: fixed;
