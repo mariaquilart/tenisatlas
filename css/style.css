@@ -265,6 +265,10 @@ a {
   text-transform: uppercase;
 }
 
+.tournaments-sidebar__heading--current {
+  color: #39745b;
+}
+
 .tournaments-sidebar__section-toggle {
   width: 1.65rem;
   height: 1.65rem;

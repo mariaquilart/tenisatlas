@@ -99,9 +99,16 @@ document.addEventListener("DOMContentLoaded", () => {
     {
       name: "Generali Open Kitzbühel",
       start: "2026-07-20",
+      winner: {
+        name: "Quentin Halys",
+        country: "Francia",
+        countryCode: "FR",
+        photo: "images/players/quentin-halys.jpg?v=2",
+        defeated: "Alexander Bublik",
+      },
       details: [
         ["Inicio", "20 de julio de 2026"],
-        ["Fin", "26 de julio de 2026"],
+        ["Fin", "25 de julio de 2026"],
         ["Categoría", "ATP 250"],
         ["Ubicación", "Kitzbühel (Austria)"],
         ["Superficie", "Tierra batida"],
@@ -791,15 +798,19 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   ];
 
-  let currentMonth = firstMonth;
-  let currentYear = firstYear;
-  let tournamentTrigger = null;
-  let matchesTrigger = null;
-  let winnerTrigger = null;
-
   const monthIndex = (year, month) => year * 12 + month;
   const firstIndex = monthIndex(firstYear, firstMonth);
   const lastIndex = monthIndex(lastYear, lastMonth);
+  const todayForInitialMonth = new Date();
+  const initialIndex = Math.min(
+    lastIndex,
+    Math.max(firstIndex, monthIndex(todayForInitialMonth.getFullYear(), todayForInitialMonth.getMonth())),
+  );
+  let currentYear = Math.floor(initialIndex / 12);
+  let currentMonth = initialIndex % 12;
+  let tournamentTrigger = null;
+  let matchesTrigger = null;
+  let winnerTrigger = null;
 
   const closeTournamentCard = () => {
     tournamentModal.hidden = true;
@@ -906,24 +917,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const name = document.createElement("strong");
     name.className = "tournaments-sidebar__card-name";
     name.textContent = tournament.name;
-
-    const dates = document.createElement("span");
-    dates.className = "tournaments-sidebar__card-dates";
-    dates.textContent = `${detailValue(tournament, "Inicio")} – ${detailValue(tournament, "Fin")}`;
-
-    const category = document.createElement("span");
-    category.className = "tournaments-sidebar__card-meta";
-    category.textContent = detailValue(tournament, "Categoría");
-
-    card.append(name, dates, category);
-
-    const locationValue = detailValue(tournament, "Ubicación");
-    if (locationValue) {
-      const location = document.createElement("span");
-      location.className = "tournaments-sidebar__card-meta";
-      location.textContent = locationValue;
-      card.appendChild(location);
-    }
+    card.appendChild(name);
 
     return card;
   };
@@ -1076,15 +1070,9 @@ document.addEventListener("DOMContentLoaded", () => {
         dayCell.setAttribute("aria-hidden", "true");
       } else {
         const isToday = day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear();
-        const dayNumber = document.createElement(isToday ? "button" : "span");
+        const dayNumber = document.createElement("span");
         dayNumber.className = "tournaments-calendar__day-number";
         dayNumber.textContent = String(day);
-        if (isToday) {
-          dayNumber.type = "button";
-          dayNumber.classList.add("tournaments-calendar__day-number--interactive");
-          dayNumber.setAttribute("aria-label", `Ver partidos de hoy, ${day} de ${monthNames[currentMonth]} de ${currentYear}`);
-          dayNumber.addEventListener("click", () => openMatchesCard(dateKey, dayNumber));
-        }
         dayCell.appendChild(dayNumber);
         const dateKey = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
         const dayTournaments = tournaments.filter((tournament) => tournament.start === dateKey);
@@ -1138,8 +1126,13 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   option.addEventListener("click", () => {
-    currentMonth = firstMonth;
-    currentYear = firstYear;
+    const today = new Date();
+    const todayIndex = Math.min(
+      lastIndex,
+      Math.max(firstIndex, monthIndex(today.getFullYear(), today.getMonth())),
+    );
+    currentYear = Math.floor(todayIndex / 12);
+    currentMonth = todayIndex % 12;
     if (hero) hero.hidden = true;
     if (mapView) mapView.hidden = true;
     if (mapButton) {

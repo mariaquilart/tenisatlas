@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
-  <link rel="stylesheet" href="css/style.css?v=20260726b">
+  <link rel="stylesheet" href="css/style.css?v=20260727">
 </head>
 <body class="page--sub">
   <header class="site-nav">
@@ -75,17 +75,10 @@
       <aside class="tournaments-sidebar" id="tournaments-sidebar" aria-label="Resumen de torneos del mes">
         <section class="tournaments-sidebar__section">
           <div class="tournaments-sidebar__section-header">
-            <h3 class="tournaments-sidebar__heading">Torneos que se están jugando</h3>
+            <h3 class="tournaments-sidebar__heading tournaments-sidebar__heading--current">Torneos que se están jugando</h3>
             <button type="button" class="tournaments-sidebar__section-toggle" aria-controls="calendar-tournaments-current" aria-expanded="true" aria-label="Plegar torneos que se están jugando">&minus;</button>
           </div>
           <div class="tournaments-sidebar__list" id="calendar-tournaments-current"></div>
-        </section>
-        <section class="tournaments-sidebar__section">
-          <div class="tournaments-sidebar__section-header">
-            <h3 class="tournaments-sidebar__heading">Torneos pasados este mes</h3>
-            <button type="button" class="tournaments-sidebar__section-toggle" aria-controls="calendar-tournaments-past" aria-expanded="true" aria-label="Plegar torneos pasados este mes">&minus;</button>
-          </div>
-          <div class="tournaments-sidebar__list" id="calendar-tournaments-past"></div>
         </section>
         <section class="tournaments-sidebar__section">
           <div class="tournaments-sidebar__section-header">
@@ -93,6 +86,13 @@
             <button type="button" class="tournaments-sidebar__section-toggle" aria-controls="calendar-tournaments-upcoming" aria-expanded="true" aria-label="Plegar torneos próximos este mes">&minus;</button>
           </div>
           <div class="tournaments-sidebar__list" id="calendar-tournaments-upcoming"></div>
+        </section>
+        <section class="tournaments-sidebar__section">
+          <div class="tournaments-sidebar__section-header">
+            <h3 class="tournaments-sidebar__heading">Torneos pasados este mes</h3>
+            <button type="button" class="tournaments-sidebar__section-toggle" aria-controls="calendar-tournaments-past" aria-expanded="true" aria-label="Plegar torneos pasados este mes">&minus;</button>
+          </div>
+          <div class="tournaments-sidebar__list" id="calendar-tournaments-past"></div>
         </section>
       </aside>
     <div class="tournaments-calendar__panel">
@@ -142,7 +142,7 @@
   <script src="js/credit.js"></script>
   <script src="js/atp-calendar-menu.js"></script>
   <script src="js/atp-daily-matches-data.js?v=20260726b"></script>
-  <script src="js/atp-tournaments-calendar.js?v=20260726c"></script>
+  <script src="js/atp-tournaments-calendar.js?v=20260727e"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="js/atp-tournaments-data.js"></script>
