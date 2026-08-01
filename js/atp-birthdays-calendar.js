@@ -268,14 +268,20 @@ document.addEventListener("DOMContentLoaded", () => {
     information.className = "birthdays-agenda__birthday-info";
     const nameRow = document.createElement("div");
     nameRow.className = "birthdays-agenda__birthday-name-row";
-    const flag = document.createElement("img");
-    const countryCode = playerCountries[birthday.name].toLowerCase();
-    flag.className = "birthdays-agenda__birthday-flag";
-    flag.src = `https://flagcdn.com/${countryCode}.svg`;
-    flag.alt = "";
-    flag.width = 20;
-    flag.height = 15;
-    flag.loading = "lazy";
+    const countryCode = playerCountries[birthday.name];
+    const flag = document.createElement(countryCode === "RU" ? "span" : "img");
+    flag.className = countryCode === "RU"
+      ? "birthdays-agenda__birthday-flag birthdays-agenda__birthday-flag--neutral"
+      : "birthdays-agenda__birthday-flag";
+    if (countryCode === "RU") {
+      flag.setAttribute("aria-label", "Sin bandera");
+    } else {
+      flag.src = `https://flagcdn.com/${countryCode.toLowerCase()}.svg`;
+      flag.alt = "";
+      flag.width = 20;
+      flag.height = 15;
+      flag.loading = "lazy";
+    }
     const name = document.createElement("strong");
     name.className = "birthdays-agenda__birthday-name";
     name.textContent = birthday.name;

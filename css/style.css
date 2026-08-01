@@ -223,6 +223,12 @@ a {
   display: none;
 }
 
+.map-view:not([hidden]) ~ .credit-section,
+.birthdays-agenda:not([hidden]) ~ .credit-section,
+.tournaments-calendar:not([hidden]) ~ .credit-section {
+  display: none;
+}
+
 .birthdays-agenda__inner {
   width: min(92rem, 100%);
   min-height: 100%;
@@ -461,6 +467,8 @@ a {
 
 .birthdays-agenda__birthday-name-row {
   display: flex;
+  height: 5.5rem;
+  box-sizing: border-box;
   align-items: center;
   gap: 0.42rem;
   min-width: 0;
@@ -474,6 +482,12 @@ a {
   object-fit: cover;
   border-radius: 0.12rem;
   box-shadow: 0 0 0 1px rgba(79, 68, 51, 0.14);
+}
+
+.birthdays-agenda__birthday-flag--neutral {
+  background: transparent;
+  border: 1px solid #2f2f2f;
+  box-shadow: none;
 }
 
 .birthdays-agenda__birthday-info {
@@ -504,7 +518,7 @@ a {
 
 @media (max-width: 560px) {
   .birthdays-agenda {
-    inset-block-start: 4.5rem;
+    inset-block-start: 5.5rem;
   }
 
   .birthdays-agenda__inner {
@@ -1140,7 +1154,12 @@ a {
   display: grid;
   place-items: center;
   width: 3.25rem;
+  min-width: 3.25rem;
+  max-width: 3.25rem;
   height: 3.25rem;
+  min-height: 3.25rem;
+  max-height: 3.25rem;
+  aspect-ratio: 1;
   background: #f5f1e8;
   border: 1px solid #ded8ca;
   border-radius: 50%;
@@ -1148,11 +1167,14 @@ a {
 }
 
 .calendar-match__player-photo {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+  object-position: center top;
 }
 
 .calendar-match__player-flag {
@@ -1173,6 +1195,7 @@ a {
   letter-spacing: 0.01em;
   line-height: 1;
   box-shadow: 0 2px 5px rgba(55, 48, 37, 0.12);
+  z-index: 1;
 }
 
 .calendar-match__country {
@@ -1321,7 +1344,11 @@ a {
 
   .calendar-match__player-mark {
     width: 2.75rem;
+    min-width: 2.75rem;
+    max-width: 2.75rem;
     height: 2.75rem;
+    min-height: 2.75rem;
+    max-height: 2.75rem;
     font-size: 1.3rem;
   }
 }
@@ -1396,6 +1423,10 @@ body.page--sub .hero[hidden] {
   padding: 0.9rem clamp(1.25rem, 4vw, 3rem);
   background: #000;
   border-bottom: 1px solid rgba(233, 220, 195, 0.12);
+}
+
+.map-filters[hidden] {
+  display: none;
 }
 
 .map-filters__group {

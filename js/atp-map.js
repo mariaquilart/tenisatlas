@@ -7,9 +7,11 @@
 document.addEventListener("DOMContentLoaded", () => {
   const mapBtn = document.getElementById("atp-map-btn");
   const tournamentsMapOption = document.getElementById("atp-tournaments-map-option");
+  const playersMapOption = document.getElementById("atp-players-map-option");
   const hero = document.getElementById("atp-hero");
   const mapView = document.getElementById("atp-map-view");
-  if (!mapBtn || !tournamentsMapOption || !hero || !mapView || typeof L === "undefined") return;
+  const mapFilters = document.getElementById("atp-map-filters");
+  if (!mapBtn || !tournamentsMapOption || !playersMapOption || !hero || !mapView || typeof L === "undefined") return;
 
   // Límites del mapa: se recorta la Antártida (sin interés para el contenido)
   // dejando el borde norte en el límite de la proyección Web Mercator.
@@ -80,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const activeCategories = new Set();
     const activeSurfaces = new Set();
 
-    const clusterGroup = L.markerClusterGroup({
+    tournamentLayer = L.markerClusterGroup({
       maxClusterRadius: 48,
       spiderfyOnMaxZoom: true,
       showCoverageOnHover: false,
@@ -110,13 +112,13 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
     const refresh = () => {
-      clusterGroup.clearLayers();
+      tournamentLayer.clearLayers();
       const visible = markers.filter(
         (m) =>
           (!activeCategories.size || activeCategories.has(m.tournament.category)) &&
           (!activeSurfaces.size || activeSurfaces.has(m.tournament.surface))
       );
-      if (visible.length) clusterGroup.addLayers(visible);
+      if (visible.length) tournamentLayer.addLayers(visible);
       if (emptyMsg) emptyMsg.hidden = visible.length !== 0;
     };
 
@@ -149,13 +151,14 @@ document.addEventListener("DOMContentLoaded", () => {
     if (categoryContainer) categories.forEach((c) => addChip(categoryContainer, c, c, activeCategories, true));
     if (surfaceContainer) surfaces.forEach((s) => addChip(surfaceContainer, s, SURFACE_LABELS[s] || s, activeSurfaces));
 
-    map.addLayer(clusterGroup);
+    map.addLayer(tournamentLayer);
     refresh();
   };
 
   let map = null;
+  let tournamentLayer = null;
 
-  const openMap = () => {
+  const openMap = (mode) => {
     const calendarView = document.getElementById("atp-tournaments-calendar");
     const birthdaysView = document.getElementById("atp-birthdays-agenda");
     const calendarButton = document.getElementById("atp-calendar-btn");
@@ -166,6 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
     mapView.hidden = false;
     mapBtn.classList.add("is-active");
     mapBtn.setAttribute("aria-pressed", "true");
+    mapView.dataset.mapMode = mode;
 
     const firstOpen = !map;
 
@@ -197,6 +201,13 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     }
 
+    if (mapFilters) mapFilters.hidden = mode === "players";
+    if (tournamentLayer) {
+      if (mode === "tournaments" && !map.hasLayer(tournamentLayer)) map.addLayer(tournamentLayer);
+      if (mode === "players" && map.hasLayer(tournamentLayer)) map.removeLayer(tournamentLayer);
+    }
+    if (mode === "players") map.closePopup();
+
     requestAnimationFrame(() => {
       map.invalidateSize();
       const coverZoom = map.getBoundsZoom(worldBounds, true);
@@ -219,5 +230,6 @@ document.addEventListener("DOMContentLoaded", () => {
     mapBtn.setAttribute("aria-pressed", "false");
   };
 
-  tournamentsMapOption.addEventListener("click", openMap);
+  tournamentsMapOption.addEventListener("click", () => openMap("tournaments"));
+  playersMapOption.addEventListener("click", () => openMap("players"));
 });

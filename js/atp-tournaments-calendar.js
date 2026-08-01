@@ -1005,6 +1005,7 @@ document.addEventListener("DOMContentLoaded", () => {
         photo.alt = `Foto de ${player.name}`;
         photo.width = 52;
         photo.height = 52;
+        photo.addEventListener("error", () => photo.remove(), { once: true });
         avatar.appendChild(photo);
       }
       const flag = document.createElement("span");
@@ -1071,11 +1072,17 @@ document.addEventListener("DOMContentLoaded", () => {
         dayCell.setAttribute("aria-hidden", "true");
       } else {
         const isToday = day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear();
-        const dayNumber = document.createElement("span");
+        const dateKey = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+        const dayNumber = document.createElement(isToday ? "button" : "span");
         dayNumber.className = "tournaments-calendar__day-number";
         dayNumber.textContent = String(day);
+        if (isToday) {
+          dayNumber.type = "button";
+          dayNumber.classList.add("tournaments-calendar__day-number--interactive");
+          dayNumber.setAttribute("aria-label", `Ver partidos de hoy, ${day} de ${monthNames[currentMonth]} de ${currentYear}`);
+          dayNumber.addEventListener("click", () => openMatchesCard(dateKey, dayNumber));
+        }
         dayCell.appendChild(dayNumber);
-        const dateKey = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
         const dayTournaments = tournaments.filter((tournament) => tournament.start === dateKey);
         if (dayTournaments.length > 1) {
           dayCell.classList.add("tournaments-calendar__day--multiple-events");
