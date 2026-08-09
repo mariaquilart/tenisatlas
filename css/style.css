@@ -467,7 +467,7 @@ a {
 
 .birthdays-agenda__birthday-name-row {
   display: flex;
-  height: 5.5rem;
+  height: auto;
   box-sizing: border-box;
   align-items: center;
   gap: 0.42rem;
@@ -496,7 +496,7 @@ a {
 
 .birthdays-agenda__birthday-year {
   display: block;
-  margin-top: 0.12rem;
+  margin-top: 0.02rem;
   padding-left: 1.6rem;
   color: #938875;
   font-size: 0.58rem;
