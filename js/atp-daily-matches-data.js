@@ -136,3 +136,40 @@ window.ATP_DAILY_MATCHES = {
     },
   ],
 };
+
+{
+  const configuredMatches = window.ATP_DAILY_MATCHES;
+  const knownMatches = [
+    ...configuredMatches.matches.map((match) => ({ ...match, date: configuredMatches.date })),
+    ...configuredMatches.upcoming,
+  ];
+  const matchesByDate = knownMatches.reduce((dates, match) => {
+    (dates[match.date] ||= []).push(match);
+    return dates;
+  }, {});
+  window.ATP_REFRESH_DAILY_MATCHES = () => {
+    const now = new Date();
+    const currentDate = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    const todayMatches = (matchesByDate[currentDate] || []).map((match) => {
+      const currentMatch = { ...match };
+      delete currentMatch.dateLabel;
+      return currentMatch;
+    });
+    const archive = Object.fromEntries(
+      Object.entries(matchesByDate)
+        .filter(([date]) => date < currentDate)
+        .map(([date, matches]) => [date, { date, matches }]),
+    );
+
+    window.ATP_DAILY_MATCHES = {
+      ...configuredMatches,
+      date: currentDate,
+      matches: todayMatches,
+      upcoming: knownMatches
+        .filter((match) => match.date > currentDate)
+        .sort((first, second) => first.date.localeCompare(second.date) || first.time.localeCompare(second.time)),
+      archive,
+    };
+  };
+  window.ATP_REFRESH_DAILY_MATCHES();
+}

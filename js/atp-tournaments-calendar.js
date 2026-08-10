@@ -1008,20 +1008,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const flagEmoji = (countryCode) => {
       const code = (countryCode || "").toUpperCase();
-      const atpCodes = {
-        AU: "AUS", AT: "AUT", BE: "BEL", BR: "BRA", CA: "CAN",
-        CL: "CHI", CN: "CHN", CO: "COL", HR: "CRO", CZ: "CZE",
-        DK: "DEN", ES: "ESP", FI: "FIN", FR: "FRA", DE: "GER",
-        GB: "GBR", GR: "GRE", HK: "HKG", HU: "HUN", IT: "ITA",
-        JP: "JPN", KZ: "KAZ", MC: "MON", MX: "MEX", NL: "NED",
-        NZ: "NZL", NO: "NOR", PE: "PER", PL: "POL", PT: "POR",
-        RS: "SRB", SK: "SVK", SE: "SWE", CH: "SUI", US: "USA",
-        AUT: "AUT", BEL: "BEL", BRA: "BRA", CAN: "CAN", CHE: "SUI",
-        CHL: "CHI", DEU: "GER", DNK: "DEN", ESP: "ESP", FRA: "FRA",
-        GBR: "GBR", GRC: "GRE", HRV: "CRO", ITA: "ITA", JPN: "JPN",
-        MCO: "MON", NLD: "NED", PRT: "POR", SRB: "SRB", USA: "USA",
+      const countryCodes = {
+        AUS: "AU", AUT: "AT", BEL: "BE", BOL: "BO", BRA: "BR",
+        CAN: "CA", CHE: "CH", CHI: "CL", CHL: "CL", CHN: "CN",
+        COL: "CO", CRO: "HR", HRV: "HR", CZE: "CZ", DEN: "DK",
+        DNK: "DK", ESP: "ES", FIN: "FI", FRA: "FR", GER: "DE",
+        DEU: "DE", GBR: "GB", GRE: "GR", GRC: "GR", HKG: "HK",
+        HUN: "HU", IND: "IN", ISR: "IL", ITA: "IT", JPN: "JP",
+        JOR: "JO", KAZ: "KZ", MEX: "MX", MON: "MC", MCO: "MC",
+        NED: "NL", NLD: "NL", NOR: "NO", NZL: "NZ", PAR: "PY",
+        PRY: "PY", PER: "PE", POL: "PL", POR: "PT", PRT: "PT",
+        SRB: "RS", SUI: "CH", SVK: "SK", SWE: "SE", TUN: "TN",
+        UKR: "UA", URU: "UY", URY: "UY", USA: "US",
       };
-      return atpCodes[code] || (/^[A-Z]{3}$/.test(code) ? code : "—");
+      return /^[A-Z]{2}$/.test(code) ? code : countryCodes[code] || "—";
     };
 
     const createPlayer = (player) => {
@@ -1032,9 +1032,12 @@ document.addEventListener("DOMContentLoaded", () => {
       avatar.className = "calendar-match__player-mark";
       const photo = document.createElement("img");
       photo.className = "calendar-match__player-photo";
-      photo.src = player?.photo
-        || window.ATP_PLAYER_PHOTOS?.[player?.name]
-        || "images/players/player-placeholder.svg?v=2";
+      const usePlaceholder = player?.name === "Aleksandr Shevchenko";
+      photo.src = usePlaceholder
+        ? "images/players/player-placeholder.svg?v=2"
+        : player?.photo
+          || window.ATP_PLAYER_PHOTOS?.[player?.name]
+          || "images/players/player-placeholder.svg?v=2";
       photo.alt = `Foto de ${player.name}`;
       photo.width = 52;
       photo.height = 52;
@@ -1079,6 +1082,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const dailyData = window.ATP_DAILY_MATCHES;
     const data = window.ATP_MATCHES_HISTORY?.[dateKey]
+      || dailyData?.archive?.[dateKey]
       || (dailyData?.date === dateKey ? dailyData : null);
     const hasUpcoming = dateKey === currentDateKey
       && Array.isArray(dailyData?.upcoming)
@@ -1130,8 +1134,13 @@ document.addEventListener("DOMContentLoaded", () => {
     title.textContent = `${monthName.charAt(0).toUpperCase()}${monthName.slice(1)} de ${currentYear}`;
     grid.replaceChildren();
     const displayedMonthPrefix = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-`;
-    upcomingMatchesButton.hidden = !Array.isArray(window.ATP_DAILY_MATCHES?.upcoming)
-      || !window.ATP_DAILY_MATCHES.upcoming.some((match) => match.date?.startsWith(displayedMonthPrefix));
+    const dailyMatches = window.ATP_DAILY_MATCHES;
+    const hasTodayMatches = dailyMatches?.date?.startsWith(displayedMonthPrefix)
+      && Array.isArray(dailyMatches.matches)
+      && dailyMatches.matches.length > 0;
+    const hasUpcomingMatches = Array.isArray(dailyMatches?.upcoming)
+      && dailyMatches.upcoming.some((match) => match.date?.startsWith(displayedMonthPrefix));
+    upcomingMatchesButton.hidden = !hasTodayMatches && !hasUpcomingMatches;
 
     const today = new Date();
     const todayAtNoon = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 12);
@@ -1160,7 +1169,8 @@ document.addEventListener("DOMContentLoaded", () => {
           dayNumber.setAttribute("aria-label", `Hoy, ${day} de ${monthNames[currentMonth]} de ${currentYear}`);
         }
         dayCell.appendChild(dayNumber);
-        if (dayDate < todayAtNoon && window.ATP_MATCHES_HISTORY?.[dateKey]) {
+        if (dayDate < todayAtNoon
+          && (window.ATP_MATCHES_HISTORY?.[dateKey] || window.ATP_DAILY_MATCHES?.archive?.[dateKey])) {
           const pastDayBall = document.createElement("button");
           pastDayBall.type = "button";
           pastDayBall.className = "tournaments-calendar__past-day-ball";
@@ -1291,6 +1301,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const now = new Date();
     const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
     window.setTimeout(() => {
+      window.ATP_REFRESH_DAILY_MATCHES?.();
       if (!calendar.hidden) render();
       scheduleTodayRefresh();
     }, nextMidnight.getTime() - now.getTime() + 100);
