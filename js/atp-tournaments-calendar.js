@@ -17,11 +17,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const currentTournamentsList = document.getElementById("calendar-tournaments-current");
   const pastTournamentsList = document.getElementById("calendar-tournaments-past");
   const upcomingTournamentsList = document.getElementById("calendar-tournaments-upcoming");
+  const upcomingMatchesButton = document.getElementById("calendar-upcoming-matches-button");
   const sidebarSectionToggles = calendar.querySelectorAll(".tournaments-sidebar__section-toggle");
   const matchesModal = document.getElementById("calendar-matches-modal");
+  const matchesTitle = document.getElementById("calendar-matches-title");
   const matchesClose = document.getElementById("calendar-matches-close");
   const matchesStatus = document.getElementById("calendar-matches-status");
   const matchesList = document.getElementById("calendar-matches-list");
+  const matchesTabs = document.getElementById("calendar-matches-tabs");
+  const matchesTodayTab = document.getElementById("calendar-matches-today-tab");
+  const matchesUpcomingTab = document.getElementById("calendar-matches-upcoming-tab");
   const winnerModal = document.getElementById("calendar-winner-modal");
   const winnerClose = document.getElementById("calendar-winner-close");
   const winnerTournament = document.getElementById("calendar-winner-tournament");
@@ -30,8 +35,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!option || !calendar || !title || !grid || !previousButton || !nextButton
     || !tournamentModal || !tournamentName || !tournamentDetails || !tournamentClose
     || !currentTournamentsList || !pastTournamentsList || !upcomingTournamentsList
-    || !sidebarSectionToggles.length || !matchesModal || !matchesClose
-    || !matchesStatus || !matchesList || !winnerModal || !winnerClose
+    || !upcomingMatchesButton
+    || !sidebarSectionToggles.length || !matchesModal || !matchesTitle || !matchesClose
+    || !matchesStatus || !matchesList || !matchesTabs || !matchesTodayTab
+    || !matchesUpcomingTab || !winnerModal || !winnerClose
     || !winnerTournament || !winnerContent) return;
 
   const firstMonth = 6;
@@ -967,6 +974,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const createMatchCard = (match) => {
     const card = document.createElement("article");
     card.className = "calendar-match";
+    if (match.player1?.name === "Por confirmar" && match.player2?.name === "Por confirmar") {
+      card.classList.add("calendar-match--pending");
+    }
 
     const round = document.createElement("span");
     round.className = "calendar-match__round";
@@ -981,7 +991,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const time = document.createElement("time");
     time.className = "calendar-match__time";
     time.textContent = match.time || "Por confirmar";
-    header.append(tournament, time);
+    header.appendChild(tournament);
+    if (match.dateLabel) {
+      const date = document.createElement("span");
+      date.className = "calendar-match__date";
+      date.textContent = match.dateLabel;
+      header.appendChild(date);
+    }
+    header.appendChild(time);
 
     const versus = document.createElement("div");
     versus.className = "calendar-match__versus";
@@ -990,24 +1007,41 @@ document.addEventListener("DOMContentLoaded", () => {
     versus.appendChild(versusLabel);
 
     const flagEmoji = (countryCode) => {
-      return /^[A-Z]{2}$/.test(countryCode || "") ? countryCode : "—";
+      const code = (countryCode || "").toUpperCase();
+      const atpCodes = {
+        AU: "AUS", AT: "AUT", BE: "BEL", BR: "BRA", CA: "CAN",
+        CL: "CHI", CN: "CHN", CO: "COL", HR: "CRO", CZ: "CZE",
+        DK: "DEN", ES: "ESP", FI: "FIN", FR: "FRA", DE: "GER",
+        GB: "GBR", GR: "GRE", HK: "HKG", HU: "HUN", IT: "ITA",
+        JP: "JPN", KZ: "KAZ", MC: "MON", MX: "MEX", NL: "NED",
+        NZ: "NZL", NO: "NOR", PE: "PER", PL: "POL", PT: "POR",
+        RS: "SRB", SK: "SVK", SE: "SWE", CH: "SUI", US: "USA",
+        AUT: "AUT", BEL: "BEL", BRA: "BRA", CAN: "CAN", CHE: "SUI",
+        CHL: "CHI", DEU: "GER", DNK: "DEN", ESP: "ESP", FRA: "FRA",
+        GBR: "GBR", GRC: "GRE", HRV: "CRO", ITA: "ITA", JPN: "JPN",
+        MCO: "MON", NLD: "NED", PRT: "POR", SRB: "SRB", USA: "USA",
+      };
+      return atpCodes[code] || (/^[A-Z]{3}$/.test(code) ? code : "—");
     };
 
     const createPlayer = (player) => {
       const playerColumn = document.createElement("div");
       playerColumn.className = "calendar-match__player";
+      if (player?.lost) playerColumn.classList.add("calendar-match__player--lost");
       const avatar = document.createElement("span");
       avatar.className = "calendar-match__player-mark";
-      if (player?.photo) {
-        const photo = document.createElement("img");
-        photo.className = "calendar-match__player-photo";
-        photo.src = player.photo;
-        photo.alt = `Foto de ${player.name}`;
-        photo.width = 52;
-        photo.height = 52;
-        photo.addEventListener("error", () => photo.remove(), { once: true });
-        avatar.appendChild(photo);
-      }
+      const photo = document.createElement("img");
+      photo.className = "calendar-match__player-photo";
+      photo.src = player?.photo
+        || window.ATP_PLAYER_PHOTOS?.[player?.name]
+        || "images/players/player-placeholder.svg?v=2";
+      photo.alt = `Foto de ${player.name}`;
+      photo.width = 52;
+      photo.height = 52;
+      photo.addEventListener("error", () => {
+        photo.src = "images/players/player-placeholder.svg?v=2";
+      }, { once: true });
+      avatar.appendChild(photo);
       const flag = document.createElement("span");
       flag.className = "calendar-match__player-flag";
       flag.textContent = flagEmoji(player?.country_code);
@@ -1030,33 +1064,78 @@ document.addEventListener("DOMContentLoaded", () => {
     return card;
   };
 
-  const openMatchesCard = (dateKey, trigger) => {
+  const openMatchesCard = (dateKey, trigger, showUpcoming = false) => {
     matchesTrigger = trigger;
     matchesList.replaceChildren();
     matchesModal.hidden = false;
     matchesClose.focus();
 
-    const data = window.ATP_DAILY_MATCHES;
+    const now = new Date();
+    const currentDateKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    const [selectedYear, selectedMonth, selectedDay] = dateKey.split("-").map(Number);
+    matchesTitle.textContent = dateKey === currentDateKey
+      ? "Partidos de hoy"
+      : `Partidos del ${selectedDay} de ${monthNames[selectedMonth - 1]} de ${selectedYear}`;
+
+    const dailyData = window.ATP_DAILY_MATCHES;
+    const data = window.ATP_MATCHES_HISTORY?.[dateKey]
+      || (dailyData?.date === dateKey ? dailyData : null);
+    const hasUpcoming = dateKey === currentDateKey
+      && Array.isArray(dailyData?.upcoming)
+      && dailyData.upcoming.length > 0;
+    matchesTabs.hidden = !hasUpcoming;
+
+    const renderMatches = (matches, emptyMessage) => {
+      matchesList.replaceChildren();
+      if (!Array.isArray(matches) || !matches.length) {
+        matchesStatus.hidden = false;
+        matchesStatus.textContent = emptyMessage;
+        return;
+      }
+      matchesStatus.hidden = true;
+      matches.forEach((match) => matchesList.appendChild(createMatchCard(match)));
+    };
+
+    const selectMatchesTab = (upcoming) => {
+      matchesTodayTab.classList.toggle("is-active", !upcoming);
+      matchesUpcomingTab.classList.toggle("is-active", upcoming);
+      matchesTodayTab.setAttribute("aria-selected", String(!upcoming));
+      matchesUpcomingTab.setAttribute("aria-selected", String(upcoming));
+      renderMatches(
+        upcoming ? dailyData.upcoming : data?.matches,
+        upcoming ? "Todavía no hay próximos partidos confirmados." : "No hay partidos ATP programados para hoy.",
+      );
+    };
+
+    matchesTodayTab.onclick = () => selectMatchesTab(false);
+    matchesUpcomingTab.onclick = () => selectMatchesTab(true);
     matchesStatus.hidden = false;
-    if (!data || data.date !== dateKey) {
-      matchesStatus.textContent = "Todavía no hay partidos verificados para hoy.";
+    if (!data) {
+      matchesStatus.textContent = dateKey < currentDateKey
+        ? "Todavía no hay partidos registrados para este día."
+        : "Todavía no hay partidos verificados para hoy.";
       return;
     }
     if (!Array.isArray(data.matches) || !data.matches.length) {
-      matchesStatus.textContent = "No hay partidos ATP programados para hoy.";
+      matchesStatus.textContent = dateKey === currentDateKey
+        ? "No hay partidos ATP programados para hoy."
+        : "No hay partidos ATP registrados para este día.";
       return;
     }
-    matchesStatus.hidden = true;
-    data.matches.forEach((match) => matchesList.appendChild(createMatchCard(match)));
+    selectMatchesTab(showUpcoming && hasUpcoming);
   };
 
   const render = () => {
     const monthName = monthNames[currentMonth];
     title.textContent = `${monthName.charAt(0).toUpperCase()}${monthName.slice(1)} de ${currentYear}`;
     grid.replaceChildren();
+    const displayedMonthPrefix = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-`;
+    upcomingMatchesButton.hidden = !Array.isArray(window.ATP_DAILY_MATCHES?.upcoming)
+      || !window.ATP_DAILY_MATCHES.upcoming.some((match) => match.date?.startsWith(displayedMonthPrefix));
 
     const today = new Date();
     const todayAtNoon = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 12);
+    const todayDateKey = `${todayAtNoon.getFullYear()}-${String(todayAtNoon.getMonth() + 1).padStart(2, "0")}-${String(todayAtNoon.getDate()).padStart(2, "0")}`;
     const firstWeekday = (new Date(Date.UTC(currentYear, currentMonth, 1)).getUTCDay() + 6) % 7;
     const daysInMonth = new Date(Date.UTC(currentYear, currentMonth + 1, 0)).getUTCDate();
     const cellCount = Math.ceil((firstWeekday + daysInMonth) / 7) * 7;
@@ -1073,17 +1152,36 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         const isToday = day === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear();
         const dateKey = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
-        const dayNumber = document.createElement(isToday ? "button" : "span");
+        const dayDate = new Date(currentYear, currentMonth, day, 12);
+        const dayNumber = document.createElement("span");
         dayNumber.className = "tournaments-calendar__day-number";
         dayNumber.textContent = String(day);
         if (isToday) {
-          dayNumber.type = "button";
-          dayNumber.classList.add("tournaments-calendar__day-number--interactive");
-          dayNumber.setAttribute("aria-label", `Ver partidos de hoy, ${day} de ${monthNames[currentMonth]} de ${currentYear}`);
-          dayNumber.addEventListener("click", () => openMatchesCard(dateKey, dayNumber));
+          dayNumber.setAttribute("aria-label", `Hoy, ${day} de ${monthNames[currentMonth]} de ${currentYear}`);
         }
         dayCell.appendChild(dayNumber);
-        const dayTournaments = tournaments.filter((tournament) => tournament.start === dateKey);
+        if (dayDate < todayAtNoon && window.ATP_MATCHES_HISTORY?.[dateKey]) {
+          const pastDayBall = document.createElement("button");
+          pastDayBall.type = "button";
+          pastDayBall.className = "tournaments-calendar__past-day-ball";
+          pastDayBall.setAttribute("aria-label", `Ver partidos del ${day} de ${monthNames[currentMonth]} de ${currentYear}`);
+          pastDayBall.title = "Ver partidos de este día";
+          pastDayBall.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            openMatchesCard(dateKey, pastDayBall);
+          });
+          dayCell.appendChild(pastDayBall);
+        }
+        const dayTournaments = tournaments.filter((tournament) => {
+          const [startYear, startMonth, startDay] = tournament.start.split("-").map(Number);
+          const tournamentStart = new Date(startYear, startMonth - 1, startDay, 12);
+          const tournamentEnd = parseSpanishDate(detailValue(tournament, "Fin"));
+          if (!tournamentEnd || tournamentStart > todayAtNoon) return tournament.start === dateKey;
+          if (tournamentStart <= todayAtNoon && todayAtNoon <= tournamentEnd) return todayDateKey === dateKey;
+          const endDateKey = `${tournamentEnd.getFullYear()}-${String(tournamentEnd.getMonth() + 1).padStart(2, "0")}-${String(tournamentEnd.getDate()).padStart(2, "0")}`;
+          return endDateKey === dateKey;
+        });
         if (dayTournaments.length > 1) {
           dayCell.classList.add("tournaments-calendar__day--multiple-events");
         }
@@ -1155,6 +1253,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   previousButton.addEventListener("click", () => changeMonth(-1));
   nextButton.addEventListener("click", () => changeMonth(1));
+  upcomingMatchesButton.addEventListener("click", () => {
+    const dailyData = window.ATP_DAILY_MATCHES;
+    if (!dailyData?.date) return;
+    openMatchesCard(dailyData.date, upcomingMatchesButton);
+  });
   tournamentClose.addEventListener("click", closeTournamentCard);
   matchesClose.addEventListener("click", closeMatchesCard);
   winnerClose.addEventListener("click", closeWinnerCard);

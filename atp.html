@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
-  <link rel="stylesheet" href="css/style.css?v=20260809">
+  <link rel="stylesheet" href="css/style.css?v=20260810b">
 </head>
 <body class="page--sub">
   <header class="site-nav">
@@ -91,6 +91,16 @@
   <section class="tournaments-calendar" id="atp-tournaments-calendar" aria-labelledby="tournaments-calendar-title" hidden>
     <div class="tournaments-calendar__layout">
       <aside class="tournaments-sidebar" id="tournaments-sidebar" aria-label="Resumen de torneos del mes">
+        <button type="button" class="tournaments-sidebar__matches-button" id="calendar-upcoming-matches-button">
+          <svg class="tournaments-sidebar__matches-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 3v3M17 3v3M4.5 9h15M6 5h12a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z"/>
+            <path d="m9 14 2 2 4-4"/>
+          </svg>
+          <span>
+            <strong>Próximos partidos</strong>
+          </span>
+          <span class="tournaments-sidebar__matches-arrow" aria-hidden="true">›</span>
+        </button>
         <section class="tournaments-sidebar__section">
           <div class="tournaments-sidebar__section-header">
             <h3 class="tournaments-sidebar__heading tournaments-sidebar__heading--current">Torneos que se están jugando</h3>
@@ -136,6 +146,10 @@
       <article class="calendar-matches-card" role="dialog" aria-modal="true" aria-labelledby="calendar-matches-title">
         <button type="button" class="calendar-tournament-card__close" id="calendar-matches-close" aria-label="Cerrar partidos del día">&times;</button>
         <h3 class="calendar-tournament-card__name" id="calendar-matches-title">Partidos de hoy</h3>
+        <div class="calendar-matches-card__tabs" id="calendar-matches-tabs" role="tablist" aria-label="Partidos por fecha" hidden>
+          <button type="button" class="calendar-matches-card__tab is-active" id="calendar-matches-today-tab" role="tab" aria-selected="true">Hoy</button>
+          <button type="button" class="calendar-matches-card__tab" id="calendar-matches-upcoming-tab" role="tab" aria-selected="false">Próximos</button>
+        </div>
         <p class="calendar-matches-card__status" id="calendar-matches-status" role="status"></p>
         <div class="calendar-matches-card__list" id="calendar-matches-list"></div>
       </article>
@@ -160,8 +174,11 @@
   <script src="js/credit.js"></script>
   <script src="js/atp-calendar-menu.js?v=20260727"></script>
   <script src="js/atp-birthdays-calendar.js?v=20260727m"></script>
-  <script src="js/atp-daily-matches-data.js?v=20260809"></script>
-  <script src="js/atp-tournaments-calendar.js?v=20260809"></script>
+  <script src="js/atp-daily-matches-data.js?v=20260810c"></script>
+  <script src="js/atp-player-photos-data.js?v=20260810a"></script>
+  <script src="js/atp-matches-history-data.js?v=20260810d"></script>
+  <script src="js/atp-matches-july-data.js?v=20260810a"></script>
+  <script src="js/atp-tournaments-calendar.js?v=20260810n"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="js/atp-tournaments-data.js"></script>

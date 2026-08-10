@@ -584,6 +584,63 @@ a {
   scrollbar-color: #d8cbb5 transparent;
 }
 
+.tournaments-sidebar__matches-button {
+  display: grid;
+  grid-template-columns: 1.45rem minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  margin-bottom: 1.4rem;
+  padding: 0.8rem 0.75rem;
+  background: #fffdf8;
+  border: 1px solid #d3c39f;
+  border-radius: 0.7rem;
+  color: #4f4433;
+  text-align: left;
+  box-shadow: 0 4px 14px rgba(55, 48, 37, 0.06);
+  cursor: pointer;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.tournaments-sidebar__matches-icon {
+  width: 1.35rem;
+  height: 1.35rem;
+  fill: none;
+  stroke: #9a7840;
+  stroke-width: 1.65;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tournaments-sidebar__matches-button[hidden] {
+  display: none;
+}
+
+.tournaments-sidebar__matches-button:hover,
+.tournaments-sidebar__matches-button:focus-visible {
+  border-color: #b29455;
+  outline: 2px solid rgba(178, 148, 85, 0.18);
+  outline-offset: 2px;
+  box-shadow: 0 6px 18px rgba(55, 48, 37, 0.1);
+  transform: translateY(-1px);
+}
+
+.tournaments-sidebar__matches-button strong {
+  display: block;
+}
+
+.tournaments-sidebar__matches-button strong {
+  font-family: var(--font-display);
+  font-size: 0.93rem;
+  line-height: 1.2;
+}
+
+.tournaments-sidebar__matches-arrow {
+  color: #9a7840;
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
 .tournaments-sidebar__section + .tournaments-sidebar__section {
   margin-top: 1.5rem;
   padding-top: 1.35rem;
@@ -784,6 +841,7 @@ a {
 }
 
 .tournaments-calendar__day {
+  position: relative;
   min-height: 0;
   overflow: hidden;
   padding: 0.65rem;
@@ -821,24 +879,56 @@ a {
   border-radius: 50%;
 }
 
-.tournaments-calendar__day-number--interactive {
-  border: 0;
-  font: inherit;
-  cursor: pointer;
-}
-
-.tournaments-calendar__day-number--interactive:hover,
-.tournaments-calendar__day-number--interactive:focus-visible {
-  outline: 3px solid rgba(190, 163, 109, 0.28);
-  outline-offset: 2px;
-}
-
 .tournaments-calendar__day--today .tournaments-calendar__day-number {
   color: #34483f;
   background: #d6bd87;
   border: 1px solid #bea36d;
   box-shadow: 0 0 0 2px rgba(190, 163, 109, 0.14);
   font-weight: 600;
+}
+
+.tournaments-calendar__past-day-ball {
+  position: absolute;
+  top: 2.27rem;
+  left: 1.13rem;
+  display: block;
+  width: 0.78rem;
+  height: 0.78rem;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #c7d84a;
+  border: 1px solid rgba(71, 82, 31, 0.45);
+  border-radius: 50%;
+  box-shadow: 0 1px 3px rgba(55, 48, 37, 0.18);
+  cursor: pointer;
+  pointer-events: auto;
+  z-index: 4;
+}
+
+.tournaments-calendar__past-day-ball::before,
+.tournaments-calendar__past-day-ball::after {
+  content: "";
+  position: absolute;
+  top: -0.14rem;
+  width: 0.48rem;
+  height: 0.92rem;
+  border: 1px solid rgba(255, 255, 245, 0.9);
+  border-radius: 50%;
+}
+
+.tournaments-calendar__past-day-ball::before {
+  right: 0.5rem;
+}
+
+.tournaments-calendar__past-day-ball::after {
+  left: 0.5rem;
+}
+
+.tournaments-calendar__past-day-ball:hover,
+.tournaments-calendar__past-day-ball:focus-visible {
+  outline: 2px solid rgba(190, 163, 109, 0.32);
+  outline-offset: 2px;
 }
 
 .tournaments-calendar__event {
@@ -861,6 +951,19 @@ a {
   white-space: nowrap;
   cursor: pointer;
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.tournaments-calendar__past-day-ball + .tournaments-calendar__event {
+  margin-top: 1.15rem;
+}
+
+.tournaments-calendar__day--multiple-events .tournaments-calendar__event + .tournaments-calendar__event {
+  margin-top: 0.1rem;
+}
+
+.tournaments-calendar__day--crowded .tournaments-calendar__event {
+  padding-top: 0.15rem;
+  padding-bottom: 0.15rem;
 }
 
 .tournaments-calendar__event--live::after {
@@ -1084,6 +1187,42 @@ a {
   font-size: 0.82rem;
 }
 
+.calendar-matches-card__tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.25rem;
+  margin: -0.45rem 0 1rem;
+  padding: 0.25rem;
+  background: #eee8dc;
+  border: 1px solid rgba(120, 107, 86, 0.16);
+  border-radius: 0.75rem;
+}
+
+.calendar-matches-card__tabs[hidden] {
+  display: none;
+}
+
+.calendar-matches-card__tab {
+  padding: 0.55rem 0.8rem;
+  background: transparent;
+  border: 0;
+  border-radius: 0.55rem;
+  color: #786b56;
+  font: 700 0.72rem/1 var(--font-body);
+  cursor: pointer;
+}
+
+.calendar-matches-card__tab.is-active {
+  background: #fffdf8;
+  color: #34483f;
+  box-shadow: 0 2px 8px rgba(55, 48, 37, 0.1);
+}
+
+.calendar-matches-card__tab:focus-visible {
+  outline: 2px solid rgba(178, 148, 85, 0.45);
+  outline-offset: 1px;
+}
+
 .calendar-matches-card__list {
   display: grid;
   gap: 0.7rem;
@@ -1098,6 +1237,15 @@ a {
   border: 1px solid #d8cbb5;
   border-radius: 0.75rem;
   box-shadow: 0 6px 18px rgba(55, 48, 37, 0.07);
+}
+
+.calendar-match--pending {
+  background: #faf7ef;
+  border-style: dashed;
+}
+
+.calendar-match--pending .calendar-match__player-photo {
+  opacity: 0.68;
 }
 
 .calendar-match__round {
@@ -1177,20 +1325,24 @@ a {
   object-position: center top;
 }
 
+.calendar-match__player--lost .calendar-match__player-photo {
+  filter: grayscale(1);
+}
+
 .calendar-match__player-flag {
   position: absolute;
   right: -0.25rem;
   bottom: -0.12rem;
   display: grid;
   place-items: center;
-  width: 1.3rem;
-  height: 1.3rem;
+  width: 1.55rem;
+  height: 1.55rem;
   background: #fffdf8;
   border: 1px solid #d8cbb5;
   border-radius: 50%;
   color: #263a32;
   font-family: var(--font-body);
-  font-size: 0.53rem;
+  font-size: 0.46rem;
   font-weight: 800;
   letter-spacing: 0.01em;
   line-height: 1;
@@ -1218,6 +1370,12 @@ a {
   font-size: 0.82rem;
   font-weight: 700;
   white-space: nowrap;
+}
+
+.calendar-match__date {
+  color: #9a7840;
+  font-size: 0.72rem;
+  font-weight: 700;
 }
 
 .calendar-tournament-card__close {
@@ -1281,6 +1439,10 @@ a {
 }
 
 @media (max-width: 860px) {
+  .tournaments-calendar__past-day-ball {
+    top: 2.04rem;
+  }
+
   .tournaments-calendar {
     overflow-y: auto;
   }
