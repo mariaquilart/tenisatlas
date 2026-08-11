@@ -1144,11 +1144,46 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const today = new Date();
     const todayAtNoon = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 12);
-    const todayDateKey = `${todayAtNoon.getFullYear()}-${String(todayAtNoon.getMonth() + 1).padStart(2, "0")}-${String(todayAtNoon.getDate()).padStart(2, "0")}`;
     const firstWeekday = (new Date(Date.UTC(currentYear, currentMonth, 1)).getUTCDay() + 6) % 7;
     const daysInMonth = new Date(Date.UTC(currentYear, currentMonth + 1, 0)).getUTCDate();
     const cellCount = Math.ceil((firstWeekday + daysInMonth) / 7) * 7;
     grid.style.setProperty("--calendar-weeks", String(cellCount / 7));
+
+    const tournamentTracks = new Map();
+    const tournamentTrackOffsets = new Map();
+    const tournamentIntervals = [...tournaments]
+      .map((tournament) => ({
+        tournament,
+        start: new Date(`${tournament.start}T12:00:00`),
+        end: parseSpanishDate(detailValue(tournament, "Fin")),
+      }))
+      .filter(({ end }) => end)
+      .sort((first, second) => first.start - second.start || first.end - second.end);
+    const assignTournamentGroup = (group) => {
+      const trackEndDates = [];
+      group.forEach(({ tournament, start, end }) => {
+        let track = trackEndDates.findIndex((trackEnd) => trackEnd < start);
+        if (track < 0) track = trackEndDates.length;
+        trackEndDates[track] = end;
+        tournamentTracks.set(tournament, track);
+      });
+      const centerTrack = (trackEndDates.length - 1) / 2;
+      group.forEach(({ tournament }) => {
+        tournamentTrackOffsets.set(tournament, ((tournamentTracks.get(tournament) ?? 0) - centerTrack) * 1.25);
+      });
+    };
+    let tournamentGroup = [];
+    let tournamentGroupEnd = null;
+    tournamentIntervals.forEach((interval) => {
+      if (tournamentGroup.length && interval.start > tournamentGroupEnd) {
+        assignTournamentGroup(tournamentGroup);
+        tournamentGroup = [];
+        tournamentGroupEnd = null;
+      }
+      tournamentGroup.push(interval);
+      if (!tournamentGroupEnd || interval.end > tournamentGroupEnd) tournamentGroupEnd = interval.end;
+    });
+    if (tournamentGroup.length) assignTournamentGroup(tournamentGroup);
 
     for (let cell = 0; cell < cellCount; cell += 1) {
       const day = cell - firstWeekday + 1;
@@ -1182,16 +1217,20 @@ document.addEventListener("DOMContentLoaded", () => {
             openMatchesCard(dateKey, pastDayBall);
           });
           dayCell.appendChild(pastDayBall);
+          dayCell.classList.add("tournaments-calendar__day--has-match-ball");
         }
-        const dayTournaments = tournaments.filter((tournament) => {
+        const dayTournaments = tournaments.filter((tournament) => tournament.start === dateKey);
+        const continuingTournaments = tournaments.filter((tournament) => {
           const [startYear, startMonth, startDay] = tournament.start.split("-").map(Number);
           const tournamentStart = new Date(startYear, startMonth - 1, startDay, 12);
           const tournamentEnd = parseSpanishDate(detailValue(tournament, "Fin"));
-          if (!tournamentEnd || tournamentStart > todayAtNoon) return tournament.start === dateKey;
-          if (tournamentStart <= todayAtNoon && todayAtNoon <= tournamentEnd) return todayDateKey === dateKey;
-          const endDateKey = `${tournamentEnd.getFullYear()}-${String(tournamentEnd.getMonth() + 1).padStart(2, "0")}-${String(tournamentEnd.getDate()).padStart(2, "0")}`;
-          return endDateKey === dateKey;
+          return tournamentEnd && tournamentStart <= dayDate && dayDate <= tournamentEnd;
         });
+        const activeTrackCount = continuingTournaments.reduce(
+          (count, tournament) => Math.max(count, (tournamentTracks.get(tournament) ?? 0) + 1),
+          0,
+        );
+        dayCell.style.setProperty("--tournament-track-count", String(activeTrackCount));
         if (dayTournaments.length > 1) {
           dayCell.classList.add("tournaments-calendar__day--multiple-events");
         }
@@ -1201,7 +1240,19 @@ document.addEventListener("DOMContentLoaded", () => {
         dayTournaments.forEach((tournament) => {
           const tournamentButton = document.createElement("button");
           tournamentButton.type = "button";
-          tournamentButton.className = "tournaments-calendar__event";
+          tournamentButton.className = "tournaments-calendar__event tournaments-calendar__event--timeline";
+          tournamentButton.style.setProperty(
+            "--tournament-track",
+            String(tournamentTracks.get(tournament) ?? 0),
+          );
+          tournamentButton.style.setProperty(
+            "--tournament-track-offset",
+            `${tournamentTrackOffsets.get(tournament) ?? 0}rem`,
+          );
+          if (window.ATP_MATCHES_HISTORY?.[tournament.start]
+            || window.ATP_DAILY_MATCHES?.archive?.[tournament.start]) {
+            tournamentButton.style.setProperty("--tournament-timeline-center", "66%");
+          }
           tournamentButton.textContent = tournament.name;
           tournamentButton.title = tournament.name;
           tournamentButton.setAttribute("aria-label", `Ver información de ${tournament.name}`);
@@ -1215,6 +1266,31 @@ document.addEventListener("DOMContentLoaded", () => {
           }
           tournamentButton.addEventListener("click", () => openTournamentCard(tournament, tournamentButton));
           dayCell.appendChild(tournamentButton);
+        });
+        continuingTournaments.forEach((tournament) => {
+          const tournamentEnd = parseSpanishDate(detailValue(tournament, "Fin"));
+          const endDateKey = `${tournamentEnd.getFullYear()}-${String(tournamentEnd.getMonth() + 1).padStart(2, "0")}-${String(tournamentEnd.getDate()).padStart(2, "0")}`;
+          const duration = document.createElement("span");
+          const track = tournamentTracks.get(tournament) ?? 0;
+          duration.className = "tournaments-calendar__duration";
+          duration.style.setProperty("--tournament-track", String(track));
+          duration.style.setProperty(
+            "--tournament-track-offset",
+            `${tournamentTrackOffsets.get(tournament) ?? 0}rem`,
+          );
+          if (window.ATP_MATCHES_HISTORY?.[tournament.start]
+            || window.ATP_DAILY_MATCHES?.archive?.[tournament.start]) {
+            duration.style.setProperty("--tournament-timeline-center", "66%");
+          }
+          duration.style.setProperty("--tournament-track-color", [
+            "#b29455", "#687b71", "#8f7356", "#7b8261",
+          ][track % 4]);
+          duration.setAttribute("aria-hidden", "true");
+          if (tournament.start === dateKey) duration.classList.add("tournaments-calendar__duration--start");
+          if (endDateKey === dateKey) duration.classList.add("tournaments-calendar__duration--end");
+          if (cell % 7 === 0 || day === 1) duration.classList.add("tournaments-calendar__duration--row-start");
+          if (cell % 7 === 6 || day === daysInMonth) duration.classList.add("tournaments-calendar__duration--row-end");
+          dayCell.appendChild(duration);
         });
         if (cell % 7 >= 5) dayCell.classList.add("tournaments-calendar__day--weekend");
         if (isToday) {

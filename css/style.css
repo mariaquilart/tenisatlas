@@ -933,6 +933,7 @@ a {
 
 .tournaments-calendar__event {
   position: relative;
+  z-index: 2;
   display: block;
   width: 100%;
   margin-top: 0.28rem;
@@ -951,6 +952,71 @@ a {
   white-space: nowrap;
   cursor: pointer;
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.tournaments-calendar__event--timeline {
+  position: absolute;
+  top: calc(var(--tournament-timeline-center, 50%) + var(--tournament-track-offset, 0rem));
+  bottom: auto;
+  left: 0.62rem;
+  width: calc(78% - 0.62rem);
+  min-height: 1.12rem;
+  margin: 0 !important;
+  padding: 0.2rem 0.38rem;
+  transform: translateY(-50%);
+}
+
+.tournaments-calendar__day--has-match-ball .tournaments-calendar__event--timeline {
+  left: 0.62rem;
+  width: calc(78% - 0.62rem);
+}
+
+.tournaments-calendar__duration {
+  position: absolute;
+  right: -1px;
+  top: calc(var(--tournament-timeline-center, 50%) + var(--tournament-track-offset, 0rem));
+  bottom: auto;
+  left: -1px;
+  z-index: 1;
+  height: 2px;
+  background: var(--tournament-track-color, #b29455);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.tournaments-calendar__duration--start,
+.tournaments-calendar__duration--row-start {
+  left: 0.62rem;
+  border-radius: 999px 0 0 999px;
+}
+
+.tournaments-calendar__duration--start {
+  left: 78%;
+  border-radius: 0;
+}
+
+.tournaments-calendar__duration--row-end:not(.tournaments-calendar__duration--end) {
+  right: 0.62rem;
+  border-radius: 0 999px 999px 0;
+}
+
+.tournaments-calendar__duration--end {
+  right: 0.78rem;
+  border-radius: 0 999px 999px 0;
+}
+
+.tournaments-calendar__duration--end::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -0.28rem;
+  width: 0.38rem;
+  height: 0.38rem;
+  background: var(--tournament-track-color, #b29455);
+  border: 2px solid #fffdf8;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(79, 68, 51, 0.14);
+  transform: translateY(-50%);
 }
 
 .tournaments-calendar__past-day-ball + .tournaments-calendar__event {
@@ -1031,6 +1097,11 @@ a {
   border-color: #d2c8b6;
   outline: none;
   transform: translateY(-1px);
+}
+
+.tournaments-calendar__event--timeline:hover,
+.tournaments-calendar__event--timeline:focus-visible {
+  transform: translateY(calc(-50% - 1px));
 }
 
 .calendar-tournament-modal,
