@@ -256,6 +256,16 @@ document.addEventListener("DOMContentLoaded", () => {
     summary.replaceChildren(playerCard(nameOne, winsOne), score, playerCard(nameTwo, winsTwo));
 
     matchesContainer.replaceChildren();
+    if (meetings.length) {
+      const tableHeader = document.createElement("div");
+      tableHeader.className = "versus-match versus-match--header";
+      ["Fecha", "Torneo", "Ronda", "Ganador"].forEach((label) => {
+        const heading = document.createElement("span");
+        heading.textContent = label;
+        tableHeader.appendChild(heading);
+      });
+      matchesContainer.appendChild(tableHeader);
+    }
     meetings.forEach((match) => {
       const row = document.createElement("article");
       row.className = "versus-match";
@@ -267,17 +277,16 @@ document.addEventListener("DOMContentLoaded", () => {
       event.className = "versus-match__event";
       const tournament = document.createElement("strong");
       tournament.textContent = match.tournament;
-      const round = document.createElement("span");
+      event.appendChild(tournament);
+      const round = document.createElement("div");
+      round.className = "versus-match__round";
       round.textContent = match.round;
-      event.append(tournament, round);
       const winner = document.createElement("div");
       winner.className = "versus-match__winner";
       const winnerName = document.createElement("strong");
       winnerName.textContent = match.winner;
-      const winnerLabel = document.createElement("span");
-      winnerLabel.textContent = "Ganador";
-      winner.append(winnerName, winnerLabel);
-      row.append(date, event, winner);
+      winner.appendChild(winnerName);
+      row.append(date, event, round, winner);
       matchesContainer.appendChild(row);
     });
     if (!meetings.length) {

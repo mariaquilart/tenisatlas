@@ -1660,17 +1660,20 @@ body.page--sub .hero[hidden] {
 .versus-score span { color: #d9c7a4; font-size: 0.62rem; letter-spacing: 0.09em; text-transform: uppercase; }
 
 .versus-result__matches { display: grid; gap: 0.65rem; margin-top: 2rem; }
-.versus-match { display: grid; grid-template-columns: 7rem minmax(0, 1fr) minmax(0, 1fr); gap: 1rem; padding: 0.9rem 1rem; background: #fffdf8; border: 1px solid #ded8ca; border-radius: 0.65rem; }
+.versus-match { display: grid; grid-template-columns: 8rem minmax(10rem, 1.5fr) minmax(8rem, 1fr) minmax(9rem, 1fr); align-items: center; gap: 1rem; padding: 0.9rem 1rem; background: #fffdf8; border: 1px solid #ded8ca; border-radius: 0.65rem; }
+.versus-match--header { position: sticky; top: 0; z-index: 2; background: var(--versus-score-background); border-color: var(--versus-score-background); color: #fffdf8; box-shadow: 0 7px 18px rgba(52, 72, 63, 0.18); }
+.versus-match--header span { color: #fffdf8; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; }
 .versus-match__date { color: #8a7a62; font-size: 0.7rem; }
 .versus-match__event strong, .versus-match__winner strong { display: block; color: #34483f; font-size: 0.78rem; }
-.versus-match__event span, .versus-match__winner span { color: #8a7a62; font-size: 0.68rem; }
+.versus-match__round { color: #6f6659; font-size: 0.72rem; }
 
 @media (max-width: 720px) {
   .versus-search { grid-template-columns: 1fr; }
   .versus-search__separator { justify-self: center; }
   .versus-result__summary { grid-template-columns: 1fr; }
   .versus-score { order: -1; }
-  .versus-match { grid-template-columns: 1fr; gap: 0.35rem; }
+  .versus-match { grid-template-columns: 5.5rem minmax(8rem, 1.4fr) minmax(7rem, 1fr) minmax(8rem, 1fr); min-width: 38rem; }
+  .versus-result__matches { overflow-x: auto; padding-bottom: 0.35rem; }
 }
 
 @media (max-width: 720px) {
