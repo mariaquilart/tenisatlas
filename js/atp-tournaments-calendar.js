@@ -805,6 +805,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ],
     },
   ];
+  window.ATP_CALENDAR_TOURNAMENTS = tournaments;
 
   const monthIndex = (year, month) => year * 12 + month;
   const firstIndex = monthIndex(firstYear, firstMonth);
@@ -1032,6 +1033,10 @@ document.addEventListener("DOMContentLoaded", () => {
       avatar.className = "calendar-match__player-mark";
       const photo = document.createElement("img");
       photo.className = "calendar-match__player-photo";
+      if (player?.lost) {
+        photo.classList.add("calendar-match__player-photo--lost");
+        photo.style.filter = "grayscale(100%)";
+      }
       const usePlaceholder = player?.name === "Aleksandr Shevchenko";
       photo.src = usePlaceholder
         ? "images/players/player-placeholder.svg?v=2"
@@ -1054,7 +1059,8 @@ document.addEventListener("DOMContentLoaded", () => {
       playerName.textContent = player?.name || "Por confirmar";
       const country = document.createElement("span");
       country.className = "calendar-match__country";
-      country.textContent = player?.country || "País no disponible";
+      country.textContent = player?.country || "";
+      country.hidden = !player?.country;
       playerColumn.append(avatar, playerName, country);
       return playerColumn;
     };

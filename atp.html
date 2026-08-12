@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
-  <link rel="stylesheet" href="css/style.css?v=20260811g">
+  <link rel="stylesheet" href="css/style.css?v=20260812i">
 </head>
 <body class="page--sub">
   <header class="site-nav">
@@ -69,7 +69,10 @@
         <span class="map-filters__label">Superficie</span>
         <div class="map-filters__chips" data-filter-group="surface"></div>
       </div>
-      <span class="map-filters__empty" id="atp-map-empty" hidden>Ningún torneo cumple estos filtros</span>
+      <div class="map-filters__group map-filters__group--today" role="group" aria-label="Filtrar por fecha">
+        <button type="button" class="map-filters__chip map-filters__today" id="atp-map-today-filter" aria-pressed="false">Hoy</button>
+        <span class="map-filters__empty" id="atp-map-empty" hidden>Ningún torneo cumple estos filtros</span>
+      </div>
     </div>
     <div class="map-view__canvas" id="atp-map-canvas"></div>
   </section>
@@ -173,15 +176,16 @@
   <script src="js/script.js"></script>
   <script src="js/credit.js"></script>
   <script src="js/atp-calendar-menu.js?v=20260727"></script>
-  <script src="js/atp-birthdays-calendar.js?v=20260727m"></script>
-  <script src="js/atp-daily-matches-data.js?v=20260810d"></script>
+  <script src="js/atp-birthdays-calendar.js?v=20260812d"></script>
+  <script src="js/atp-daily-matches-data.js?v=20260812a"></script>
   <script src="js/atp-player-photos-data.js?v=20260810a"></script>
   <script src="js/atp-matches-history-data.js?v=20260810d"></script>
   <script src="js/atp-matches-july-data.js?v=20260810a"></script>
-  <script src="js/atp-tournaments-calendar.js?v=20260811g"></script>
+  <script src="js/atp-tournaments-calendar.js?v=20260812c"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="js/atp-tournaments-data.js"></script>
-  <script src="js/atp-map.js?v=20260729"></script>
+  <script src="js/atp-players-map-data.js?v=20260812a"></script>
+  <script src="js/atp-map.js?v=20260812o"></script>
 </body>
 </html>

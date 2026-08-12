@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!option || !agenda || !monthsContainer || !todayNotice || !todayPlayers || !confetti) return;
 
-  const birthdays = [
+  const allBirthdays = [
     { name: "Jannik Sinner", day: 16, month: 8, year: 2001 },
     { name: "Alexander Zverev", day: 20, month: 4, year: 1997 },
     { name: "Carlos Alcaraz", day: 5, month: 5, year: 2003 },
@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: "Cameron Norrie", day: 23, month: 8, year: 1995 },
     { name: "Ethan Quinn", day: 12, month: 3, year: 2004 },
     { name: "Luca Van Assche", day: 11, month: 5, year: 2004 },
-    { name: "Stefanos Tsitsipas", day: 12, month: 8, year: 1998 },
+    { name: "Stefanos Tsitsipas", day: 12, month: 8, year: 1998, photo: "images/players/stefanos-tsitsipas.jpg?v=1" },
     { name: "Tomáš Macháč", day: 13, month: 10, year: 2000 },
     { name: "Fábián Marozsán", day: 8, month: 10, year: 1999 },
     { name: "Pablo Carreño Busta", day: 12, month: 7, year: 1991 },
@@ -133,6 +133,17 @@ document.addEventListener("DOMContentLoaded", () => {
     { name: "Dino Prižmić", day: 5, month: 8, year: 2005 },
     { name: "Francisco Comesaña", day: 6, month: 10, year: 2000 },
   ];
+  const excludedOutsideTop100 = new Set([
+    "Aleksandar Vukic", "Borna Ćorić", "Christopher O'Connell", "David Goffin",
+    "Emilio Nava", "Francisco Comesaña", "Gabriel Diallo", "Hugo Dellien",
+    "Jacob Fearnley", "Jesper de Jong", "Kei Nishikori", "Laslo Djere",
+    "Luca Nardi", "Mackenzie McDonald", "Matteo Gigante", "Nicolás Jarry",
+    "Nishesh Basavareddy", "Reilly Opelka", "Roberto Bautista Agut",
+    "Roberto Carballés Baena", "Roman Safiullin", "Thiago Seyboth Wild",
+    "Yunchaokete Bu",
+  ]);
+  const birthdays = allBirthdays.filter((birthday) => !excludedOutsideTop100.has(birthday.name));
+  window.ATP_BIRTHDAY_PLAYERS = birthdays.map((birthday) => ({ ...birthday }));
   const monthNames = [
     "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
     "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre",
@@ -261,6 +272,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const createBirthdayEntry = (birthday) => {
     const item = document.createElement("article");
     item.className = "birthdays-agenda__birthday";
+    const today = new Date();
+    const todaysBirthdays = birthdays.filter(
+      (entry) => entry.month === today.getMonth() + 1 && entry.day === today.getDate(),
+    );
+    if (todaysBirthdays.length > 1
+      && birthday.month === today.getMonth() + 1
+      && birthday.day === today.getDate()) {
+      item.classList.add("birthdays-agenda__birthday--today-multiple");
+    }
     const day = document.createElement("time");
     day.className = "birthdays-agenda__birthday-day";
     day.textContent = String(birthday.day).padStart(2, "0");
@@ -347,8 +367,8 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     todayPlayers.replaceChildren();
-    todayNotice.hidden = !todaysBirthdays.length;
-    if (!todaysBirthdays.length) {
+    todayNotice.hidden = todaysBirthdays.length !== 1;
+    if (todaysBirthdays.length !== 1) {
       confetti.replaceChildren();
       return;
     }
@@ -358,10 +378,11 @@ document.addEventListener("DOMContentLoaded", () => {
       player.className = "birthdays-agenda__today-player";
       const portrait = document.createElement("span");
       portrait.className = "birthdays-agenda__today-portrait";
-      if (birthday.photo) {
+      const verifiedPhoto = birthday.photo || window.ATP_PLAYER_PHOTOS?.[birthday.name];
+      if (verifiedPhoto) {
         const photo = document.createElement("img");
         photo.className = "birthdays-agenda__today-photo";
-        photo.src = birthday.photo;
+        photo.src = verifiedPhoto;
         photo.alt = `Foto de ${birthday.name}`;
         photo.width = 82;
         photo.height = 82;
