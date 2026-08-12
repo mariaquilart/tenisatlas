@@ -1660,7 +1660,27 @@ body.page--sub .hero[hidden] {
 .versus-score span { color: #d9c7a4; font-size: 0.62rem; letter-spacing: 0.09em; text-transform: uppercase; }
 
 .versus-result__matches { display: grid; gap: 0.65rem; margin-top: 2rem; }
-.versus-match { display: grid; grid-template-columns: 8rem minmax(10rem, 1.5fr) minmax(8rem, 1fr) minmax(9rem, 1fr); align-items: center; gap: 1rem; padding: 0.9rem 1rem; background: #fffdf8; border: 1px solid #ded8ca; border-radius: 0.65rem; }
+.versus-match { display: grid; grid-template-columns: 8rem minmax(10rem, 1.5fr) minmax(8rem, 1fr) minmax(9rem, 1fr) 3.5rem; align-items: center; gap: 1rem; padding: 0.9rem 1rem; background: #fffdf8; border: 1px solid #ded8ca; border-radius: 0.65rem; }
+.versus-match-group { display: grid; }
+.versus-match__sets { display: grid; place-items: center; }
+.versus-match__sets-button { display: grid; place-items: center; width: 1.85rem; height: 1.85rem; background: #f4eee2; border: 1px solid #c9b98f; border-radius: 50%; color: #34483f; font: 600 1rem var(--font-body); cursor: pointer; transition: transform 0.2s ease, background 0.2s ease; }
+.versus-match__sets-button:hover { background: #e9dfcb; }
+.versus-match__sets-button[aria-expanded="true"] { transform: rotate(90deg); }
+.versus-match__score-detail { margin-top: -0.65rem; padding: 1rem; background: #e7dfd1; border: 1px solid #d2c5ae; border-top: 0; border-radius: 0 0 0.65rem 0.65rem; }
+.versus-match__score-detail[hidden] { display: none; }
+.versus-scoreboard { width: min(34rem, 100%); margin: 0 auto; overflow: hidden; background: #17251f; border: 1px solid rgba(255, 255, 255, 0.14); border-radius: 0.45rem; color: #fffdf8; box-shadow: 0 8px 20px rgba(31, 39, 34, 0.2); font-variant-numeric: tabular-nums; }
+.versus-scoreboard__heading, .versus-scoreboard__row { display: grid; grid-template-columns: minmax(10rem, 1fr) repeat(var(--score-sets, 5), 2.4rem); align-items: center; }
+.versus-scoreboard__heading { display: flex; justify-content: flex-end; padding: 0.35rem 0.7rem; background: #263a32; color: #cdbf9f; font-size: 0.56rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.versus-scoreboard__heading span:first-child { margin-right: auto; }
+.versus-scoreboard__heading span:not(:first-child) { width: 2.4rem; text-align: center; }
+.versus-scoreboard__row { display: flex; min-height: 2.7rem; padding: 0 0.7rem; border-top: 1px solid rgba(255, 255, 255, 0.1); }
+.versus-scoreboard__row--winner { background: rgba(201, 168, 106, 0.1); }
+.versus-scoreboard__player { flex: 1; color: #f6f1e7; font-size: 0.76rem; font-weight: 500; }
+.versus-scoreboard__row--winner .versus-scoreboard__player::before { content: "●"; margin-right: 0.5rem; color: #d6b66f; font-size: 0.52rem; vertical-align: 0.12rem; }
+.versus-scoreboard__set { display: grid; place-items: center; width: 2.4rem; color: #f8f5ed; font-size: 0.9rem; font-weight: 600; }
+.versus-scoreboard__set sup { margin: -0.7rem 0 0 0.08rem; color: #d7c9a8; font-size: 0.5rem; }
+.versus-scoreboard__status { padding: 0.38rem 0.7rem; background: #263a32; color: #cdbf9f; font-size: 0.58rem; letter-spacing: 0.06em; text-align: right; text-transform: uppercase; }
+.versus-scoreboard--empty { padding: 1rem; color: #d7c9a8; font-size: 0.72rem; text-align: center; }
 .versus-match--header { position: sticky; top: 0; z-index: 2; background: var(--versus-score-background); border-color: var(--versus-score-background); color: #fffdf8; box-shadow: 0 7px 18px rgba(52, 72, 63, 0.18); }
 .versus-match--header span { color: #fffdf8; font-size: 0.66rem; font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; }
 .versus-match__date { color: #8a7a62; font-size: 0.7rem; }
@@ -1672,7 +1692,7 @@ body.page--sub .hero[hidden] {
   .versus-search__separator { justify-self: center; }
   .versus-result__summary { grid-template-columns: 1fr; }
   .versus-score { order: -1; }
-  .versus-match { grid-template-columns: 5.5rem minmax(8rem, 1.4fr) minmax(7rem, 1fr) minmax(8rem, 1fr); min-width: 38rem; }
+  .versus-match { grid-template-columns: 5.5rem minmax(8rem, 1.4fr) minmax(7rem, 1fr) minmax(8rem, 1fr) 3rem; min-width: 42rem; }
   .versus-result__matches { overflow-x: auto; padding-bottom: 0.35rem; }
 }
 

@@ -87,6 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const tournamentColumn = column("tourney_name");
       const roundColumn = column("round");
       const dateColumn = column("tourney_date");
+      const scoreColumn = column("score");
       if ([winnerColumn, loserColumn, tournamentColumn, roundColumn, dateColumn].some((index) => index < 0)) return;
 
       const known = new Set(history.matches
@@ -103,7 +104,10 @@ document.addEventListener("DOMContentLoaded", () => {
         const date = rawDate.length === 8
           ? `${rawDate.slice(0, 4)}-${rawDate.slice(4, 6)}-${rawDate.slice(6, 8)}`
           : rawDate;
-        const match = { winner, loser, tournament: row[tournamentColumn], roundCode: row[roundColumn], date };
+        const match = {
+          winner, loser, tournament: row[tournamentColumn], roundCode: row[roundColumn], date,
+          score: scoreColumn >= 0 ? row[scoreColumn] : "",
+        };
         const key = [normalize(winner), normalize(loser), match.tournament, match.roundCode, date].join("|");
         if (known.has(key)) return;
         known.add(key);
@@ -194,6 +198,63 @@ document.addEventListener("DOMContentLoaded", () => {
     }).format(parsed);
   };
 
+  const buildScoreboard = (match) => {
+    const board = document.createElement("div");
+    board.className = "versus-scoreboard";
+    const tokens = String(match.score || "").trim().split(/\s+/).filter(Boolean);
+    const setScores = tokens.filter((token) => /^\d+-\d+(?:\(\d+\))?$/.test(token));
+    const status = tokens.filter((token) => !/^\d+-\d+(?:\(\d+\))?$/.test(token)).join(" ");
+    if (!setScores.length) {
+      board.classList.add("versus-scoreboard--empty");
+      board.textContent = match.score || "Marcador no disponible";
+      return board;
+    }
+
+    const heading = document.createElement("div");
+    heading.className = "versus-scoreboard__heading";
+    const playerHeading = document.createElement("span");
+    playerHeading.textContent = "Jugador";
+    heading.appendChild(playerHeading);
+    setScores.forEach((_, index) => {
+      const setHeading = document.createElement("span");
+      setHeading.textContent = `S${index + 1}`;
+      heading.appendChild(setHeading);
+    });
+
+    const scores = setScores.map((setScore) => {
+      const parts = setScore.match(/^(\d+)-(\d+)(?:\((\d+)\))?$/);
+      return { winner: parts?.[1] || "–", loser: parts?.[2] || "–", tiebreak: parts?.[3] || "" };
+    });
+    const createRow = (name, side, won) => {
+      const row = document.createElement("div");
+      row.className = `versus-scoreboard__row${won ? " versus-scoreboard__row--winner" : ""}`;
+      const player = document.createElement("strong");
+      player.className = "versus-scoreboard__player";
+      player.textContent = name;
+      row.appendChild(player);
+      scores.forEach((score) => {
+        const cell = document.createElement("span");
+        cell.className = "versus-scoreboard__set";
+        cell.textContent = score[side];
+        if (side === "loser" && score.tiebreak) {
+          const tiebreak = document.createElement("sup");
+          tiebreak.textContent = score.tiebreak;
+          cell.appendChild(tiebreak);
+        }
+        row.appendChild(cell);
+      });
+      return row;
+    };
+    board.append(heading, createRow(match.winner, "winner", true), createRow(match.loser, "loser", false));
+    if (status) {
+      const note = document.createElement("div");
+      note.className = "versus-scoreboard__status";
+      note.textContent = status;
+      board.appendChild(note);
+    }
+    return board;
+  };
+
   const compare = async () => {
     compareButton.disabled = true;
     await liveUpdatePromise;
@@ -230,6 +291,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tournament: history.tournaments[match[2]] || "Torneo no disponible",
         round: roundLabels[history.rounds[match[3]]] || history.rounds[match[3]] || "Ronda no disponible",
         date: match[4],
+        score: match[5] || "",
       }))
       .concat(liveMatches
         .filter((match) => {
@@ -259,7 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (meetings.length) {
       const tableHeader = document.createElement("div");
       tableHeader.className = "versus-match versus-match--header";
-      ["Fecha", "Torneo", "Ronda", "Ganador"].forEach((label) => {
+      ["Fecha", "Torneo", "Ronda", "Ganador", "Sets"].forEach((label) => {
         const heading = document.createElement("span");
         heading.textContent = label;
         tableHeader.appendChild(heading);
@@ -286,8 +348,29 @@ document.addEventListener("DOMContentLoaded", () => {
       const winnerName = document.createElement("strong");
       winnerName.textContent = match.winner;
       winner.appendChild(winnerName);
-      row.append(date, event, round, winner);
-      matchesContainer.appendChild(row);
+      const sets = document.createElement("div");
+      sets.className = "versus-match__sets";
+      const setsButton = document.createElement("button");
+      setsButton.type = "button";
+      setsButton.className = "versus-match__sets-button";
+      setsButton.setAttribute("aria-expanded", "false");
+      setsButton.setAttribute("aria-label", `Ver sets de ${match.winner} contra ${match.loser}`);
+      setsButton.textContent = ">";
+      sets.appendChild(setsButton);
+      const scoreDetail = document.createElement("div");
+      scoreDetail.className = "versus-match__score-detail";
+      scoreDetail.hidden = true;
+      scoreDetail.appendChild(buildScoreboard(match));
+      setsButton.addEventListener("click", () => {
+        const expanded = setsButton.getAttribute("aria-expanded") === "true";
+        setsButton.setAttribute("aria-expanded", String(!expanded));
+        scoreDetail.hidden = expanded;
+      });
+      row.append(date, event, round, winner, sets);
+      const group = document.createElement("div");
+      group.className = "versus-match-group";
+      group.append(row, scoreDetail);
+      matchesContainer.appendChild(group);
     });
     if (!meetings.length) {
       const empty = document.createElement("p");
