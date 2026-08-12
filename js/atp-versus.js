@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const idTwo = playerIds.get(keyTwo);
     const roundLabels = {
       F: "Final", SF: "Semifinal", QF: "Cuartos de final", R16: "Octavos de final",
-      R32: "Dieciseisavos de final", R64: "Primera ronda", R128: "Primera ronda",
+      R32: "Tercera ronda", R64: "Segunda ronda", R128: "Primera ronda",
       RR: "Fase de grupos", Q1: "Primera ronda de clasificación", Q2: "Segunda ronda de clasificación",
       Q3: "Ronda final de clasificación", BR: "Partido por el bronce",
     };
