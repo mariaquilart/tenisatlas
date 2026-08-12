@@ -411,9 +411,16 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   option.addEventListener("click", () => {
+    const versusView = document.getElementById("atp-versus-view");
+    const versusButton = document.getElementById("atp-versus-btn");
     if (hero) hero.hidden = true;
     if (mapView) mapView.hidden = true;
     if (tournamentsCalendar) tournamentsCalendar.hidden = true;
+    if (versusView) versusView.hidden = true;
+    if (versusButton) {
+      versusButton.classList.remove("is-active");
+      versusButton.setAttribute("aria-pressed", "false");
+    }
     if (mapButton) {
       mapButton.classList.remove("is-active");
       mapButton.setAttribute("aria-pressed", "false");

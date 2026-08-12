@@ -254,6 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
     "Taylor Fritz": "images/players/taylor-fritz.jpg",
     "Terence Atmane": "images/players/terence-atmane.jpg",
   };
+  window.ATP_PLAYER_PHOTOS = Object.assign(window.ATP_PLAYER_PHOTOS || {}, LOCAL_PLAYER_PHOTOS);
 
   const BUILTIN_PLAYER_COORDINATES = {
     "San Candido, Italia": [12.2847097, 46.7097542], "El Palmar, España": [-1.1634534, 37.9391241],
@@ -428,8 +429,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const calendarView = document.getElementById("atp-tournaments-calendar");
     const birthdaysView = document.getElementById("atp-birthdays-agenda");
     const calendarButton = document.getElementById("atp-calendar-btn");
+    const versusView = document.getElementById("atp-versus-view");
+    const versusButton = document.getElementById("atp-versus-btn");
     if (calendarView) calendarView.hidden = true;
     if (birthdaysView) birthdaysView.hidden = true;
+    if (versusView) versusView.hidden = true;
+    if (versusButton) {
+      versusButton.classList.remove("is-active");
+      versusButton.setAttribute("aria-pressed", "false");
+    }
     if (calendarButton) calendarButton.classList.remove("is-active");
     hero.hidden = true;
     mapView.hidden = false;

@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
-  <link rel="stylesheet" href="css/style.css?v=20260812i">
+  <link rel="stylesheet" href="css/style.css?v=20260812n">
 </head>
 <body class="page--sub">
   <header class="site-nav">
@@ -27,7 +27,7 @@
       <button type="button" class="site-nav__link" id="atp-calendar-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="atp-calendar-menu">Calendario</button>
       <button type="button" class="site-nav__link">Versus</button>
       <button type="button" class="site-nav__link">Historial</button>
-      <button type="button" class="site-nav__link">H2H</button>
+      <button type="button" class="site-nav__link" id="atp-versus-btn" aria-pressed="false">H2H</button>
       <button type="button" class="site-nav__link">Palmarés</button>
       <button type="button" class="site-nav__link">Campeones</button>
       <button type="button" class="site-nav__link">Filtros</button>
@@ -75,6 +75,34 @@
       </div>
     </div>
     <div class="map-view__canvas" id="atp-map-canvas"></div>
+  </section>
+
+  <section class="versus-view" id="atp-versus-view" aria-labelledby="atp-versus-title" hidden>
+    <div class="versus-view__inner">
+      <header class="versus-view__header">
+        <h1 class="versus-view__title" id="atp-versus-title">HEAD TO HEAD</h1>
+        <p class="versus-view__intro">Busca dos tenistas para consultar su historial cara a cara.</p>
+      </header>
+      <div class="versus-search" aria-label="Seleccionar tenistas">
+        <div class="versus-search__field">
+          <label for="atp-versus-player-one">Primer tenista</label>
+          <input type="search" id="atp-versus-player-one" autocomplete="off" placeholder="Ej. Carlos Alcaraz" aria-autocomplete="list" aria-controls="atp-versus-options-one" aria-expanded="false">
+          <div class="versus-search__options" id="atp-versus-options-one" role="listbox" hidden></div>
+        </div>
+        <span class="versus-search__separator" aria-hidden="true">VS</span>
+        <div class="versus-search__field">
+          <label for="atp-versus-player-two">Segundo tenista</label>
+          <input type="search" id="atp-versus-player-two" autocomplete="off" placeholder="Ej. Jannik Sinner" aria-autocomplete="list" aria-controls="atp-versus-options-two" aria-expanded="false">
+          <div class="versus-search__options" id="atp-versus-options-two" role="listbox" hidden></div>
+        </div>
+        <button type="button" class="versus-search__button" id="atp-versus-compare">Comparar</button>
+      </div>
+      <p class="versus-view__message" id="atp-versus-message" role="status" hidden></p>
+      <div class="versus-result" id="atp-versus-result" hidden>
+        <div class="versus-result__summary" id="atp-versus-summary"></div>
+        <div class="versus-result__matches" id="atp-versus-matches"></div>
+      </div>
+    </div>
   </section>
 
   <section class="birthdays-agenda" id="atp-birthdays-agenda" aria-labelledby="birthdays-agenda-title" hidden>
@@ -176,16 +204,18 @@
   <script src="js/script.js"></script>
   <script src="js/credit.js"></script>
   <script src="js/atp-calendar-menu.js?v=20260727"></script>
-  <script src="js/atp-birthdays-calendar.js?v=20260812d"></script>
-  <script src="js/atp-daily-matches-data.js?v=20260812a"></script>
+  <script src="js/atp-birthdays-calendar.js?v=20260812e"></script>
+  <script src="js/atp-daily-matches-data.js?v=20260812b"></script>
   <script src="js/atp-player-photos-data.js?v=20260810a"></script>
   <script src="js/atp-matches-history-data.js?v=20260810d"></script>
   <script src="js/atp-matches-july-data.js?v=20260810a"></script>
-  <script src="js/atp-tournaments-calendar.js?v=20260812c"></script>
+  <script src="js/atp-tournaments-calendar.js?v=20260812d"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="js/atp-tournaments-data.js"></script>
   <script src="js/atp-players-map-data.js?v=20260812a"></script>
-  <script src="js/atp-map.js?v=20260812o"></script>
+  <script src="js/atp-map.js?v=20260812q"></script>
+  <script src="js/atp-versus-data.js?v=20260812a"></script>
+  <script src="js/atp-versus.js?v=20260812g"></script>
 </body>
 </html>

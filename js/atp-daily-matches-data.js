@@ -5,12 +5,12 @@ window.ATP_DAILY_MATCHES = {
   source: "https://www.tennis.com/tournaments/national-bank-open-presented-by-rogers-3?date=2026-08-12",
   matches: [
     {
-      id: "montreal-2026-qf-jodar-fils", tournament: "National Bank Open Presented by Rogers", round: "Cuartos de final", time: "18:00",
+      id: "montreal-2026-qf-jodar-fils", date: "2026-08-10", tournament: "National Bank Open Presented by Rogers", round: "Cuartos de final", time: "00:00",
       player1: { name: "Rafael Jódar", country: "España", country_code: "ES", photo: "images/players/rafael-jodar.jpg?v=1" },
       player2: { name: "Arthur Fils", country: "Francia", country_code: "FR", photo: "images/players/arthur-fils.jpg?v=1", lost: true },
     },
     {
-      id: "montreal-2026-qf-darderi-nakashima", tournament: "National Bank Open Presented by Rogers", round: "Cuartos de final", time: "A continuación",
+      id: "montreal-2026-qf-darderi-nakashima", date: "2026-08-10", tournament: "National Bank Open Presented by Rogers", round: "Cuartos de final", time: "01:10",
       player1: { name: "Luciano Darderi", country: "Italia", country_code: "IT", lost: true },
       player2: { name: "Brandon Nakashima", country: "Estados Unidos", country_code: "US", photo: "images/players/brandon-nakashima.jpg?v=1" },
     },
@@ -50,7 +50,7 @@ window.ATP_DAILY_MATCHES = {
 {
   const configuredMatches = window.ATP_DAILY_MATCHES;
   const knownMatches = [
-    ...configuredMatches.matches.map((match) => ({ ...match, date: configuredMatches.date })),
+    ...configuredMatches.matches.map((match) => ({ ...match, date: match.date || configuredMatches.date })),
     ...configuredMatches.upcoming,
   ];
   const matchesByDate = knownMatches.reduce((dates, match) => {
