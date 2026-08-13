@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
-  <link rel="stylesheet" href="css/style.css?v=20260812q">
+  <link rel="stylesheet" href="css/style.css?v=20260813e">
 </head>
 <body class="page--sub">
   <header class="site-nav">
@@ -26,7 +26,7 @@
       <button type="button" class="site-nav__link" id="atp-map-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="atp-map-menu" aria-pressed="false">Mapa</button>
       <button type="button" class="site-nav__link" id="atp-calendar-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="atp-calendar-menu">Calendario</button>
       <button type="button" class="site-nav__link">Versus</button>
-      <button type="button" class="site-nav__link">Historial</button>
+      <button type="button" class="site-nav__link" id="atp-history-btn" aria-pressed="false">Historial</button>
       <button type="button" class="site-nav__link" id="atp-versus-btn" aria-pressed="false">H2H</button>
       <button type="button" class="site-nav__link">Palmarés</button>
       <button type="button" class="site-nav__link">Campeones</button>
@@ -102,6 +102,44 @@
         <div class="versus-result__summary" id="atp-versus-summary"></div>
         <div class="versus-result__matches" id="atp-versus-matches"></div>
       </div>
+    </div>
+  </section>
+
+  <section class="history-view" id="atp-history-view" aria-labelledby="atp-history-title" hidden>
+    <div class="history-view__inner">
+      <header class="history-view__header">
+        <h1 class="history-view__title" id="atp-history-title">HISTORIAL</h1>
+        <p class="history-view__intro">Consulta los partidos de un torneo, una temporada y una ronda.</p>
+      </header>
+      <div class="history-search">
+        <div class="history-search__field">
+          <label for="atp-history-tournament">Torneo</label>
+          <div class="history-search__control">
+            <input type="search" id="atp-history-tournament" autocomplete="off" placeholder="Ej. Australian Open" aria-autocomplete="list" aria-controls="atp-history-tournament-options" aria-expanded="false">
+            <button type="button" class="history-search__toggle" data-history-toggle="tournament" aria-label="Mostrar torneos">⌄</button>
+          </div>
+          <div class="history-search__options" id="atp-history-tournament-options" role="listbox" hidden></div>
+        </div>
+        <div class="history-search__field">
+          <label for="atp-history-year">Año</label>
+          <div class="history-search__control">
+            <input type="text" inputmode="numeric" id="atp-history-year" autocomplete="off" placeholder="Ej. 2006" aria-controls="atp-history-year-options" aria-expanded="false">
+            <button type="button" class="history-search__toggle" data-history-toggle="year" aria-label="Mostrar años">⌄</button>
+          </div>
+          <div class="history-search__options" id="atp-history-year-options" role="listbox" hidden></div>
+        </div>
+        <div class="history-search__field">
+          <label for="atp-history-round">Ronda</label>
+          <div class="history-search__control">
+            <input type="search" id="atp-history-round" autocomplete="off" placeholder="Ej. Semifinal" aria-autocomplete="list" aria-controls="atp-history-round-options" aria-expanded="false">
+            <button type="button" class="history-search__toggle" data-history-toggle="round" aria-label="Mostrar rondas">⌄</button>
+          </div>
+          <div class="history-search__options" id="atp-history-round-options" role="listbox" hidden></div>
+        </div>
+        <button type="button" class="history-search__button" id="atp-history-search">Buscar</button>
+      </div>
+      <p class="history-view__message" id="atp-history-message" role="status" hidden></p>
+      <div class="history-results" id="atp-history-results" hidden></div>
     </div>
   </section>
 
@@ -205,7 +243,7 @@
   <script src="js/credit.js"></script>
   <script src="js/atp-calendar-menu.js?v=20260727"></script>
   <script src="js/atp-birthdays-calendar.js?v=20260812e"></script>
-  <script src="js/atp-daily-matches-data.js?v=20260812b"></script>
+  <script src="js/atp-daily-matches-data.js?v=20260813a"></script>
   <script src="js/atp-player-photos-data.js?v=20260810a"></script>
   <script src="js/atp-matches-history-data.js?v=20260810d"></script>
   <script src="js/atp-matches-july-data.js?v=20260810a"></script>
@@ -214,8 +252,9 @@
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="js/atp-tournaments-data.js"></script>
   <script src="js/atp-players-map-data.js?v=20260812a"></script>
-  <script src="js/atp-map.js?v=20260812q"></script>
+  <script src="js/atp-map.js?v=20260813d"></script>
   <script src="js/atp-versus-data.js?v=20260812b"></script>
-  <script src="js/atp-versus.js?v=20260812k"></script>
+  <script src="js/atp-versus.js?v=20260813d"></script>
+  <script src="js/atp-history.js?v=20260813a"></script>
 </body>
 </html>

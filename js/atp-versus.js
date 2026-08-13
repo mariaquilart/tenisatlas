@@ -49,6 +49,32 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let playerNames = [...players.values()].sort((a, b) => a.localeCompare(b, "es"));
   const liveMatches = [];
+  const addLocalCompletedMatches = () => {
+    const daily = window.ATP_DAILY_MATCHES || {};
+    const days = [
+      ...Object.values(daily.archive || {}),
+      { date: daily.date, matches: daily.matches || [] },
+    ];
+    days.forEach((day) => (day.matches || []).forEach((match) => {
+      const first = match.player1;
+      const second = match.player2;
+      if (!first?.name || !second?.name || first.lost === second.lost) return;
+      const winner = first.lost ? second : first;
+      const loser = first.lost ? first : second;
+      liveMatches.push({
+        winner: winner.name,
+        loser: loser.name,
+        tournament: match.tournament || "Torneo no disponible",
+        roundCode: match.round || "Ronda no disponible",
+        date: match.date || day.date,
+        score: match.score || "",
+      });
+      [winner.name, loser.name].forEach((name) => {
+        const key = normalize(name);
+        if (!players.has(key)) players.set(key, name);
+      });
+    }));
+  };
   const parseCsv = (text) => {
     const rows = [];
     let row = [];
@@ -76,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const year = new Date().getFullYear();
     try {
       liveMatches.length = 0;
+      addLocalCompletedMatches();
       const url = `https://raw.githubusercontent.com/Aneeshers/tennis-sackmann-archive/main/atp/atp_matches_${year}.csv?v=${new Date().toISOString().slice(0, 10)}`;
       const response = await fetch(url, { cache: "no-store" });
       if (!response.ok) throw new Error(`HTTP ${response.status}`);
@@ -94,8 +121,11 @@ document.addEventListener("DOMContentLoaded", () => {
         .filter((match) => String(match[4]).startsWith(String(year)))
         .map((match) => [
           normalize(history.players[match[0]]), normalize(history.players[match[1]]),
-          history.tournaments[match[2]], history.rounds[match[3]], match[4],
+          history.tournaments[match[2]], match[4],
         ].join("|")));
+      liveMatches.forEach((match) => known.add([
+        normalize(match.winner), normalize(match.loser), match.tournament, match.date,
+      ].join("|")));
       rows.forEach((row) => {
         const winner = row[winnerColumn];
         const loser = row[loserColumn];
@@ -108,7 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
           winner, loser, tournament: row[tournamentColumn], roundCode: row[roundColumn], date,
           score: scoreColumn >= 0 ? row[scoreColumn] : "",
         };
-        const key = [normalize(winner), normalize(loser), match.tournament, match.roundCode, date].join("|");
+        const key = [normalize(winner), normalize(loser), match.tournament, date].join("|");
         if (known.has(key)) return;
         known.add(key);
         liveMatches.push(match);
@@ -119,6 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       playerNames = [...players.values()].sort((a, b) => a.localeCompare(b, "es"));
     } catch (error) {
+      if (!liveMatches.length) addLocalCompletedMatches();
       console.warn("No se pudo actualizar el histórico ATP; se usan los datos locales.", error);
     }
   };
@@ -329,8 +360,12 @@ document.addEventListener("DOMContentLoaded", () => {
       matchesContainer.appendChild(tableHeader);
     }
     meetings.forEach((match) => {
+      const normalizedTournament = normalize(match.tournament);
+      const isGrandSlam = ["australianopen", "rolandgarros", "frenchopen", "wimbledon", "usopen"]
+        .some((grandSlam) => normalizedTournament.includes(grandSlam));
       const row = document.createElement("article");
       row.className = "versus-match";
+      if (isGrandSlam) row.classList.add("versus-match--grand-slam");
       const date = document.createElement("time");
       date.className = "versus-match__date";
       date.dateTime = match.date;
@@ -369,6 +404,7 @@ document.addEventListener("DOMContentLoaded", () => {
       row.append(date, event, round, winner, sets);
       const group = document.createElement("div");
       group.className = "versus-match-group";
+      if (isGrandSlam) group.classList.add("versus-match-group--grand-slam");
       group.append(row, scoreDetail);
       matchesContainer.appendChild(group);
     });
@@ -386,6 +422,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   button.addEventListener("click", () => {
     liveUpdatePromise = refreshCurrentYear();
+    inputOne.value = "";
+    inputTwo.value = "";
+    closeOptions(inputOne, optionsOne);
+    closeOptions(inputTwo, optionsTwo);
+    message.hidden = true;
+    message.textContent = "";
+    result.hidden = true;
+    summary.replaceChildren();
+    matchesContainer.replaceChildren();
     document.getElementById("atp-hero")?.setAttribute("hidden", "");
     document.getElementById("atp-map-view")?.setAttribute("hidden", "");
     document.getElementById("atp-birthdays-agenda")?.setAttribute("hidden", "");

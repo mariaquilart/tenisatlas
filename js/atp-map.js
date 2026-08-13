@@ -221,6 +221,11 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
 
   const LOCAL_PLAYER_PHOTOS = {
+    "Rafael Nadal": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Rafael_Nadal_en_2024_%28cropped%29.jpg/330px-Rafael_Nadal_en_2024_%28cropped%29.jpg",
+    "Roger Federer": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Roger_Federer_2015_%28cropped%29.jpg/330px-Roger_Federer_2015_%28cropped%29.jpg",
+    "Àlex Corretja": "https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/%C3%80lex_Corretja_in_2009.jpg/330px-%C3%80lex_Corretja_in_2009.jpg",
+    "Feliciano López": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/30/Lopez_F._RG21_%2810%29_%2851376399843%29.jpg/330px-Lopez_F._RG21_%2810%29_%2851376399843%29.jpg",
+    "John McEnroe": "https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/John_McEnroe_005.png/330px-John_McEnroe_005.png",
     "Jannik Sinner": "https://upload.wikimedia.org/wikipedia/commons/6/64/Jannik_Sinner_2025_US_Open.jpg",
     "Carlos Alcaraz": "https://upload.wikimedia.org/wikipedia/commons/d/d4/25th_Laureus_World_Sports_Awards_-_Red_Carpet_-_Carlos_Alcaraz_-_240422_192324_%28cropped%29.jpg",
     "Félix Auger-Aliassime": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/F%C3%A9lix_Auger-Aliassime_%282023_DC_Open%29_01_%28cropped%29.jpg/640px-F%C3%A9lix_Auger-Aliassime_%282023_DC_Open%29_01_%28cropped%29.jpg",
@@ -316,7 +321,6 @@ document.addEventListener("DOMContentLoaded", () => {
         ${row("Nacimiento", player.birthLabel)}
         ${row("Mano", player.hand)}
         ${row("Altura", player.height ? `${player.height} cm` : "-")}
-        ${row("Ranking ATP", player.ranking ? `N.º ${player.ranking}` : "-")}
         ${row("Puntos", player.points ? player.points.toLocaleString("es-ES") : "-")}
       </div>
     </article>`;

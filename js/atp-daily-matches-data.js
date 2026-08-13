@@ -28,21 +28,21 @@ window.ATP_DAILY_MATCHES = {
   upcoming: [
     {
       id: "montreal-2026-sf-jodar-nakashima", date: "2026-08-12", dateLabel: "Miércoles, 12 de agosto",
-      tournament: "National Bank Open Presented by Rogers", round: "Semifinal", time: "00:00 (no antes)",
-      player1: { name: "Rafael Jódar", country: "España", country_code: "ES", photo: "images/players/rafael-jodar.jpg?v=1" },
+      tournament: "National Bank Open Presented by Rogers", round: "Semifinal", time: "00:00", score: "7-6(3) 6-4",
+      player1: { name: "Rafael Jódar", country: "España", country_code: "ES", photo: "images/players/rafael-jodar.jpg?v=1", lost: true },
       player2: { name: "Brandon Nakashima", country: "Estados Unidos", country_code: "US", photo: "images/players/brandon-nakashima.jpg?v=1" },
     },
     {
-      id: "montreal-2026-sf-tien-shelton", date: "2026-08-12", dateLabel: "Miércoles, 12 de agosto",
-      tournament: "National Bank Open Presented by Rogers", round: "Semifinal", time: "A continuación",
-      player1: { name: "Learner Tien", country: "Estados Unidos", country_code: "US" },
+      id: "montreal-2026-sf-tien-shelton", date: "2026-08-13", dateLabel: "Jueves, 13 de agosto",
+      tournament: "National Bank Open Presented by Rogers", round: "Semifinal", time: "02:30", score: "6-2 6-3",
+      player1: { name: "Learner Tien", country: "Estados Unidos", country_code: "US", lost: true },
       player2: { name: "Ben Shelton", country: "Estados Unidos", country_code: "US", photo: "images/players/ben-shelton.jpg?v=1" },
     },
     {
-      id: "montreal-2026-final", date: "2026-08-13", dateLabel: "Jueves, 13 de agosto",
-      tournament: "National Bank Open Presented by Rogers", round: "Final", time: "Por confirmar",
-      player1: { name: "Ganador Jódar / Nakashima", country: "", country_code: "" },
-      player2: { name: "Ganador Tien / Shelton", country: "", country_code: "" },
+      id: "montreal-2026-final", date: "2026-08-14", dateLabel: "Viernes, 14 de agosto",
+      tournament: "National Bank Open Presented by Rogers", round: "Final", time: "02:00",
+      player1: { name: "Ben Shelton", country: "Estados Unidos", country_code: "US", photo: "images/players/ben-shelton.jpg?v=1" },
+      player2: { name: "Brandon Nakashima", country: "Estados Unidos", country_code: "US", photo: "images/players/brandon-nakashima.jpg?v=1" },
     },
   ],
 };
