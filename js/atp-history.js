@@ -119,6 +119,54 @@ document.addEventListener("DOMContentLoaded", () => {
     { label: "Final", codes: ["F"] },
   ];
   const roundByKey = new Map(roundChoices.map((round) => [normalize(round.label), round]));
+  const dailyRoundCodes = new Map([
+    ["primeraronda", "R128"],
+    ["segundaronda", "R64"],
+    ["terceraronda", "R32"],
+    ["octavos", "R16"],
+    ["octavosdefinal", "R16"],
+    ["cuartos", "QF"],
+    ["cuartosdefinal", "QF"],
+    ["semifinal", "SF"],
+    ["semifinales", "SF"],
+    ["final", "F"],
+  ]);
+  const addCompletedDailyMatches = () => {
+    const daily = window.ATP_DAILY_MATCHES || {};
+    const days = [
+      ...Object.values(daily.archive || {}),
+      { date: daily.date, matches: daily.matches || [] },
+    ];
+    const known = new Set(recentMatches.map((match) => [
+      normalize(match.tournament), match.date, match.round,
+      normalize(match.winner), normalize(match.loser),
+    ].join("|")));
+    days.forEach((day) => (day.matches || []).forEach((match) => {
+      const first = match.player1;
+      const second = match.player2;
+      if (!first?.name || !second?.name || first.lost === second.lost) return;
+      const winner = first.lost ? second : first;
+      const loser = first.lost ? first : second;
+      const round = dailyRoundCodes.get(normalize(match.round));
+      const date = match.date || day.date;
+      if (!round || !date || !match.tournament) return;
+      const localMatch = {
+        winner: winner.name,
+        loser: loser.name,
+        tournament: match.tournament,
+        round,
+        date,
+        score: match.score || "",
+      };
+      const key = [normalize(localMatch.tournament), localMatch.date, localMatch.round,
+        normalize(localMatch.winner), normalize(localMatch.loser)].join("|");
+      if (!known.has(key)) {
+        known.add(key);
+        recentMatches.push(localMatch);
+      }
+    }));
+  };
+  addCompletedDailyMatches();
   const years = Array.from({ length: new Date().getFullYear() - 1969 }, (_, index) => String(new Date().getFullYear() - index));
   const getTournamentMatches = (tournament, year = null) => {
     if (!tournament) return [];

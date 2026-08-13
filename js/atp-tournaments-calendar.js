@@ -1010,10 +1010,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const flagEmoji = (countryCode) => {
       const code = (countryCode || "").toUpperCase();
       const countryCodes = {
-        AUS: "AU", AUT: "AT", BEL: "BE", BOL: "BO", BRA: "BR",
+        AUS: "AU", AUT: "AT", BEL: "BE", BGR: "BG", BUL: "BG", BOL: "BO", BRA: "BR",
         CAN: "CA", CHE: "CH", CHI: "CL", CHL: "CL", CHN: "CN",
         COL: "CO", CRO: "HR", HRV: "HR", CZE: "CZ", DEN: "DK",
-        DNK: "DK", ESP: "ES", FIN: "FI", FRA: "FR", GER: "DE",
+        DNK: "DK", ESP: "ES", EST: "EE", FIN: "FI", FRA: "FR", GER: "DE",
         DEU: "DE", GBR: "GB", GRE: "GR", GRC: "GR", HKG: "HK",
         HUN: "HU", IND: "IN", ISR: "IL", ITA: "IT", JPN: "JP",
         JOR: "JO", KAZ: "KZ", MEX: "MX", MON: "MC", MCO: "MC",
@@ -1038,10 +1038,15 @@ document.addEventListener("DOMContentLoaded", () => {
         photo.style.filter = "grayscale(100%)";
       }
       const usePlaceholder = player?.name === "Aleksandr Shevchenko";
+      const normalizedPlayerName = String(player?.name || "").normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "").toLowerCase();
+      const sharedPhoto = Object.entries(window.ATP_PLAYER_PHOTOS || {}).find(([name]) => String(name)
+        .normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() === normalizedPlayerName)?.[1];
       photo.src = usePlaceholder
         ? "images/players/player-placeholder.svg?v=2"
         : player?.photo
           || window.ATP_PLAYER_PHOTOS?.[player?.name]
+          || sharedPhoto
           || "images/players/player-placeholder.svg?v=2";
       photo.alt = `Foto de ${player.name}`;
       photo.width = 52;
