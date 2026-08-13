@@ -435,10 +435,14 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("atp-map-view")?.setAttribute("hidden", "");
     document.getElementById("atp-birthdays-agenda")?.setAttribute("hidden", "");
     document.getElementById("atp-tournaments-calendar")?.setAttribute("hidden", "");
+    document.getElementById("atp-history-view")?.setAttribute("hidden", "");
     document.getElementById("atp-map-menu")?.setAttribute("hidden", "");
     document.getElementById("atp-calendar-menu")?.setAttribute("hidden", "");
     document.getElementById("atp-map-btn")?.classList.remove("is-active");
     document.getElementById("atp-calendar-btn")?.classList.remove("is-active");
+    const historyButton = document.getElementById("atp-history-btn");
+    historyButton?.classList.remove("is-active");
+    historyButton?.setAttribute("aria-pressed", "false");
     view.hidden = false;
     button.classList.add("is-active");
     button.setAttribute("aria-pressed", "true");

@@ -435,9 +435,16 @@ document.addEventListener("DOMContentLoaded", () => {
     const calendarButton = document.getElementById("atp-calendar-btn");
     const versusView = document.getElementById("atp-versus-view");
     const versusButton = document.getElementById("atp-versus-btn");
+    const historyView = document.getElementById("atp-history-view");
+    const historyButton = document.getElementById("atp-history-btn");
     if (calendarView) calendarView.hidden = true;
     if (birthdaysView) birthdaysView.hidden = true;
     if (versusView) versusView.hidden = true;
+    if (historyView) historyView.hidden = true;
+    if (historyButton) {
+      historyButton.classList.remove("is-active");
+      historyButton.setAttribute("aria-pressed", "false");
+    }
     if (versusButton) {
       versusButton.classList.remove("is-active");
       versusButton.setAttribute("aria-pressed", "false");

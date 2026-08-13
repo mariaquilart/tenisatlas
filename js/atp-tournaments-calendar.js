@@ -1326,6 +1326,8 @@ document.addEventListener("DOMContentLoaded", () => {
   option.addEventListener("click", () => {
     const versusView = document.getElementById("atp-versus-view");
     const versusButton = document.getElementById("atp-versus-btn");
+    const historyView = document.getElementById("atp-history-view");
+    const historyButton = document.getElementById("atp-history-btn");
     const today = new Date();
     const todayIndex = Math.min(
       lastIndex,
@@ -1337,6 +1339,11 @@ document.addEventListener("DOMContentLoaded", () => {
     if (mapView) mapView.hidden = true;
     if (birthdaysView) birthdaysView.hidden = true;
     if (versusView) versusView.hidden = true;
+    if (historyView) historyView.hidden = true;
+    if (historyButton) {
+      historyButton.classList.remove("is-active");
+      historyButton.setAttribute("aria-pressed", "false");
+    }
     if (versusButton) {
       versusButton.classList.remove("is-active");
       versusButton.setAttribute("aria-pressed", "false");
