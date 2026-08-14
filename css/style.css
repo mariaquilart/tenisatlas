@@ -1802,6 +1802,39 @@ body.page--sub .hero[hidden] {
 .history-view__message { margin: 1.2rem 0; color: #786e60; font-size: 0.78rem; text-align: center; }
 
 /* Palmarés ATP */
+.compare-view { position: fixed; inset: 4rem 0 0; z-index: 10; overflow-y: auto; background: radial-gradient(circle at 50% 0,rgba(201,168,106,.16),transparent 34rem),#f3eee4; color: #34483f; }
+.compare-view[hidden] { display: none; }
+.compare-view:not([hidden]) ~ .credit-section { display: none; }
+.compare-view__inner { width: min(70rem,calc(100% - 2rem)); margin: 0 auto; padding: clamp(2rem,5vw,4rem) 0 5rem; }
+.compare-view__header { text-align: center; }
+.compare-view__eyebrow { color: #987b43; font-size: .66rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+.compare-view__title { font: 500 clamp(3rem,7vw,5.5rem)/.9 var(--font-display); }
+.compare-view__intro { margin-top: .8rem; color: #786e60; font-size: .82rem; }
+.compare-search { display: grid; grid-template-columns: minmax(0,1fr) auto minmax(0,1fr); align-items: end; gap: clamp(.8rem,3vw,1.8rem); width: min(58rem,100%); margin: 2rem auto 0; }
+.compare-search .palmares-search { width: 100%; margin: 0; }
+.compare-search__versus { display: grid; place-items: center; width: 3rem; height: 3rem; margin-bottom: .15rem; border: 1px solid rgba(151,123,67,.28); border-radius: 50%; color: #987b43; font: 600 1rem var(--font-display); }
+.compare-view__message { margin: 1.5rem 0; color: #786e60; font-size: .78rem; text-align: center; }
+.compare-result { overflow: hidden; margin-top: 2.2rem; border: 1px solid rgba(79,68,51,.14); border-radius: 1.1rem; background: #fffdf8; box-shadow: 0 24px 70px rgba(31,43,37,.13); }
+.compare-result__players { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: rgba(255,255,255,.12); }
+.compare-player { position: relative; display: grid; justify-items: center; padding: 1.8rem 1rem 1.6rem; overflow: hidden; background: linear-gradient(135deg,#172a22,#355044); color: #fffdf8; text-align: center; }
+.compare-player:nth-child(2) { background: linear-gradient(225deg,#172a22,#665635); }
+.compare-player__portrait { position: relative; display: grid; place-items: center; width: clamp(7rem,15vw,10rem); aspect-ratio: 1; overflow: hidden; border: 2px solid rgba(224,194,138,.66); border-radius: 50%; background: #928469; color: #fff8e9; font: 600 2.5rem var(--font-display); box-shadow: 0 12px 32px rgba(0,0,0,.25); }
+.compare-player__portrait img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.compare-player__rank { margin-top: 1rem; color: #d8bd88; font-size: .62rem; font-weight: 700; letter-spacing: .13em; text-transform: uppercase; }
+.compare-player h2 { margin-top: .25rem; font: 600 clamp(1.55rem,4vw,2.5rem)/1 var(--font-display); }
+.compare-table-wrap { overflow-x: auto; }
+.compare-table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+.compare-table th, .compare-table td { padding: .9rem clamp(.7rem,2vw,1.3rem); border-bottom: 1px solid rgba(79,68,51,.09); font-size: .77rem; text-align: center; }
+.compare-table thead th { background: #e9e1d2; color: #625848; font-size: .64rem; letter-spacing: .06em; text-transform: uppercase; }
+.compare-table thead th:first-child, .compare-table tbody th { width: 29%; text-align: left; }
+.compare-table tbody th { color: #766b5d; font-weight: 600; }
+.compare-table td { color: #34483f; font-weight: 600; }
+.compare-table tbody tr:nth-child(even):not(.is-match) { background: rgba(238,232,220,.38); }
+.compare-table tbody tr.is-match { background: rgba(201,168,106,.16); }
+.compare-table tbody tr.is-match td { color: #765d31; }
+.compare-result__source { padding: 1.1rem 1.3rem; background: #eee8dc; color: #8a8175; font-size: .64rem; text-align: right; }
+@media (max-width: 640px) { .compare-view { inset: 3.7rem 0 0; } .compare-search { grid-template-columns: 1fr; } .compare-search__versus { width: auto; height: auto; margin: -.2rem 0; border: 0; } .compare-table { min-width: 38rem; } .compare-player { padding-inline: .6rem; } }
+
 .palmares-view { position: fixed; inset: 4rem 0 0; z-index: 10; overflow-y: auto; background: radial-gradient(circle at 50% 0, rgba(201,168,106,.13), transparent 34rem), #f8f5ee; color: #34483f; }
 .palmares-view[hidden] { display: none; }
 .palmares-view:not([hidden]) ~ .credit-section { display: none; }

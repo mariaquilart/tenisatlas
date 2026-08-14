@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const button = document.getElementById("atp-palmares-btn");
+  const compareButton = document.getElementById("atp-compare-btn");
   const view = document.getElementById("atp-palmares-view");
   const input = document.getElementById("atp-palmares-player");
   const toggle = document.getElementById("atp-palmares-toggle");
@@ -14,6 +15,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const titlesNode = document.getElementById("atp-palmares-titles");
   const history = window.ATP_VERSUS_DATA;
   if (!button || !view || !input || !history) return;
+  compareButton?.addEventListener("click", () => {
+    ["atp-hero", "atp-map-view", "atp-birthdays-agenda", "atp-tournaments-calendar", "atp-versus-view", "atp-history-view", "atp-palmares-view"].forEach((id) => document.getElementById(id)?.setAttribute("hidden", ""));
+    document.querySelectorAll(".site-nav__link.is-active").forEach((item) => {
+      item.classList.remove("is-active");
+      item.setAttribute("aria-pressed", "false");
+    });
+    document.getElementById("atp-compare-view")?.removeAttribute("hidden");
+    compareButton.classList.add("is-active");
+    compareButton.setAttribute("aria-pressed", "true");
+  });
 
   const normalize = (value) => value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/-/g, " ").replace(/['’]/g, "").replace(/\s+/g, " ").trim().toLowerCase();
   const historyAliases = { "yunchaokete bu": "bu yunchaokete" };
@@ -238,6 +249,7 @@ document.addEventListener("DOMContentLoaded", () => {
     input.focus();
   });
   document.querySelector(".site-nav__menu")?.addEventListener("click", (event) => {
+    if (["atp-filters-btn", "atp-similar-btn"].includes(event.target.id)) return;
     if (event.target !== button) {
       view.hidden = true;
       button.classList.remove("is-active");

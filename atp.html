@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
-  <link rel="stylesheet" href="css/style.css?v=20260814k">
+  <link rel="stylesheet" href="css/style.css?v=20260814l">
 </head>
 <body class="page--sub">
   <header class="site-nav">
@@ -25,11 +25,12 @@
     <nav class="site-nav__menu" aria-label="Navegación del circuito">
       <button type="button" class="site-nav__link" id="atp-map-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="atp-map-menu" aria-pressed="false">Mapa</button>
       <button type="button" class="site-nav__link" id="atp-calendar-btn" aria-haspopup="menu" aria-expanded="false" aria-controls="atp-calendar-menu">Calendario</button>
-      <button type="button" class="site-nav__link">Versus</button>
+      <button type="button" class="site-nav__link" id="atp-compare-btn" aria-pressed="false">Versus</button>
       <button type="button" class="site-nav__link" id="atp-history-btn" aria-pressed="false">Historial</button>
       <button type="button" class="site-nav__link" id="atp-versus-btn" aria-pressed="false">H2H</button>
       <button type="button" class="site-nav__link" id="atp-palmares-btn" aria-pressed="false">Palmarés</button>
-      <button type="button" class="site-nav__link">Filtros</button>
+      <button type="button" class="site-nav__link" id="atp-filters-btn" aria-disabled="true">Filtros</button>
+      <button type="button" class="site-nav__link" id="atp-similar-btn" aria-disabled="true">Parecidos</button>
     </nav>
   </header>
 
@@ -101,6 +102,46 @@
         <div class="versus-result__summary" id="atp-versus-summary"></div>
         <div class="versus-result__matches" id="atp-versus-matches"></div>
       </div>
+    </div>
+  </section>
+
+  <section class="compare-view" id="atp-compare-view" aria-labelledby="atp-compare-title" hidden>
+    <div class="compare-view__inner">
+      <header class="compare-view__header">
+        <p class="compare-view__eyebrow">Top 200 ATP</p>
+        <h1 class="compare-view__title" id="atp-compare-title">VERSUS</h1>
+        <p class="compare-view__intro">Elige dos tenistas y compara sus perfiles y logros profesionales.</p>
+      </header>
+      <div class="compare-search">
+        <div class="compare-search__player palmares-search" data-compare-slot="one">
+          <label for="atp-compare-player-one">Primer tenista</label>
+          <div class="palmares-search__control">
+            <input type="search" id="atp-compare-player-one" autocomplete="off" placeholder="Ej. Jannik Sinner" aria-autocomplete="list" aria-controls="atp-compare-options-one" aria-expanded="false">
+            <button type="button" class="palmares-search__toggle" id="atp-compare-toggle-one" aria-label="Mostrar los 200 tenistas" aria-expanded="false">&#8964;</button>
+          </div>
+          <div class="palmares-search__options" id="atp-compare-options-one" role="listbox" hidden></div>
+        </div>
+        <span class="compare-search__versus" aria-hidden="true">VS</span>
+        <div class="compare-search__player palmares-search" data-compare-slot="two">
+          <label for="atp-compare-player-two">Segundo tenista</label>
+          <div class="palmares-search__control">
+            <input type="search" id="atp-compare-player-two" autocomplete="off" placeholder="Ej. Carlos Alcaraz" aria-autocomplete="list" aria-controls="atp-compare-options-two" aria-expanded="false">
+            <button type="button" class="palmares-search__toggle" id="atp-compare-toggle-two" aria-label="Mostrar los 200 tenistas" aria-expanded="false">&#8964;</button>
+          </div>
+          <div class="palmares-search__options" id="atp-compare-options-two" role="listbox" hidden></div>
+        </div>
+      </div>
+      <p class="compare-view__message" id="atp-compare-message" role="status">Selecciona dos tenistas distintos para compararlos.</p>
+      <article class="compare-result" id="atp-compare-result" hidden>
+        <div class="compare-result__players" id="atp-compare-players"></div>
+        <div class="compare-table-wrap">
+          <table class="compare-table">
+            <thead id="atp-compare-table-head"></thead>
+            <tbody id="atp-compare-table-body"></tbody>
+          </table>
+        </div>
+        <p class="compare-result__source">Ranking y perfiles: ATP Tour · Palmarés calculado a partir del archivo de resultados ATP · Actualizado el 14 de agosto de 2026.</p>
+      </article>
     </div>
   </section>
 
@@ -276,7 +317,7 @@
 
   <script src="js/script.js"></script>
   <script src="js/credit.js"></script>
-  <script src="js/atp-calendar-menu.js?v=20260727"></script>
+  <script src="js/atp-calendar-menu.js?v=20260814b"></script>
   <script src="js/atp-birthdays-calendar.js?v=20260813a"></script>
   <script src="js/atp-daily-matches-data.js?v=20260814a"></script>
   <script src="js/atp-player-photos-data.js?v=20260814b"></script>
@@ -290,7 +331,9 @@
   <script src="js/atp-map.js?v=20260813e"></script>
   <script src="js/atp-versus-data.js?v=20260812b"></script>
   <script src="js/atp-palmares-data.js?v=20260814a"></script>
-  <script src="js/atp-palmares.js?v=20260814d"></script>
+  <script src="js/atp-compare-data.js?v=20260814b"></script>
+  <script src="js/atp-palmares.js?v=20260814h"></script>
+  <script src="js/atp-compare.js?v=20260814d"></script>
   <script src="js/atp-versus.js?v=20260813e"></script>
   <script src="js/atp-history-recent-data.js?v=20260813a"></script>
   <script src="js/atp-history-amateur-data.js?v=20260813a"></script>
