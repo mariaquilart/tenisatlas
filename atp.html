@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
-  <link rel="stylesheet" href="css/style.css?v=20260814l">
+  <link rel="stylesheet" href="css/style.css?v=20260814n">
 </head>
 <body class="page--sub">
   <header class="site-nav">
@@ -29,7 +29,7 @@
       <button type="button" class="site-nav__link" id="atp-history-btn" aria-pressed="false">Historial</button>
       <button type="button" class="site-nav__link" id="atp-versus-btn" aria-pressed="false">H2H</button>
       <button type="button" class="site-nav__link" id="atp-palmares-btn" aria-pressed="false">Palmarés</button>
-      <button type="button" class="site-nav__link" id="atp-filters-btn" aria-disabled="true">Filtros</button>
+      <button type="button" class="site-nav__link" id="atp-filters-btn" aria-pressed="false">Filtros</button>
     </nav>
   </header>
 
@@ -141,6 +141,30 @@
         </div>
         <p class="compare-result__source">Ranking y perfiles: ATP Tour · Palmarés calculado a partir del archivo de resultados ATP · Actualizado el 14 de agosto de 2026.</p>
       </article>
+    </div>
+  </section>
+
+  <section class="players-filter-view" id="atp-filters-view" aria-labelledby="atp-filters-title" hidden>
+    <div class="players-filter-view__inner">
+      <header class="players-filter-view__header">
+        <p class="players-filter-view__eyebrow">Top 200 ATP</p>
+        <h1 class="players-filter-view__title" id="atp-filters-title">FILTROS</h1>
+        <p class="players-filter-view__intro">Combina criterios para encontrar jugadores con el perfil que buscas.</p>
+      </header>
+      <div class="players-filter-panel" id="atp-players-filter-panel">
+        <label>Altura<select data-player-filter="height"><option value="">Todas</option><option value="lt180">Menos de 180 cm</option><option value="180-190">180–190 cm</option><option value="gt190">Más de 190 cm</option></select></label>
+        <label>Mano<select data-player-filter="hand"><option value="">Todas</option><option value="right">Derecha</option><option value="left">Izquierda</option></select></label>
+        <label>Edad<select data-player-filter="age"><option value="">Todas</option><option value="u21">Hasta 21 años</option><option value="22-25">22–25 años</option><option value="26-30">26–30 años</option><option value="o30">Más de 30 años</option></select></label>
+        <label>Número de títulos<select data-player-filter="titles"><option value="">Todos</option><option value="0">Ninguno</option><option value="1-5">1–5</option><option value="6-10">6–10</option><option value="11-25">11–25</option><option value="26+">26 o más</option></select></label>
+        <label>País<select data-player-filter="country" id="atp-filter-country"><option value="">Todos</option></select></label>
+        <label>Superficie favorita<select data-player-filter="surface"><option value="">Todas</option><option value="hard">Pista dura</option><option value="clay">Tierra batida</option><option value="grass">Hierba</option></select></label>
+        <label>Estilo estimado<select data-player-filter="style"><option value="">Todos</option><option value="aggressive">Agresivo</option><option value="balanced">Equilibrado</option><option value="defensive">Defensivo</option></select></label>
+        <button type="button" class="players-filter-panel__clear" id="atp-filters-clear">Limpiar filtros</button>
+      </div>
+      <div class="players-filter-funnel" id="atp-filters-funnel" aria-live="polite"></div>
+      <div class="players-filter-results" id="atp-filters-results"></div>
+      <p class="players-filter-empty" id="atp-filters-empty" hidden>No hay ningún jugador que cumpla todos estos criterios.</p>
+      <p class="players-filter-view__source">Perfiles y ranking: ATP Tour · Superficie y estilo estimados a partir del palmarés profesional disponible.</p>
     </div>
   </section>
 
@@ -333,6 +357,7 @@
   <script src="js/atp-compare-data.js?v=20260814b"></script>
   <script src="js/atp-palmares.js?v=20260814i"></script>
   <script src="js/atp-compare.js?v=20260814e"></script>
+  <script src="js/atp-filters.js?v=20260814d"></script>
   <script src="js/atp-versus.js?v=20260813e"></script>
   <script src="js/atp-history-recent-data.js?v=20260813a"></script>
   <script src="js/atp-history-amateur-data.js?v=20260813a"></script>
