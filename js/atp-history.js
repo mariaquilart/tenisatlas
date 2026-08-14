@@ -100,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const currentKey = normalize(current);
       return key.length >= 5 && (currentKey.includes(key) || key.includes(currentKey));
     });
-    return locationMatch || null;
+    return locationMatch || repairMojibake(name);
   };
   const tournamentNames = currentTournamentNames
     .map((name) => historicalTournamentLabels[name] ? `${name} (${historicalTournamentLabels[name]})` : name)
@@ -442,10 +442,12 @@ document.addEventListener("DOMContentLoaded", () => {
     results.hidden = false;
   };
 
-  button.addEventListener("click", () => {
-    tournamentInput.value = "";
-    yearInput.value = "";
-    roundInput.value = "";
+  const activateHistory = (reset = true) => {
+    if (reset) {
+      tournamentInput.value = "";
+      yearInput.value = "";
+      roundInput.value = "";
+    }
     closeAllOptions();
     message.hidden = true;
     message.textContent = "";
@@ -456,6 +458,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("atp-birthdays-agenda")?.setAttribute("hidden", "");
     document.getElementById("atp-tournaments-calendar")?.setAttribute("hidden", "");
     document.getElementById("atp-versus-view")?.setAttribute("hidden", "");
+    document.getElementById("atp-palmares-view")?.setAttribute("hidden", "");
     document.getElementById("atp-map-menu")?.setAttribute("hidden", "");
     document.getElementById("atp-calendar-menu")?.setAttribute("hidden", "");
     document.getElementById("atp-map-btn")?.classList.remove("is-active");
@@ -463,11 +466,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const h2hButton = document.getElementById("atp-versus-btn");
     h2hButton?.classList.remove("is-active");
     h2hButton?.setAttribute("aria-pressed", "false");
+    const palmaresButton = document.getElementById("atp-palmares-btn");
+    palmaresButton?.classList.remove("is-active");
+    palmaresButton?.setAttribute("aria-pressed", "false");
     view.hidden = false;
     button.classList.add("is-active");
     button.setAttribute("aria-pressed", "true");
-    tournamentInput.focus();
+    if (reset) tournamentInput.focus();
+  };
+
+  button.addEventListener("click", () => {
+    activateHistory(true);
   });
+  window.ATP_OPEN_HISTORY_FILTER = async ({ tournament, year, round = "Final" }) => {
+    const canonical = canonicalTournament(tournament);
+    tournamentByKey.set(normalize(canonical), canonical);
+    activateHistory(false);
+    tournamentInput.value = canonical;
+    yearInput.value = String(year);
+    roundInput.value = round;
+    await search();
+    view.scrollTo({ top: 0, behavior: "smooth" });
+  };
   searchButton.addEventListener("click", search);
   [tournamentInput, yearInput, roundInput].forEach((input) => input.addEventListener("keydown", (event) => {
     if (event.key === "Enter") search();

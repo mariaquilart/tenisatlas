@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
-  <link rel="stylesheet" href="css/style.css?v=20260813v">
+  <link rel="stylesheet" href="css/style.css?v=20260814k">
 </head>
 <body class="page--sub">
   <header class="site-nav">
@@ -28,7 +28,7 @@
       <button type="button" class="site-nav__link">Versus</button>
       <button type="button" class="site-nav__link" id="atp-history-btn" aria-pressed="false">Historial</button>
       <button type="button" class="site-nav__link" id="atp-versus-btn" aria-pressed="false">H2H</button>
-      <button type="button" class="site-nav__link">Palmarés</button>
+      <button type="button" class="site-nav__link" id="atp-palmares-btn" aria-pressed="false">Palmarés</button>
       <button type="button" class="site-nav__link">Campeones</button>
       <button type="button" class="site-nav__link">Filtros</button>
     </nav>
@@ -143,6 +143,42 @@
     </div>
   </section>
 
+  <section class="palmares-view" id="atp-palmares-view" aria-labelledby="atp-palmares-title" hidden>
+    <div class="palmares-view__inner">
+      <header class="palmares-view__header">
+        <p class="palmares-view__eyebrow">Top 150 ATP</p>
+        <h1 class="palmares-view__title" id="atp-palmares-title">PALMARÉS</h1>
+        <p class="palmares-view__intro">Busca un tenista y consulta todos sus títulos individuales.</p>
+      </header>
+      <div class="palmares-search">
+        <label for="atp-palmares-player">Tenista</label>
+        <div class="palmares-search__control">
+          <input type="search" id="atp-palmares-player" autocomplete="off" placeholder="Ej. Carlos Alcaraz" aria-autocomplete="list" aria-controls="atp-palmares-options" aria-expanded="false">
+          <button type="button" class="palmares-search__toggle" id="atp-palmares-toggle" aria-label="Mostrar los 150 tenistas" aria-expanded="false">&#8964;</button>
+        </div>
+        <div class="palmares-search__options" id="atp-palmares-options" role="listbox" hidden></div>
+      </div>
+      <p class="palmares-view__message" id="atp-palmares-message" role="status">Selecciona un tenista para consultar su palmarés.</p>
+      <article class="palmares-result" id="atp-palmares-result" hidden>
+        <header class="palmares-result__header">
+          <div class="palmares-result__portrait" id="atp-palmares-portrait">
+            <img id="atp-palmares-photo" src="" alt="" hidden>
+            <span id="atp-palmares-initials" aria-hidden="true"></span>
+          </div>
+          <div class="palmares-result__identity">
+            <p class="palmares-result__label">Títulos individuales</p>
+            <h2 class="palmares-result__name" id="atp-palmares-name"></h2>
+            <p class="palmares-result__subtitle">Palmarés profesional · ATP Tour</p>
+          </div>
+          <strong class="palmares-result__total" id="atp-palmares-total"></strong>
+        </header>
+        <div class="palmares-filters" id="atp-palmares-filters" role="group" aria-label="Filtrar títulos por categoría"></div>
+        <div class="palmares-titles" id="atp-palmares-titles"></div>
+        <p class="palmares-result__source">Fuente: <a href="https://www.atptour.com/en/scores/results-archive" target="_blank" rel="noopener noreferrer">archivo oficial ATP Tour</a> · Datos comprobados el 14 de agosto de 2026.</p>
+      </article>
+    </div>
+  </section>
+
   <section class="birthdays-agenda" id="atp-birthdays-agenda" aria-labelledby="birthdays-agenda-title" hidden>
     <div class="birthdays-agenda__inner">
       <div class="birthdays-agenda__today" id="birthdays-agenda-today" role="status" hidden>
@@ -243,8 +279,8 @@
   <script src="js/credit.js"></script>
   <script src="js/atp-calendar-menu.js?v=20260727"></script>
   <script src="js/atp-birthdays-calendar.js?v=20260813a"></script>
-  <script src="js/atp-daily-matches-data.js?v=20260813c"></script>
-  <script src="js/atp-player-photos-data.js?v=20260810a"></script>
+  <script src="js/atp-daily-matches-data.js?v=20260814a"></script>
+  <script src="js/atp-player-photos-data.js?v=20260814b"></script>
   <script src="js/atp-matches-history-data.js?v=20260810d"></script>
   <script src="js/atp-matches-july-data.js?v=20260810a"></script>
   <script src="js/atp-tournaments-calendar.js?v=20260813b"></script>
@@ -254,10 +290,12 @@
   <script src="js/atp-players-map-data.js?v=20260812a"></script>
   <script src="js/atp-map.js?v=20260813e"></script>
   <script src="js/atp-versus-data.js?v=20260812b"></script>
+  <script src="js/atp-palmares-data.js?v=20260814a"></script>
+  <script src="js/atp-palmares.js?v=20260814d"></script>
   <script src="js/atp-versus.js?v=20260813e"></script>
   <script src="js/atp-history-recent-data.js?v=20260813a"></script>
   <script src="js/atp-history-amateur-data.js?v=20260813a"></script>
   <script src="js/atp-history-five-years-data.js?v=20260813a"></script>
-  <script src="js/atp-history.js?v=20260813w"></script>
+  <script src="js/atp-history.js?v=20260814a"></script>
 </body>
 </html>
