@@ -225,7 +225,9 @@ a {
 
 .map-view:not([hidden]) ~ .credit-section,
 .birthdays-agenda:not([hidden]) ~ .credit-section,
-.tournaments-calendar:not([hidden]) ~ .credit-section {
+.tournaments-calendar:not([hidden]) ~ .credit-section,
+.history-view:not([hidden]) ~ .credit-section,
+.versus-view:not([hidden]) ~ .credit-section {
   display: none;
 }
 

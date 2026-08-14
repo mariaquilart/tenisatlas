@@ -110,5 +110,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".site-nav__link.is-active").forEach((item) => { item.classList.remove("is-active"); item.setAttribute("aria-pressed", "false"); });
     view.hidden = false; button.classList.add("is-active"); button.setAttribute("aria-pressed", "true"); render();
   });
-  document.querySelector(".site-nav__menu")?.addEventListener("click", (event) => { if (event.target !== button) { view.hidden = true; button.classList.remove("is-active"); button.setAttribute("aria-pressed", "false"); } }, true);
+  document.querySelector(".site-nav__menu")?.addEventListener("click", (event) => {
+    const opensSubmenu = event.target.id === "atp-map-btn" || event.target.id === "atp-calendar-btn";
+    if (event.target !== button && !opensSubmenu) {
+      view.hidden = true;
+      button.classList.remove("is-active");
+      button.setAttribute("aria-pressed", "false");
+    }
+  }, true);
 });

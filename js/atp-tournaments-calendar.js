@@ -1180,7 +1180,8 @@ document.addEventListener("DOMContentLoaded", () => {
       });
       const centerTrack = (trackEndDates.length - 1) / 2;
       group.forEach(({ tournament }) => {
-        tournamentTrackOffsets.set(tournament, ((tournamentTracks.get(tournament) ?? 0) - centerTrack) * 1.25);
+        const winstonSalemOffset = tournament.name === "Winston-Salem Open" ? 0.32 : 0;
+        tournamentTrackOffsets.set(tournament, ((tournamentTracks.get(tournament) ?? 0) - centerTrack) * 1.25 + winstonSalemOffset);
       });
     };
     let tournamentGroup = [];
