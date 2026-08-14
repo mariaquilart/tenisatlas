@@ -249,7 +249,7 @@ document.addEventListener("DOMContentLoaded", () => {
     input.focus();
   });
   document.querySelector(".site-nav__menu")?.addEventListener("click", (event) => {
-    if (["atp-filters-btn", "atp-similar-btn"].includes(event.target.id)) return;
+    if (event.target.id === "atp-filters-btn") return;
     if (event.target !== button) {
       view.hidden = true;
       button.classList.remove("is-active");
