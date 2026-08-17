@@ -74,9 +74,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const recordFor = (player) => {
     const key = aliases[normalize(player)] || normalize(player);
     const id = history.players.findIndex((name) => normalize(name) === key);
-    if (id < 0) return { wins: 0, losses: 0, percentage: "Sin dato" };
     let wins = 0; let losses = 0;
-    history.matches.forEach((match) => { if (match[0] === id) wins += 1; if (match[1] === id) losses += 1; });
+    if (id >= 0) history.matches.forEach((match) => { if (match[0] === id) wins += 1; if (match[1] === id) losses += 1; });
+    (window.ATP_HISTORY_RECENT_MATCHES || []).forEach((match) => {
+      if (normalize(match.winner) === normalize(player)) wins += 1;
+      if (normalize(match.loser) === normalize(player)) losses += 1;
+    });
     const total = wins + losses;
     return { wins, losses, percentage: total ? `${(wins * 100 / total).toFixed(1).replace(".0", "")} %` : "Sin dato" };
   };
@@ -88,7 +91,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const dataFor = (player) => {
     const profile = profileMap.get(normalize(player)); const titles = titlesFor(player); const record = recordFor(player);
     const count = (category) => titles.filter((title) => title.category === category).length;
-    return { name: player, photo: photoMap.get(normalize(player)), ranking: profile?.ranking || "Sin dato", points: profile?.points ? profile.points.toLocaleString("es-ES") : "Sin dato", country: profile?.country || "Sin dato", age: ageFromBirth(profile?.birth), height: profile?.height ? `${profile.height} cm` : "Sin dato", hand: profile ? (profile.right ? "Diestro" : "Zurdo") : "Sin dato", wins: record.wins || "Sin dato", losses: record.losses || "Sin dato", percentage: record.percentage, total: titles.length, slam: count("Grand Slam"), masters: count("Masters 1000"), atp500: count("ATP 500"), atp250: count("ATP 250"), finals: count("ATP Finals"), first: titles[0] ? `${titles[0].tournament.replace(/ Masters$/i, "")} · ${titles[0].year}` : "Sin título", latest: titles.at(-1) ? `${titles.at(-1).tournament.replace(/ Masters$/i, "")} · ${titles.at(-1).year}` : "Sin título" };
+    return { name: player, photo: photoMap.get(normalize(player)), ranking: profile?.ranking || "Sin dato", points: profile?.points ? profile.points.toLocaleString("es-ES") : "Sin dato", country: profile?.country || "Sin dato", age: ageFromBirth(profile?.birth) === "Sin dato" ? (profile?.age || "Sin dato") : ageFromBirth(profile?.birth), height: profile?.height ? `${profile.height} cm` : "Sin dato", hand: profile ? (profile.right === undefined ? "Sin dato" : profile.right ? "Diestro" : "Zurdo") : "Sin dato", wins: record.wins || "Sin dato", losses: record.losses || "Sin dato", percentage: record.percentage, total: titles.length, slam: count("Grand Slam"), masters: count("Masters 1000"), atp500: count("ATP 500"), atp250: count("ATP 250"), finals: count("ATP Finals"), first: titles[0] ? `${titles[0].tournament.replace(/ Masters$/i, "")} · ${titles[0].year}` : "Sin título", latest: titles.at(-1) ? `${titles.at(-1).tournament.replace(/ Masters$/i, "")} · ${titles.at(-1).year}` : "Sin título" };
   };
 
   let selectedOne = null; let selectedTwo = null;

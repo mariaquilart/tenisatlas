@@ -117,8 +117,52 @@ window.ATP_DAILY_MATCHES = {
       player1: { name: "Valentin Royer", country_code: "FRA" }, player2: { name: "Stefanos Tsitsipas", country_code: "GRC" },
     },
     {
-      id: "cincinnati-2026-r64-landaluce-arnaldi", date: "2026-08-15", dateLabel: "Sábado, 15 de agosto", tournament: "Cincinnati Open", round: "Segunda ronda", time: "17:00",
-      player1: { name: "Martin Landaluce", country_code: "ESP" }, player2: { name: "Matteo Arnaldi", country_code: "ITA" },
+      id: "cincinnati-2026-r64-landaluce-arnaldi", date: "2026-08-15", dateLabel: "Sábado, 15 de agosto", tournament: "Cincinnati Open", round: "Segunda ronda", time: "Finalizado", score: "6-4 4-6 6-4",
+      player1: { name: "Martin Landaluce", country_code: "ESP" }, player2: { name: "Matteo Arnaldi", country_code: "ITA", lost: true },
+    },
+    {
+      id: "cincinnati-2026-r64-tirante-djokovic", date: "2026-08-15", dateLabel: "Sábado, 15 de agosto", tournament: "Cincinnati Open", round: "Segunda ronda", time: "Finalizado", score: "2-6 6-3 6-4",
+      player1: { name: "Thiago Agustin Tirante", country_code: "ARG" }, player2: { name: "Novak Djokovic", country_code: "SRB", lost: true },
+    },
+    {
+      id: "cincinnati-2026-r64-jodar-shapovalov", date: "2026-08-15", dateLabel: "Sábado, 15 de agosto", tournament: "Cincinnati Open", round: "Segunda ronda", time: "Finalizado", score: "7-5 4-6 7-5",
+      player1: { name: "Rafael Jodar", country_code: "ESP" }, player2: { name: "Denis Shapovalov", country_code: "CAN", lost: true },
+    },
+    {
+      id: "cincinnati-2026-r64-oconnell-ruud", date: "2026-08-16", dateLabel: "Domingo, 16 de agosto", tournament: "Cincinnati Open", round: "Segunda ronda", time: "Finalizado", score: "7-5 1-2 RET",
+      player1: { name: "Christopher O'Connell", country_code: "AUS" }, player2: { name: "Casper Ruud", country_code: "NOR", lost: true },
+    },
+    {
+      id: "cincinnati-2026-r64-medvedev-trungelliti", date: "2026-08-16", dateLabel: "Domingo, 16 de agosto", tournament: "Cincinnati Open", round: "Segunda ronda", time: "Finalizado", score: "6-4 7-5",
+      player1: { name: "Daniil Medvedev", country_code: "RUS" }, player2: { name: "Marco Trungelliti", country_code: "ARG", lost: true },
+    },
+    {
+      id: "cincinnati-2026-r64-auger-tsitsipas", date: "2026-08-16", dateLabel: "Domingo, 16 de agosto", tournament: "Cincinnati Open", round: "Segunda ronda", time: "Finalizado", score: "6-3 7-5",
+      player1: { name: "Felix Auger-Aliassime", country_code: "CAN" }, player2: { name: "Stefanos Tsitsipas", country_code: "GRE", lost: true },
+    },
+    {
+      id: "cincinnati-2026-r64-merida-bergs", date: "2026-08-16", dateLabel: "Domingo, 16 de agosto", tournament: "Cincinnati Open", round: "Segunda ronda", time: "Finalizado", score: "6-3 6-2",
+      player1: { name: "Daniel Merida", country_code: "ESP" }, player2: { name: "Zizou Bergs", country_code: "BEL", lost: true },
+    },
+    {
+      id: "cincinnati-2026-r64-fritz-michelsen", date: "2026-08-16", dateLabel: "Domingo, 16 de agosto", tournament: "Cincinnati Open", round: "Segunda ronda", time: "Finalizado", score: "6-3 6-4",
+      player1: { name: "Taylor Fritz", country_code: "USA" }, player2: { name: "Alex Michelsen", country_code: "USA", lost: true },
+    },
+    {
+      id: "cincinnati-2026-r64-rublev-carreno", date: "2026-08-16", dateLabel: "Domingo, 16 de agosto", tournament: "Cincinnati Open", round: "Segunda ronda", time: "Finalizado", score: "7-6(5) 6-1",
+      player1: { name: "Andrey Rublev", country_code: "RUS" }, player2: { name: "Pablo Carreno Busta", country_code: "ESP", lost: true },
+    },
+    {
+      id: "cincinnati-2026-r64-borges-cerundolo", date: "2026-08-16", dateLabel: "Domingo, 16 de agosto", tournament: "Cincinnati Open", round: "Segunda ronda", time: "Finalizado", score: "6-4 6-4",
+      player1: { name: "Nuno Borges", country_code: "POR" }, player2: { name: "Francisco Cerundolo", country_code: "ARG", lost: true },
+    },
+    {
+      id: "cincinnati-2026-r64-faria-shelton", date: "2026-08-16", dateLabel: "Domingo, 16 de agosto", tournament: "Cincinnati Open", round: "Segunda ronda", time: "Finalizado", score: "6-4 6-4",
+      player1: { name: "Jaime Faria", country_code: "POR" }, player2: { name: "Ben Shelton", country_code: "USA", lost: true },
+    },
+    {
+      id: "cincinnati-2026-r64-walton-buse", date: "2026-08-16", dateLabel: "Domingo, 16 de agosto", tournament: "Cincinnati Open", round: "Segunda ronda", time: "Finalizado", score: "6-4 6-3",
+      player1: { name: "Adam Walton", country_code: "AUS" }, player2: { name: "Ignacio Buse", country_code: "PER", lost: true },
     },
     {
       id: "montreal-2026-sf-jodar-nakashima", date: "2026-08-12", dateLabel: "Miércoles, 12 de agosto",
@@ -137,6 +181,24 @@ window.ATP_DAILY_MATCHES = {
       tournament: "National Bank Open Presented by Rogers", round: "Final", time: "02:00",
       player1: { name: "Ben Shelton", country: "Estados Unidos", country_code: "US", photo: "images/players/ben-shelton.jpg?v=1" },
       player2: { name: "Brandon Nakashima", country: "Estados Unidos", country_code: "US", photo: "images/players/brandon-nakashima.jpg?v=1" },
+    },
+    {
+      id: "cincinnati-2026-r3-jodar-tabilo", date: "2026-08-17", dateLabel: "Lunes, 17 de agosto",
+      tournament: "Cincinnati Open", round: "Tercera ronda", time: "20:30",
+      player1: { name: "Rafael Jodar", country: "Espana", country_code: "ES" },
+      player2: { name: "Alejandro Tabilo", country: "Chile", country_code: "CL" },
+    },
+    {
+      id: "cincinnati-2026-r3-landaluce-tirante", date: "2026-08-17", dateLabel: "Lunes, 17 de agosto",
+      tournament: "Cincinnati Open", round: "Tercera ronda", time: "Por confirmar",
+      player1: { name: "Martin Landaluce", country: "Espana", country_code: "ES" },
+      player2: { name: "Thiago Agustin Tirante", country: "Argentina", country_code: "AR" },
+    },
+    {
+      id: "cincinnati-2026-r3-faria-walton", date: "2026-08-18", dateLabel: "Martes, 18 de agosto",
+      tournament: "Cincinnati Open", round: "Tercera ronda", time: "Por confirmar",
+      player1: { name: "Jaime Faria", country: "Portugal", country_code: "PT" },
+      player2: { name: "Adam Walton", country: "Australia", country_code: "AU" },
     },
   ],
 };

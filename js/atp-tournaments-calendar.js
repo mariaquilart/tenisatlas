@@ -1075,6 +1075,13 @@ document.addEventListener("DOMContentLoaded", () => {
     matchup.append(createPlayer(match.player1), versus, createPlayer(match.player2));
 
     card.append(round, header, matchup);
+    if (match.score) {
+      const score = document.createElement("strong");
+      score.className = "calendar-match__score";
+      score.textContent = match.score;
+      score.setAttribute("aria-label", `Resultado: ${match.score}`);
+      card.appendChild(score);
+    }
     return card;
   };
 
@@ -1086,19 +1093,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const now = new Date();
     const currentDateKey = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}-${String(now.getDate()).padStart(2, "0")}`;
+    const displayedMonthPrefix = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-`;
     const [selectedYear, selectedMonth, selectedDay] = dateKey.split("-").map(Number);
-    matchesTitle.textContent = dateKey === currentDateKey
+    matchesTitle.textContent = showUpcoming
+      ? `Próximos partidos de ${monthNames[currentMonth]} de ${currentYear}`
+      : dateKey === currentDateKey
       ? "Partidos de hoy"
       : `Partidos del ${selectedDay} de ${monthNames[selectedMonth - 1]} de ${selectedYear}`;
 
     const dailyData = window.ATP_DAILY_MATCHES;
-    const data = window.ATP_MATCHES_HISTORY?.[dateKey]
-      || dailyData?.archive?.[dateKey]
+    const monthlyMatchPool = [
+      ...Object.values(dailyData?.archive || {}).flatMap((entry) => entry.matches || []),
+      ...(dailyData?.matches || []).map((match) => ({ ...match, date: match.date || dailyData.date })),
+      ...(dailyData?.upcoming || []),
+    ];
+    const displayedMonthMatches = [...new Map(monthlyMatchPool
+      .filter((match) => match.date?.startsWith(displayedMonthPrefix))
+      .map((match) => {
+        const matchDate = new Date(`${match.date}T12:00:00`);
+        const generatedDateLabel = matchDate.toLocaleDateString("es-ES", { weekday: "long", day: "numeric", month: "long" });
+        const datedMatch = { ...match, dateLabel: match.dateLabel || `${generatedDateLabel.charAt(0).toUpperCase()}${generatedDateLabel.slice(1)}` };
+        return [match.id || `${match.date}-${match.tournament}-${match.player1?.name}-${match.player2?.name}`, datedMatch];
+      })).values()].sort((first, second) => first.date.localeCompare(second.date) || String(first.time).localeCompare(String(second.time)));
+    const displayedMonthToday = displayedMonthMatches.filter((match) => match.date === currentDateKey);
+    const displayedMonthUpcoming = displayedMonthMatches.filter((match) => match.date > currentDateKey);
+    const data = dailyData?.archive?.[dateKey]
+      || window.ATP_MATCHES_HISTORY?.[dateKey]
       || (dailyData?.date === dateKey ? dailyData : null);
     const hasUpcoming = dateKey === currentDateKey
       && Array.isArray(dailyData?.upcoming)
       && dailyData.upcoming.length > 0;
-    matchesTabs.hidden = !hasUpcoming;
+    matchesTabs.hidden = showUpcoming ? false : !hasUpcoming;
 
     const renderMatches = (matches, emptyMessage) => {
       matchesList.replaceChildren();
@@ -1117,14 +1142,24 @@ document.addEventListener("DOMContentLoaded", () => {
       matchesTodayTab.setAttribute("aria-selected", String(!upcoming));
       matchesUpcomingTab.setAttribute("aria-selected", String(upcoming));
       renderMatches(
-        upcoming ? dailyData.upcoming : data?.matches,
-        upcoming ? "Todavía no hay próximos partidos confirmados." : "No hay partidos ATP programados para hoy.",
+        upcoming
+          ? (showUpcoming ? displayedMonthUpcoming : dailyData?.upcoming)
+          : (showUpcoming ? displayedMonthToday : data?.matches),
+        upcoming
+          ? "Todavía no hay próximos partidos confirmados."
+          : (showUpcoming && !currentDateKey.startsWith(displayedMonthPrefix)
+            ? "El día de hoy no pertenece a este mes."
+            : "No hay partidos ATP programados para hoy."),
       );
     };
 
     matchesTodayTab.onclick = () => selectMatchesTab(false);
     matchesUpcomingTab.onclick = () => selectMatchesTab(true);
     matchesStatus.hidden = false;
+    if (showUpcoming) {
+      selectMatchesTab(false);
+      return;
+    }
     if (!data) {
       matchesStatus.textContent = dateKey < currentDateKey
         ? "Todavía no hay partidos registrados para este día."
@@ -1144,14 +1179,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const monthName = monthNames[currentMonth];
     title.textContent = `${monthName.charAt(0).toUpperCase()}${monthName.slice(1)} de ${currentYear}`;
     grid.replaceChildren();
-    const displayedMonthPrefix = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-`;
-    const dailyMatches = window.ATP_DAILY_MATCHES;
-    const hasTodayMatches = dailyMatches?.date?.startsWith(displayedMonthPrefix)
-      && Array.isArray(dailyMatches.matches)
-      && dailyMatches.matches.length > 0;
-    const hasUpcomingMatches = Array.isArray(dailyMatches?.upcoming)
-      && dailyMatches.upcoming.some((match) => match.date?.startsWith(displayedMonthPrefix));
-    upcomingMatchesButton.hidden = !hasTodayMatches && !hasUpcomingMatches;
+    upcomingMatchesButton.hidden = false;
 
     const today = new Date();
     const todayAtNoon = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 12);
@@ -1216,8 +1244,7 @@ document.addEventListener("DOMContentLoaded", () => {
           dayNumber.setAttribute("aria-label", `Hoy, ${day} de ${monthNames[currentMonth]} de ${currentYear}`);
         }
         dayCell.appendChild(dayNumber);
-        if (dayDate < todayAtNoon
-          && (window.ATP_MATCHES_HISTORY?.[dateKey] || window.ATP_DAILY_MATCHES?.archive?.[dateKey])) {
+        if (dayDate < todayAtNoon) {
           const pastDayBall = document.createElement("button");
           pastDayBall.type = "button";
           pastDayBall.className = "tournaments-calendar__past-day-ball";
@@ -1368,7 +1395,7 @@ document.addEventListener("DOMContentLoaded", () => {
   upcomingMatchesButton.addEventListener("click", () => {
     const dailyData = window.ATP_DAILY_MATCHES;
     if (!dailyData?.date) return;
-    openMatchesCard(dailyData.date, upcomingMatchesButton);
+    openMatchesCard(dailyData.date, upcomingMatchesButton, true);
   });
   tournamentClose.addEventListener("click", closeTournamentCard);
   matchesClose.addEventListener("click", closeMatchesCard);
@@ -1404,10 +1431,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const nextMidnight = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
     window.setTimeout(() => {
       window.ATP_REFRESH_DAILY_MATCHES?.();
+      window.ATP_LOAD_LIVE_MATCHES?.();
       if (!calendar.hidden) render();
       scheduleTodayRefresh();
     }, nextMidnight.getTime() - now.getTime() + 100);
   };
 
   scheduleTodayRefresh();
+  document.addEventListener("atp:daily-matches-updated", () => {
+    if (!calendar.hidden) render();
+  });
 });

@@ -1458,6 +1458,16 @@ a {
   font-weight: 700;
 }
 
+.calendar-match__score {
+  justify-self: center;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  background: #263a32;
+  color: #fffdf8;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+
 .calendar-tournament-card__close {
   position: absolute;
   top: 0.7rem;

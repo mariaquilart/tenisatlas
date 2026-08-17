@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
         else if ((profile?.height && profile.height <= 180) || clayShare >= .6) style = "defensive";
         else style = "balanced";
       }
-      return { name, ranking: profile?.ranking || index + 1, country: profile?.country || null, age: ageOf(profile?.birth), height: profile?.height || null, hand: profile ? (profile.right ? "right" : "left") : null, titles: titles.length, surface: favoriteSurface, style, photo: photos.get(key) || null };
+      return { name, ranking: profile?.ranking || index + 1, country: profile?.country || null, age: ageOf(profile?.birth) ?? profile?.age ?? null, height: profile?.height || null, hand: profile?.right === undefined ? null : (profile.right ? "right" : "left"), titles: titles.length, surface: favoriteSurface, style, photo: photos.get(key) || null };
     });
     return playerData;
   };
