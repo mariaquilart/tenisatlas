@@ -1913,7 +1913,10 @@ body.page--sub .hero[hidden] {
 .palmares-category ul { list-style: none; padding: .25rem 1.25rem .45rem; }
 .palmares-category li { position: relative; padding: .78rem 0 .78rem 1.15rem; border-bottom: 1px solid rgba(79,68,51,.08); color: #82776a; font-size: .8rem; }
 .palmares-category li:last-child { border-bottom: 0; }
-.palmares-category li::before { content: ""; position: absolute; left: 0; top: 1.08rem; width: .35rem; height: .35rem; border: 2px solid #c9a86a; border-radius: 50%; background: #fffdf8; }
+.palmares-category__tennis-ball { position: absolute; left: 0; top: 1.08rem; width: .6rem; height: .6rem; overflow: hidden; border: 1px solid rgba(71,82,31,.45); border-radius: 50%; background: #c7d84a; box-shadow: 0 1px 3px rgba(55,48,37,.18); }
+.palmares-category__tennis-ball::before, .palmares-category__tennis-ball::after { content: ""; position: absolute; top: -.11rem; width: .37rem; height: .71rem; border: 1px solid rgba(255,255,245,.9); border-radius: 50%; }
+.palmares-category__tennis-ball::before { right: .38rem; }
+.palmares-category__tennis-ball::after { left: .38rem; }
 .palmares-category__title-link { padding: 0; border: 0; background: transparent; color: #3f4e46; font: inherit; font-weight: 675; text-align: left; text-decoration: none; cursor: pointer; }
 .palmares-category__title-link:hover, .palmares-category__title-link:focus-visible { color: #8d713f; outline: none; }
 .palmares-category--grand-slam { border-left-color: #d4af37; }

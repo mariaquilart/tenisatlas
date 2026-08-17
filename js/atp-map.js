@@ -339,6 +339,12 @@ document.addEventListener("DOMContentLoaded", () => {
         iconSize: L.point(42, 42),
       }),
     });
+    playerLayer.on("spiderfied", (event) => {
+      if (event.cluster?._icon) event.cluster._icon.style.visibility = "hidden";
+    });
+    playerLayer.on("unspiderfied", (event) => {
+      if (event.cluster?._icon) event.cluster._icon.style.visibility = "";
+    });
     map.addLayer(playerLayer);
 
     try {

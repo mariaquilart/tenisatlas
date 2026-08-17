@@ -171,6 +171,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const list = document.createElement("ul");
       categoryTitles.forEach((title) => {
         const item = document.createElement("li");
+        const ball = document.createElement("span");
+        ball.className = "palmares-category__tennis-ball";
+        ball.setAttribute("aria-hidden", "true");
         const tournament = document.createElement("button");
         tournament.type = "button";
         tournament.className = "palmares-category__title-link";
@@ -180,7 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
         tournament.addEventListener("click", () => {
           window.ATP_OPEN_HISTORY_FILTER?.({ tournament: title.tournament, year: title.year, round: "Final" });
         });
-        item.append(tournament, document.createTextNode(` — ${title.year}`));
+        item.append(ball, tournament, document.createTextNode(` — ${title.year}`));
         list.appendChild(item);
       });
       section.append(categoryHeader, list);

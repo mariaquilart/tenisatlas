@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
-  <link rel="stylesheet" href="css/style.css?v=20260814o">
+  <link rel="stylesheet" href="css/style.css?v=20260817b">
 </head>
 <body class="page--sub">
   <header class="site-nav">
@@ -29,7 +29,7 @@
       <button type="button" class="site-nav__link" id="atp-history-btn" aria-pressed="false">Historial</button>
       <button type="button" class="site-nav__link" id="atp-versus-btn" aria-pressed="false">H2H</button>
       <button type="button" class="site-nav__link" id="atp-palmares-btn" aria-pressed="false">Palmarés</button>
-      <button type="button" class="site-nav__link" id="atp-filters-btn" aria-pressed="false">Filtros</button>
+      <button type="button" class="site-nav__link" id="atp-filters-btn" aria-pressed="false">SIMILARES</button>
     </nav>
   </header>
 
@@ -148,7 +148,7 @@
     <div class="players-filter-view__inner">
       <header class="players-filter-view__header">
         <p class="players-filter-view__eyebrow">Top 200 ATP</p>
-        <h1 class="players-filter-view__title" id="atp-filters-title">FILTROS</h1>
+        <h1 class="players-filter-view__title" id="atp-filters-title">SIMILARES</h1>
         <p class="players-filter-view__intro">Combina criterios para encontrar jugadores con el perfil que buscas.</p>
       </header>
       <div class="players-filter-panel" id="atp-players-filter-panel">
@@ -351,17 +351,18 @@
   <script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
   <script src="js/atp-tournaments-data.js"></script>
   <script src="js/atp-players-map-data.js?v=20260812a"></script>
-  <script src="js/atp-map.js?v=20260813e"></script>
+  <script src="js/atp-map.js?v=20260817a"></script>
   <script src="js/atp-versus-data.js?v=20260812b"></script>
   <script src="js/atp-palmares-data.js?v=20260814a"></script>
   <script src="js/atp-compare-data.js?v=20260814b"></script>
-  <script src="js/atp-palmares.js?v=20260814i"></script>
+  <script src="js/atp-palmares.js?v=20260817a"></script>
   <script src="js/atp-compare.js?v=20260814g"></script>
-  <script src="js/atp-filters.js?v=20260814e"></script>
+  <script src="js/atp-filters.js?v=20260817a"></script>
   <script src="js/atp-versus.js?v=20260813e"></script>
   <script src="js/atp-history-recent-data.js?v=20260813a"></script>
   <script src="js/atp-history-amateur-data.js?v=20260813a"></script>
   <script src="js/atp-history-five-years-data.js?v=20260813a"></script>
   <script src="js/atp-history.js?v=20260814a"></script>
+  <script src="js/atp-navigation-state.js?v=20260817a"></script>
 </body>
 </html>

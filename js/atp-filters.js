@@ -98,7 +98,6 @@ document.addEventListener("DOMContentLoaded", () => {
     selects.forEach((select) => {
       if (!select.value) return;
       filtered = filtered.filter((player) => predicates[select.dataset.playerFilter](player, select.value));
-      const step = document.createElement("span"); step.innerHTML = `<i>↓</i> ${select.options[select.selectedIndex].text} <b>${filtered.length} ${filtered.length === 1 ? "jugador" : "jugadores"}</b>`; funnel.appendChild(step);
     });
     base.textContent = `${filtered.length} ${filtered.length === 1 ? "jugador" : "jugadores"}`;
     results.replaceChildren(...filtered.map(cardFor)); results.hidden = !filtered.length; empty.hidden = Boolean(filtered.length);
