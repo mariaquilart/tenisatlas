@@ -49,12 +49,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let playerNames = [...players.values()].sort((a, b) => a.localeCompare(b, "es"));
   const liveMatches = [];
-  // Las distintas fuentes no siempre usan el mismo nombre para un torneo
-  // (p. ej. "Cincinnati" y "Cincinnati Open"). Para el H2H, jugadores + fecha
-  // identifican mejor el partido y evitan mostrarlo y contarlo dos veces.
-  const matchIdentity = (match) => [
-    normalize(match.winner), normalize(match.loser), match.date || "",
-  ].join("|");
+  // El CSV externo usa a veces la fecha de inicio del torneo en vez de la fecha
+  // real del partido. El marcador y el año permiten unir ese registro con el
+  // local aunque difieran el nombre del torneo, la ronda o el día.
+  const matchIdentity = (match) => {
+    const date = String(match.date || "");
+    const score = normalize(match.score);
+    const occurrence = score ? `${date.slice(0, 4)}|${score}` : date;
+    return [normalize(match.winner), normalize(match.loser), occurrence].join("|");
+  };
   const addLiveMatch = (match, knownMatches) => {
     const key = matchIdentity(match);
     if (knownMatches.has(key)) return;
@@ -133,7 +136,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const known = new Set(history.matches
         .filter((match) => String(match[4]).startsWith(String(year)))
         .map((match) => matchIdentity({
-          winner: history.players[match[0]], loser: history.players[match[1]], date: match[4],
+          winner: history.players[match[0]], loser: history.players[match[1]], date: match[4], score: match[5],
         })));
       liveMatches.forEach((match) => known.add(matchIdentity(match)));
       rows.forEach((row) => {
