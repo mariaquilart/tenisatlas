@@ -345,6 +345,19 @@ document.addEventListener("DOMContentLoaded", () => {
           winnerId: playerIds.get(normalize(match.winner)),
           round: roundLabels[match.roundCode] || match.roundCode || "Ronda no disponible",
         })))
+      // Última barrera contra duplicados: algunas fuentes asignan al mismo
+      // encuentro días consecutivos y etiquetas de ronda distintas. En una
+      // comparación entre dos jugadores no puede haber dos partidos del mismo
+      // torneo con solo unas horas de diferencia.
+      .filter((match, index, allMatches) => {
+        const matchTime = new Date(`${match.date}T12:00:00`).getTime();
+        return !allMatches.slice(0, index).some((previous) => {
+          if (normalize(previous.tournament) !== normalize(match.tournament)) return false;
+          const previousTime = new Date(`${previous.date}T12:00:00`).getTime();
+          return Number.isFinite(matchTime) && Number.isFinite(previousTime)
+            && Math.abs(matchTime - previousTime) <= 3 * 24 * 60 * 60 * 1000;
+        });
+      })
       .sort((a, b) => b.date.localeCompare(a.date));
     const winsOne = meetings.filter((match) => normalize(match.winner) === keyOne).length;
     const winsTwo = meetings.length - winsOne;
