@@ -49,7 +49,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let playerNames = [...players.values()].sort((a, b) => a.localeCompare(b, "es"));
   const liveMatches = [];
+  // Las distintas fuentes no siempre usan el mismo nombre para un torneo
+  // (p. ej. "Cincinnati" y "Cincinnati Open"). Para el H2H, jugadores + fecha
+  // identifican mejor el partido y evitan mostrarlo y contarlo dos veces.
+  const matchIdentity = (match) => [
+    normalize(match.winner), normalize(match.loser), match.date || "",
+  ].join("|");
+  const addLiveMatch = (match, knownMatches) => {
+    const key = matchIdentity(match);
+    if (knownMatches.has(key)) return;
+    knownMatches.add(key);
+    liveMatches.push(match);
+  };
   const addLocalCompletedMatches = () => {
+    const knownMatches = new Set(liveMatches.map(matchIdentity));
     const daily = window.ATP_DAILY_MATCHES || {};
     const days = [
       ...Object.values(daily.archive || {}),
@@ -61,14 +74,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!first?.name || !second?.name || first.lost === second.lost) return;
       const winner = first.lost ? second : first;
       const loser = first.lost ? first : second;
-      liveMatches.push({
+      addLiveMatch({
         winner: winner.name,
         loser: loser.name,
         tournament: match.tournament || "Torneo no disponible",
         roundCode: match.round || "Ronda no disponible",
         date: match.date || day.date,
         score: match.score || "",
-      });
+      }, knownMatches);
       [winner.name, loser.name].forEach((name) => {
         const key = normalize(name);
         if (!players.has(key)) players.set(key, name);
@@ -119,13 +132,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const known = new Set(history.matches
         .filter((match) => String(match[4]).startsWith(String(year)))
-        .map((match) => [
-          normalize(history.players[match[0]]), normalize(history.players[match[1]]),
-          history.tournaments[match[2]], match[4],
-        ].join("|")));
-      liveMatches.forEach((match) => known.add([
-        normalize(match.winner), normalize(match.loser), match.tournament, match.date,
-      ].join("|")));
+        .map((match) => matchIdentity({
+          winner: history.players[match[0]], loser: history.players[match[1]], date: match[4],
+        })));
+      liveMatches.forEach((match) => known.add(matchIdentity(match)));
       rows.forEach((row) => {
         const winner = row[winnerColumn];
         const loser = row[loserColumn];
@@ -138,10 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
           winner, loser, tournament: row[tournamentColumn], roundCode: row[roundColumn], date,
           score: scoreColumn >= 0 ? row[scoreColumn] : "",
         };
-        const key = [normalize(winner), normalize(loser), match.tournament, date].join("|");
-        if (known.has(key)) return;
-        known.add(key);
-        liveMatches.push(match);
+        addLiveMatch(match, known);
         [winner, loser].forEach((name) => {
           const normalizedName = normalize(name);
           if (!players.has(normalizedName)) players.set(normalizedName, name);
