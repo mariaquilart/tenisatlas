@@ -91,7 +91,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const dataFor = (player) => {
     const profile = profileMap.get(normalize(player)); const titles = titlesFor(player); const record = recordFor(player);
     const count = (category) => titles.filter((title) => title.category === category).length;
-    return { name: player, photo: photoMap.get(normalize(player)), ranking: profile?.ranking || "Sin dato", points: profile?.points ? profile.points.toLocaleString("es-ES") : "Sin dato", country: profile?.country || "Sin dato", age: ageFromBirth(profile?.birth) === "Sin dato" ? (profile?.age || "Sin dato") : ageFromBirth(profile?.birth), height: profile?.height ? `${profile.height} cm` : "Sin dato", hand: profile ? (profile.right === undefined ? "Sin dato" : profile.right ? "Diestro" : "Zurdo") : "Sin dato", wins: record.wins || "Sin dato", losses: record.losses || "Sin dato", percentage: record.percentage, total: titles.length, slam: count("Grand Slam"), masters: count("Masters 1000"), atp500: count("ATP 500"), atp250: count("ATP 250"), finals: count("ATP Finals"), first: titles[0] ? `${titles[0].tournament.replace(/ Masters$/i, "")} · ${titles[0].year}` : "Sin título", latest: titles.at(-1) ? `${titles.at(-1).tournament.replace(/ Masters$/i, "")} · ${titles.at(-1).year}` : "Sin título" };
+    const latestTitle = titles[titles.length - 1];
+    return { name: player, photo: photoMap.get(normalize(player)), ranking: profile?.ranking || "Sin dato", points: profile?.points ? profile.points.toLocaleString("es-ES") : "Sin dato", country: profile?.country || "Sin dato", age: ageFromBirth(profile?.birth) === "Sin dato" ? (profile?.age || "Sin dato") : ageFromBirth(profile?.birth), height: profile?.height ? `${profile.height} cm` : "Sin dato", hand: profile ? (profile.right === undefined ? "Sin dato" : profile.right ? "Diestro" : "Zurdo") : "Sin dato", wins: record.wins || "Sin dato", losses: record.losses || "Sin dato", percentage: record.percentage, total: titles.length, slam: count("Grand Slam"), masters: count("Masters 1000"), atp500: count("ATP 500"), atp250: count("ATP 250"), finals: count("ATP Finals"), first: titles[0] ? `${titles[0].tournament.replace(/ Masters$/i, "")} · ${titles[0].year}` : "Sin título", latest: latestTitle ? `${latestTitle.tournament.replace(/ Masters$/i, "")} · ${latestTitle.year}` : "Sin título" };
   };
 
   let selectedOne = null; let selectedTwo = null;
@@ -106,7 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const portrait = (data) => {
     const card = document.createElement("section"); card.className = "compare-player";
     const imageBox = document.createElement("div"); imageBox.className = "compare-player__portrait";
-    const initials = data.name.split(/\s+/).filter(Boolean); imageBox.textContent = `${initials[0]?.[0] || ""}${initials.at(-1)?.[0] || ""}`;
+    const initials = data.name.split(/\s+/).filter(Boolean); const lastInitial = initials[initials.length - 1]; imageBox.textContent = `${initials[0]?.[0] || ""}${lastInitial?.[0] || ""}`;
     if (data.photo) { const image = document.createElement("img"); image.src = data.photo; image.alt = `Retrato de ${data.name}`; image.addEventListener("error", () => image.remove(), { once: true }); imageBox.appendChild(image); }
     const rank = document.createElement("span"); rank.className = "compare-player__rank"; rank.textContent = data.ranking === "Sin dato" ? "Top 200 ATP" : `N.º ${data.ranking} ATP`;
     const name = document.createElement("h2"); name.textContent = data.name; card.append(imageBox, rank, name); return card;

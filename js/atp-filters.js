@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const cardFor = (player) => {
     const card = document.createElement("article"); card.className = "players-filter-card";
     const portrait = document.createElement("div"); portrait.className = "players-filter-card__portrait";
-    const parts = player.name.split(/\s+/); portrait.textContent = `${parts[0]?.[0] || ""}${parts.at(-1)?.[0] || ""}`;
+    const parts = player.name.split(/\s+/); const lastPart = parts[parts.length - 1]; portrait.textContent = `${parts[0]?.[0] || ""}${lastPart?.[0] || ""}`;
     if (player.photo) { const image = document.createElement("img"); image.src = player.photo; image.alt = `Retrato de ${player.name}`; image.loading = "lazy"; image.addEventListener("error", () => image.remove(), { once: true }); portrait.appendChild(image); }
     const information = document.createElement("div"); const rank = document.createElement("span"); rank.textContent = `N.º ${player.ranking} ATP`; const name = document.createElement("h2"); name.textContent = player.name; information.append(rank, name); card.append(portrait, information); return card;
   };

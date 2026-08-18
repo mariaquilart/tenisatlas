@@ -57,7 +57,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const renderPortrait = (player) => {
     const words = player.split(/\s+/).filter(Boolean);
-    initialsNode.textContent = `${words[0]?.[0] || ""}${words.at(-1)?.[0] || ""}`;
+    const lastWord = words[words.length - 1];
+    initialsNode.textContent = `${words[0]?.[0] || ""}${lastWord?.[0] || ""}`;
     initialsNode.hidden = false;
     photoNode.hidden = true;
     photoNode.alt = `Retrato de ${player}`;
