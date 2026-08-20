@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const results = document.getElementById("atp-filters-results");
   const empty = document.getElementById("atp-filters-empty");
   const clearButton = document.getElementById("atp-filters-clear");
+  const submitButton = document.getElementById("atp-filters-submit");
   const history = window.ATP_VERSUS_DATA;
   if (!button || !view || !panel || !history) return;
 
@@ -103,6 +104,10 @@ document.addEventListener("DOMContentLoaded", () => {
     results.replaceChildren(...filtered.map(cardFor)); results.hidden = !filtered.length; empty.hidden = Boolean(filtered.length);
   };
   selects.forEach((select) => select.addEventListener("change", render));
+  submitButton?.addEventListener("click", () => {
+    render();
+    funnel.scrollIntoView({ behavior: "smooth", block: "start" });
+  });
   clearButton.addEventListener("click", () => { selects.forEach((select) => { select.value = ""; }); render(); });
   button.addEventListener("click", () => {
     ["atp-hero", "atp-map-view", "atp-birthdays-agenda", "atp-tournaments-calendar", "atp-versus-view", "atp-history-view", "atp-palmares-view", "atp-compare-view"].forEach((id) => document.getElementById(id)?.setAttribute("hidden", ""));

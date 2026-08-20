@@ -121,6 +121,7 @@ document.addEventListener("DOMContentLoaded", () => {
     input.setAttribute("aria-expanded", "false");
     toggle.setAttribute("aria-expanded", "false");
   };
+  const searchButton = document.getElementById("atp-palmares-search");
 
   const renderOptions = (query = "") => {
     const needle = normalize(query);
@@ -237,6 +238,13 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   toggle.addEventListener("click", () => options.hidden ? renderOptions("") : closeOptions());
+  searchButton?.addEventListener("click", () => {
+    const query = normalize(input.value);
+    const exact = query && players.find((player) => normalize(player) === query);
+    const first = query && players.find((player) => normalize(player).includes(query));
+    if (exact || first) selectPlayer(exact || first);
+    else renderOptions(input.value);
+  });
   document.addEventListener("click", (event) => {
     if (!event.target.closest(".palmares-search")) closeOptions();
   });

@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css">
-  <link rel="stylesheet" href="css/style.css?v=20260817c">
+  <link rel="stylesheet" href="css/style.css?v=20260820n">
 </head>
 <body class="page--sub">
   <header class="site-nav">
@@ -129,6 +129,7 @@
           </div>
           <div class="palmares-search__options" id="atp-compare-options-two" role="listbox" hidden></div>
         </div>
+        <button type="button" class="mobile-search-button compare-search__button" id="atp-compare-search">Comparar</button>
       </div>
       <p class="compare-view__message" id="atp-compare-message" role="status">Selecciona dos tenistas distintos para compararlos.</p>
       <article class="compare-result" id="atp-compare-result" hidden>
@@ -160,6 +161,7 @@
         <label>Superficie favorita<select data-player-filter="surface"><option value="">Todas</option><option value="hard">Pista dura</option><option value="clay">Tierra batida</option><option value="grass">Hierba</option></select></label>
         <label>Estilo estimado<select data-player-filter="style"><option value="">Todos</option><option value="aggressive">Agresivo</option><option value="balanced">Equilibrado</option><option value="defensive">Defensivo</option></select></label>
         <button type="button" class="players-filter-panel__clear" id="atp-filters-clear">Limpiar filtros</button>
+        <button type="button" class="mobile-search-button players-filter-panel__submit" id="atp-filters-submit">Mostrar resultados</button>
       </div>
       <div class="players-filter-funnel" id="atp-filters-funnel" aria-live="polite"></div>
       <div class="players-filter-results" id="atp-filters-results"></div>
@@ -220,6 +222,7 @@
           <button type="button" class="palmares-search__toggle" id="atp-palmares-toggle" aria-label="Mostrar los 150 tenistas" aria-expanded="false">&#8964;</button>
         </div>
         <div class="palmares-search__options" id="atp-palmares-options" role="listbox" hidden></div>
+        <button type="button" class="mobile-search-button palmares-search__button" id="atp-palmares-search">Buscar</button>
       </div>
       <p class="palmares-view__message" id="atp-palmares-message" role="status">Selecciona un tenista para consultar su palmarés.</p>
       <article class="palmares-result" id="atp-palmares-result" hidden>

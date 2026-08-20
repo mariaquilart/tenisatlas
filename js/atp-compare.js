@@ -96,6 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   let selectedOne = null; let selectedTwo = null;
+  const searchButton = document.getElementById("atp-compare-search");
   const close = (input, options, toggle) => { options.hidden = true; input.setAttribute("aria-expanded", "false"); toggle.setAttribute("aria-expanded", "false"); };
   const renderOptions = (slot, query = "") => {
     const [input, options, toggle] = slot === 1 ? [inputOne, optionsOne, toggleOne] : [inputTwo, optionsTwo, toggleTwo];
@@ -130,6 +131,14 @@ document.addEventListener("DOMContentLoaded", () => {
     input.addEventListener("focus", () => renderOptions(slot, input.value));
     input.addEventListener("keydown", (event) => { if (event.key === "Escape") close(input, options, toggle); if (event.key === "Enter") { const match = players.find((player) => normalize(player).includes(normalize(input.value))); if (match) select(slot, match); } });
     toggle.addEventListener("click", () => options.hidden ? renderOptions(slot, "") : close(input, options, toggle));
+  });
+  searchButton?.addEventListener("click", () => {
+    const queryOne = normalize(inputOne.value); const queryTwo = normalize(inputTwo.value);
+    const firstOne = queryOne && players.find((player) => normalize(player).includes(queryOne));
+    const firstTwo = queryTwo && players.find((player) => normalize(player).includes(queryTwo));
+    if (!selectedOne && firstOne) { selectedOne = firstOne; inputOne.value = firstOne; }
+    if (!selectedTwo && firstTwo) { selectedTwo = firstTwo; inputTwo.value = firstTwo; }
+    close(inputOne, optionsOne, toggleOne); close(inputTwo, optionsTwo, toggleTwo); renderComparison();
   });
   document.addEventListener("click", (event) => { if (!event.target.closest(".compare-search")) { close(inputOne, optionsOne, toggleOne); close(inputTwo, optionsTwo, toggleTwo); } });
   button.addEventListener("click", () => {
