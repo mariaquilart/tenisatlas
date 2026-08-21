@@ -43,6 +43,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const activeButton = document.getElementById(buttonId);
       activeButton?.classList.add("is-active");
       activeButton?.setAttribute("aria-pressed", "true");
+      if (window.matchMedia("(max-width: 720px)").matches) {
+        activeButton?.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+      }
     });
   });
 });

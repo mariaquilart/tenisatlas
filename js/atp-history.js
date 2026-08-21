@@ -472,7 +472,7 @@ document.addEventListener("DOMContentLoaded", () => {
     view.hidden = false;
     button.classList.add("is-active");
     button.setAttribute("aria-pressed", "true");
-    if (reset) tournamentInput.focus();
+    if (reset && !window.matchMedia("(max-width: 720px)").matches) tournamentInput.focus();
   };
 
   button.addEventListener("click", () => {

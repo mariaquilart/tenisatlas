@@ -101,7 +101,14 @@ document.addEventListener("DOMContentLoaded", () => {
       filtered = filtered.filter((player) => predicates[select.dataset.playerFilter](player, select.value));
     });
     base.textContent = `${filtered.length} ${filtered.length === 1 ? "jugador" : "jugadores"}`;
-    results.replaceChildren(...filtered.map(cardFor)); results.hidden = !filtered.length; empty.hidden = Boolean(filtered.length);
+    const mobile = window.matchMedia("(max-width: 720px)").matches;
+    const visiblePlayers = mobile ? filtered.slice(0, 40) : filtered;
+    if (mobile && filtered.length > visiblePlayers.length) {
+      const note = document.createElement("span");
+      note.textContent = `Mostrando los primeros ${visiblePlayers.length}. Añade filtros para afinar la búsqueda.`;
+      funnel.appendChild(note);
+    }
+    results.replaceChildren(...visiblePlayers.map(cardFor)); results.hidden = !filtered.length; empty.hidden = Boolean(filtered.length);
   };
   selects.forEach((select) => select.addEventListener("change", render));
   submitButton?.addEventListener("click", () => {

@@ -1971,56 +1971,24 @@ body.page--sub .hero[hidden] {
 
 @media (max-width: 720px) {
   .site-nav {
-    display: block;
-    padding: .55rem .65rem .65rem;
+    gap: 1rem;
   }
 
-  .site-nav__logo {
+  .site-nav__logo-text {
     display: none;
   }
 
   .site-nav__menu {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: .3rem;
-    overflow: visible;
-    mask-image: none;
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 1.25rem;
+    mask-image: linear-gradient(90deg, transparent 0, black 24px, black calc(100% - 24px), transparent 100%);
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-inline: contain;
   }
 
   .site-nav__link {
-    min-width: 0;
-    min-height: 2.35rem;
-    padding: .45rem .15rem;
-    border: 1px solid rgba(233, 220, 195, .1);
-    border-radius: .42rem;
-    background: rgba(255, 255, 255, .035);
-    font-size: clamp(.49rem, 2.35vw, .62rem);
-    letter-spacing: .045em;
-  }
-
-  .site-nav__link.is-active {
-    border-color: rgba(227, 202, 160, .45);
-    background: rgba(201, 168, 106, .14);
-  }
-
-  .site-nav__link::after {
-    display: none;
-  }
-
-  body.page--sub .hero {
-    padding-top: 7rem;
-  }
-
-  .map-view,
-  .birthdays-agenda,
-  .tournaments-calendar,
-  .versus-view,
-  .history-view,
-  .players-filter-view,
-  .compare-view,
-  .palmares-view {
-    top: 6.15rem;
-    inset-block-start: 6.15rem;
+    touch-action: manipulation;
   }
 
   .mobile-search-button {
@@ -2787,29 +2755,17 @@ body.page--sub .hero[hidden] {
   }
 }
 
-/* Debe prevalecer sobre los insets individuales de todas las vistas. */
+/* Tarjetas del calendario adaptadas a la barra movil original. */
 @media (max-width: 720px) {
-  .map-view,
-  .birthdays-agenda,
-  .tournaments-calendar,
-  .versus-view,
-  .history-view,
-  .players-filter-view,
-  .compare-view,
-  .palmares-view {
-    top: 6.15rem;
-    inset-block-start: 6.15rem;
-  }
-
   .tournaments-calendar__panel {
-    height: calc(100dvh - 6.15rem);
+    height: calc(100dvh - 4rem);
     min-height: 0;
   }
 
   .calendar-tournament-modal,
   .calendar-matches-modal,
   .calendar-winner-modal {
-    inset: 6.15rem 0 0;
+    inset: 4rem 0 0;
     place-items: start center;
     overflow-y: auto;
     padding: .7rem;
@@ -2820,7 +2776,7 @@ body.page--sub .hero[hidden] {
   .calendar-matches-card,
   .calendar-winner-card {
     width: 100%;
-    max-height: calc(100dvh - 7.55rem);
+    max-height: calc(100dvh - 5.4rem);
     overflow-y: auto;
     padding: 1.15rem;
     border-radius: .75rem;

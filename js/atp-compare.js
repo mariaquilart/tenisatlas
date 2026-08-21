@@ -144,7 +144,8 @@ document.addEventListener("DOMContentLoaded", () => {
   button.addEventListener("click", () => {
     ["atp-hero", "atp-map-view", "atp-birthdays-agenda", "atp-tournaments-calendar", "atp-versus-view", "atp-history-view", "atp-palmares-view"].forEach((id) => document.getElementById(id)?.setAttribute("hidden", ""));
     document.querySelectorAll(".site-nav__link.is-active").forEach((item) => { item.classList.remove("is-active"); item.setAttribute("aria-pressed", "false"); });
-    view.hidden = false; button.classList.add("is-active"); button.setAttribute("aria-pressed", "true"); inputOne.focus();
+    view.hidden = false; button.classList.add("is-active"); button.setAttribute("aria-pressed", "true");
+    if (!window.matchMedia("(max-width: 720px)").matches) inputOne.focus();
   });
   document.querySelector(".site-nav__menu")?.addEventListener("click", (event) => {
     const opensSubmenu = event.target.id === "atp-map-btn" || event.target.id === "atp-calendar-btn";
