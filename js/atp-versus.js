@@ -59,10 +59,17 @@ document.addEventListener("DOMContentLoaded", () => {
     return [normalize(match.winner), normalize(match.loser), occurrence].join("|");
   };
   const addLiveMatch = (match, knownMatches) => {
-    const key = matchIdentity(match);
+    const isFilsTiafoeCincinnati = normalize(match.winner) === normalize("Arthur Fils")
+      && normalize(match.loser) === normalize("Frances Tiafoe")
+      && normalize(match.tournament).includes("cincinnati")
+      && String(match.date || "").startsWith("2026");
+    const correctedMatch = isFilsTiafoeCincinnati
+      ? { ...match, score: "6-3 1-6 6-0" }
+      : match;
+    const key = matchIdentity(correctedMatch);
     if (knownMatches.has(key)) return;
     knownMatches.add(key);
-    liveMatches.push(match);
+    liveMatches.push(correctedMatch);
   };
   const addLocalCompletedMatches = () => {
     const knownMatches = new Set(liveMatches.map(matchIdentity));
