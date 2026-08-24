@@ -1767,8 +1767,8 @@ body.page--sub .hero[hidden] {
 .versus-scoreboard__row--winner { background: rgba(201, 168, 106, 0.1); }
 .versus-scoreboard__player { flex: 1; color: #f6f1e7; font-size: 0.76rem; font-weight: 500; }
 .versus-scoreboard__row--winner .versus-scoreboard__player::before { content: "●"; margin-right: 0.5rem; color: #d6b66f; font-size: 0.52rem; vertical-align: 0.12rem; }
-.versus-scoreboard__set { display: grid; place-items: center; width: 2.4rem; color: #f8f5ed; font-size: 0.9rem; font-weight: 600; }
-.versus-scoreboard__set sup { margin: -0.7rem 0 0 0.08rem; color: #d7c9a8; font-size: 0.5rem; }
+.versus-scoreboard__set { display: flex; align-items: center; justify-content: center; width: 2.4rem; color: #f8f5ed; font-size: 0.9rem; font-weight: 600; }
+.versus-scoreboard__set sup { position: relative; top: -.48em; margin-left: .08em; color: #d7c9a8; font-size: .5rem; line-height: 1; }
 .versus-scoreboard__status { padding: 0.38rem 0.7rem; background: #263a32; color: #cdbf9f; font-size: 0.58rem; letter-spacing: 0.06em; text-align: right; text-transform: uppercase; }
 .versus-scoreboard--empty { padding: 1rem; color: #d7c9a8; font-size: 0.72rem; text-align: center; }
 .versus-match--header { position: sticky; top: 0; z-index: 2; background: var(--versus-score-background); border-color: var(--versus-score-background); color: #fffdf8; box-shadow: 0 7px 18px rgba(52, 72, 63, 0.18); }

@@ -332,15 +332,18 @@ document.addEventListener("DOMContentLoaded", () => {
     };
     const meetings = history.matches
       .filter((match) => (match[0] === idOne && match[1] === idTwo) || (match[0] === idTwo && match[1] === idOne))
-      .map((match) => ({
-        winnerId: match[0],
-        winner: history.players[match[0]],
-        loser: history.players[match[1]],
-        tournament: history.tournaments[match[2]] || "Torneo no disponible",
-        round: roundLabels[history.rounds[match[3]]] || history.rounds[match[3]] || "Ronda no disponible",
-        date: match[4],
-        score: match[5] || "",
-      }))
+      .map((match) => {
+        const meeting = {
+          winnerId: match[0],
+          winner: history.players[match[0]],
+          loser: history.players[match[1]],
+          tournament: history.tournaments[match[2]] || "Torneo no disponible",
+          round: roundLabels[history.rounds[match[3]]] || history.rounds[match[3]] || "Ronda no disponible",
+          date: match[4],
+          score: match[5] || "",
+        };
+        return meeting;
+      })
       .concat(liveMatches
         .filter((match) => {
           const winner = normalize(match.winner);
